@@ -269,3 +269,60 @@
 .avatar-correct-glow {
   animation: avatarCorrectGlow 1.2s ease-in-out infinite;
 }
+
+/* Friendly Hand Gesture & Talking Motion Animations */
+@keyframes doctorHandGesture {
+  0% {
+    transform: translateY(0px) rotate(0deg) scale(1);
+  }
+  25% {
+    transform: translateY(-4px) rotate(1.2deg) scale(1.015);
+  }
+  50% {
+    transform: translateY(-2px) rotate(-1.2deg) scale(1.02);
+  }
+  75% {
+    transform: translateY(-5px) rotate(0.8deg) scale(1.01);
+  }
+  100% {
+    transform: translateY(0px) rotate(0deg) scale(1);
+  }
+}
+
+.animate-doctor-gesture {
+  animation: doctorHandGesture 3.2s ease-in-out infinite;
+}
+
+@keyframes doctorTalkingMotion {
+  0%, 100% {
+    transform: translateY(0) scaleY(1);
+  }
+  25% {
+    transform: translateY(-1.5px) scaleY(1.01);
+  }
+  50% {
+    transform: translateY(-3px) scaleY(1.02);
+  }
+  75% {
+    transform: translateY(-1px) scaleY(1.01);
+  }
+}
+
+.animate-doctor-talking {
+  animation: doctorTalkingMotion 0.4s ease-in-out infinite alternate;
+}
+
+@keyframes mouthVisemePulse {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scaleX(0.9) scaleY(0.7);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scaleX(1.15) scaleY(1.25);
+  }
+}
+
+.animate-mouth-viseme {
+  animation: mouthVisemePulse 0.28s ease-in-out infinite alternate;
+}

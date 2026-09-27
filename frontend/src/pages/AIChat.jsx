@@ -4,12 +4,14 @@ import { askAI } from "../services/api";
 import SpeechRecognition from "../components/SpeechRecognition";
 import { FormattedText } from "../utils/formatText";
 
+import { speakWithFemaleVoice } from "../utils/speechUtils";
+
 function AIChat() {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([
     {
       sender: "AI",
-      text: "Hello! 👋 I am Dr. Mentor, your AI Doctor Learning Assistant. Ask me anything about programming, mathematics, science, history, geography, or social interaction skills!",
+      text: "Hello! 👋 I am Dr. Mentor, your friendly female AI Doctor. How are you doing today? Ask me anything about programming, math, science, history, or social interaction skills!",
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
     },
   ]);
@@ -27,19 +29,12 @@ function AIChat() {
   }, [messages, loading]);
 
   const speakText = (text) => {
-    if (!ttsEnabled || !("speechSynthesis" in window)) return;
-    window.speechSynthesis.cancel();
-    
-    // Remove markdown symbols before speaking
-    const cleanSpeechText = text.replace(/[\*\_\[\]\`\#]/g, '');
-    const utterance = new SpeechSynthesisUtterance(cleanSpeechText);
-    utterance.rate = 0.95;
-
-    utterance.onstart = () => setIsSpeaking(true);
-    utterance.onend = () => setIsSpeaking(false);
-    utterance.onerror = () => setIsSpeaking(false);
-
-    window.speechSynthesis.speak(utterance);
+    if (!ttsEnabled) return;
+    speakWithFemaleVoice(
+      text,
+      () => setIsSpeaking(true),
+      () => setIsSpeaking(false)
+    );
   };
 
   const handleSpeech = (text) => {

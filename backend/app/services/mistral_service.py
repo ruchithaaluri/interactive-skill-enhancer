@@ -199,6 +199,15 @@ def generate_response(message: str, history=None) -> str:
         return math_ans
 
     msg = message.lower().strip()
+
+    # Friendly conversational human greetings
+    if re.search(r'^(hi|hello|hey|greetings|good morning|good afternoon|good evening|howdy)\b', msg):
+        return "Hello there! 👋 How are you doing today? I'm Dr. Mentor, your friendly AI doctor! I'm so happy to talk with you. What would you like to explore or learn together today?"
+    if re.search(r'^(how are you|how do you do|how is it going|how are you doing)', msg):
+        return "I'm doing wonderful, thank you for asking! 😊 I'm always excited to help you learn and answer your questions. How are you feeling today?"
+    if re.search(r'^(who are you|what is your name)', msg):
+        return "I am **Dr. Mentor**, your friendly virtual AI doctor and learning assistant! I'm here to make learning fun, easy, and encouraging for you. What would you like to learn today?"
+
     for pattern, ans in KNOWLEDGE_MAP:
         if re.search(pattern, msg):
             return ans

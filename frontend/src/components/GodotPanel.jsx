@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Sparkles, Send, Volume2, UserCheck, Stethoscope } from "lucide-react";
 import { askAI } from "../services/api";
 import { FormattedText } from "../utils/formatText";
+import { speakWithFemaleVoice } from "../utils/speechUtils";
 import DoctorAvatar from "./DoctorAvatar";
 
 function GodotPanel() {
@@ -15,15 +16,11 @@ function GodotPanel() {
   };
 
   const speakText = (text) => {
-    if (!("speechSynthesis" in window)) return;
-    window.speechSynthesis.cancel();
-    const clean = text.replace(/[\*\_\[\]\`\#]/g, "");
-    const utterance = new SpeechSynthesisUtterance(clean);
-    utterance.rate = 0.95;
-    utterance.onstart = () => setAvatarState("SPEAKING");
-    utterance.onend = () => setAvatarState("IDLE");
-    utterance.onerror = () => setAvatarState("IDLE");
-    window.speechSynthesis.speak(utterance);
+    speakWithFemaleVoice(
+      text,
+      () => setAvatarState("SPEAKING"),
+      () => setAvatarState("IDLE")
+    );
   };
 
   const handleAskAvatar = async () => {

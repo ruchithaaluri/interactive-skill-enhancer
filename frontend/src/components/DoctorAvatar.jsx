@@ -78,14 +78,34 @@ function DoctorAvatar({ avatarState = "IDLE", isSpeaking = false }) {
           {/* Subtle Background Radial Glow */}
           <div className="absolute inset-0 bg-radial from-sky-500/10 via-transparent to-transparent opacity-60 pointer-events-none" />
 
-          {/* Doctor Image with Subtle Breathing & State Micro-Animations */}
-          <img
-            src={doctorAvatarImg}
-            alt="Dr. Mentor - Realistic Female AI Doctor"
-            className={`w-full h-full object-cover object-top transition-transform duration-700 ${
-              activeSpeaking ? "animate-avatar-breath scale-[1.02]" : "animate-avatar-breath"
+          {/* Doctor Image with Subtle Breathing, Hand Gestures & Talking Motion */}
+          <div
+            className={`w-full h-full relative transition-transform duration-500 ${
+              activeSpeaking
+                ? "animate-doctor-talking animate-doctor-gesture scale-[1.02]"
+                : avatarState === "ENCOURAGING" || avatarState === "CORRECT"
+                ? "animate-doctor-gesture"
+                : "animate-avatar-breath"
             }`}
-          />
+          >
+            <img
+              src={doctorAvatarImg}
+              alt="Dr. Mentor - Realistic Female AI Doctor"
+              className="w-full h-full object-cover object-top"
+            />
+
+            {/* Mouth Movement & Viseme Motion Overlay during Speech */}
+            {activeSpeaking && (
+              <div className="absolute top-[52%] left-[48%] -translate-x-1/2 -translate-y-1/2 w-12 h-6 rounded-full bg-sky-400/20 border border-sky-300/40 backdrop-blur-[1px] animate-mouth-viseme pointer-events-none" />
+            )}
+          </div>
+
+          {/* Hand Gesture Active Badge Overlay */}
+          {(activeSpeaking || avatarState === "ENCOURAGING" || avatarState === "CORRECT") && (
+            <div className="absolute top-4 right-4 px-3 py-1 rounded-full bg-amber-500/20 border border-amber-400/40 text-amber-300 font-extrabold text-[11px] backdrop-blur-md shadow-lg flex items-center gap-1.5 z-10 animate-bounce">
+              <span>👋 Hand Gestures Active</span>
+            </div>
+          )}
 
           {/* Subtle Top & Bottom Gradient Vignettes for Conversational Framing */}
           <div className="absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-slate-950/80 to-transparent pointer-events-none" />
