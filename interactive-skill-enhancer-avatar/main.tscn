@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://ek3dtqv1t1pa"]
 
 [ext_resource type="PackedScene" uid="uid://b5qdbcb7ckp2r" path="res://Doctor_Male_Young.gltf" id="1_0xm2m"]
+[ext_resource type="PackedScene" uid="uid://ctr6lr88uj8xl" path="res://Doctor_Female_Young.gltf" id="2_female"]
 [ext_resource type="Script" uid="uid://bjvoftw7bayeq" path="res://main.gd" id="1_h2yge"]
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_wp5od"]
@@ -17,4 +18,7 @@ transform = Transform3D(1, 0, 0, 0, 0.9848077, 0.17364818, 0, -0.17364818, 0.984
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=139848565]
 mesh = SubResource("PlaneMesh_wp5od")
 
+[node name="Doctor_Female_Young" parent="." unique_id=243916003 instance=ExtResource("2_female")]
+
 [node name="Doctor_Male_Young" parent="." unique_id=243916002 instance=ExtResource("1_0xm2m")]
+visible = false
