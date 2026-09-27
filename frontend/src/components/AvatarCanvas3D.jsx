@@ -21,13 +21,13 @@ function AvatarCanvas3D({ modelFile = "Doctor_Female_Young.gltf", avatarState = 
     const width = container.clientWidth || 400;
     const height = container.clientHeight || 380;
 
-    // Scene
+    // 3D Scene Setup
     const scene = new THREE.Scene();
 
-    // Camera
-    const camera = new THREE.PerspectiveCamera(35, width / height, 0.1, 100);
-    camera.position.set(0, 1.45, 3.2);
-    camera.lookAt(0, 1.05, 0);
+    // Medium Close-Up Conversational Camera Framing (Head, Shoulders & Torso Focus)
+    const camera = new THREE.PerspectiveCamera(38, width / height, 0.1, 50);
+    camera.position.set(0, 1.32, 1.85);
+    camera.lookAt(0, 1.25, 0);
 
     // Renderer
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
@@ -36,33 +36,27 @@ function AvatarCanvas3D({ modelFile = "Doctor_Female_Young.gltf", avatarState = 
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
-    // Clear previous canvas
     while (container.firstChild) {
       container.removeChild(container.firstChild);
     }
     container.appendChild(renderer.domElement);
 
-    // Lighting
-    const ambientLight = new THREE.AmbientLight(0xffffff, 1.4);
+    // Soft Studio Lighting setup
+    const ambientLight = new THREE.AmbientLight(0xffffff, 1.5);
     scene.add(ambientLight);
 
-    const dirLight = new THREE.DirectionalLight(0xffffff, 2.2);
-    dirLight.position.set(2, 4, 3);
-    dirLight.castShadow = true;
-    scene.add(dirLight);
+    const keyLight = new THREE.DirectionalLight(0xffffff, 2.5);
+    keyLight.position.set(1.5, 3, 2.5);
+    keyLight.castShadow = true;
+    scene.add(keyLight);
 
-    const fillLight = new THREE.DirectionalLight(0x38bdf8, 0.8);
-    fillLight.position.set(-2, 2, -1);
+    const fillLight = new THREE.DirectionalLight(0x38bdf8, 1.0);
+    fillLight.position.set(-2, 2, 1);
     scene.add(fillLight);
 
-    // Floor shadow receiver
-    const planeGeo = new THREE.PlaneGeometry(10, 10);
-    const planeMat = new THREE.ShadowMaterial({ opacity: 0.25 });
-    const floor = new THREE.Mesh(planeGeo, planeMat);
-    floor.rotation.x = -Math.PI / 2;
-    floor.position.y = 0;
-    floor.receiveShadow = true;
-    scene.add(floor);
+    const rimLight = new THREE.DirectionalLight(0xa855f7, 0.6);
+    rimLight.position.set(0, 3, -3);
+    scene.add(rimLight);
 
     // Load 3D GLTF Model
     const loader = new GLTFLoader();
@@ -77,7 +71,7 @@ function AvatarCanvas3D({ modelFile = "Doctor_Female_Young.gltf", avatarState = 
       (gltf) => {
         const model = gltf.scene;
         model.position.set(0, 0, 0);
-        model.scale.set(1.1, 1.1, 1.1);
+        model.scale.set(1.15, 1.15, 1.15);
 
         model.traverse((child) => {
           if (child.isMesh) {
@@ -88,7 +82,7 @@ function AvatarCanvas3D({ modelFile = "Doctor_Female_Young.gltf", avatarState = 
 
         scene.add(model);
 
-        // Setup Animations
+        // Setup Skeletal Animations
         if (gltf.animations && gltf.animations.length > 0) {
           animationMixer = new THREE.AnimationMixer(model);
           mixerRef.current = animationMixer;
@@ -99,7 +93,6 @@ function AvatarCanvas3D({ modelFile = "Doctor_Female_Young.gltf", avatarState = 
           });
           actionsRef.current = actions;
 
-          // Default Idle track
           const defaultAnim = actions["Idle"] || actions["idle"] || Object.values(actions)[0];
           if (defaultAnim) {
             defaultAnim.play();
@@ -117,7 +110,6 @@ function AvatarCanvas3D({ modelFile = "Doctor_Female_Young.gltf", avatarState = 
       }
     );
 
-    // Render loop
     const animate = () => {
       reqId = requestAnimationFrame(animate);
       const delta = clock.getDelta();
@@ -128,7 +120,6 @@ function AvatarCanvas3D({ modelFile = "Doctor_Female_Young.gltf", avatarState = 
     };
     animate();
 
-    // Resize handler
     const handleResize = () => {
       if (!container) return;
       const w = container.clientWidth;
@@ -194,7 +185,7 @@ function AvatarCanvas3D({ modelFile = "Doctor_Female_Young.gltf", avatarState = 
       {/* Subtle overlay badge */}
       <div className="absolute bottom-3 left-3 px-3 py-1 rounded-full bg-slate-900/80 border border-slate-700 text-slate-300 text-[11px] font-semibold backdrop-blur-md z-10 flex items-center gap-1.5">
         <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-        Real-Time 3D WebGL Canvas ({modelFile})
+        Medium Close-Up 3D WebGL Canvas ({modelFile})
       </div>
     </div>
   );
