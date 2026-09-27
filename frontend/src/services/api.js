@@ -45,7 +45,7 @@ export const getCurrentUser = async () => {
 };
 
 // ==============================
-// AI Chat API
+// AI Chat & Quiz API
 // ==============================
 
 export const askAI = async (message, history = []) => {
@@ -54,6 +54,27 @@ export const askAI = async (message, history = []) => {
     history,
   });
   return response.data.response;
+};
+
+export const getTopics = async () => {
+  const response = await api.get("/chatbot/topics");
+  return response.data;
+};
+
+export const generateQuiz = async (subject, topic, count = 5) => {
+  const response = await api.post("/chatbot/quiz/generate", { subject, topic, count });
+  return response.data;
+};
+
+export const evaluateQuizAnswer = async (question, userAnswer, correctAnswer, explanation = "", hint = "") => {
+  const response = await api.post("/chatbot/quiz/evaluate", {
+    question,
+    user_answer: userAnswer,
+    correct_answer: correctAnswer,
+    explanation,
+    hint,
+  });
+  return response.data;
 };
 
 // ==============================
@@ -90,7 +111,7 @@ export const getProgress = async () => {
 };
 
 export const logProgressEvent = async (eventType, eventData = {}) => {
-  const response = await api.post("/progress/event", { event_type: eventType, event_data: eventData });
+  const response = await api.post("/progress/event", { event_type: eventType, details: eventData });
   return response.data;
 };
 

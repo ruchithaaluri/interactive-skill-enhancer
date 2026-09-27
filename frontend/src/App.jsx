@@ -10,29 +10,48 @@ import Progress from "./pages/Progress";
 import ChildProfile from "./pages/ChildProfile";
 import NotFound from "./pages/NotFound";
 import MainLayout from "./layouts/MainLayout";
+import { ProtectedRoute, PublicOnlyRoute } from "./components/ProtectedRoute";
 
 function App() {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
+      <Route
+        path="/login"
+        element={
+          <PublicOnlyRoute>
+            <Login />
+          </PublicOnlyRoute>
+        }
+      />
+      <Route
+        path="/register"
+        element={
+          <PublicOnlyRoute>
+            <Register />
+          </PublicOnlyRoute>
+        }
+      />
 
-      {/* App pages inside MainLayout */}
+      {/* Protected App pages inside MainLayout */}
       <Route
         path="/dashboard"
         element={
-          <MainLayout>
-            <Dashboard />
-          </MainLayout>
+          <ProtectedRoute>
+            <MainLayout>
+              <Dashboard />
+            </MainLayout>
+          </ProtectedRoute>
         }
       />
       <Route
         path="/ai-chat"
         element={
-          <MainLayout>
-            <AIChat />
-          </MainLayout>
+          <ProtectedRoute>
+            <MainLayout>
+              <AIChat />
+            </MainLayout>
+          </ProtectedRoute>
         }
       />
       <Route path="/chat" element={<Navigate to="/ai-chat" replace />} />
@@ -40,9 +59,11 @@ function App() {
       <Route
         path="/emotion-detection"
         element={
-          <MainLayout>
-            <EmotionDetection />
-          </MainLayout>
+          <ProtectedRoute>
+            <MainLayout>
+              <EmotionDetection />
+            </MainLayout>
+          </ProtectedRoute>
         }
       />
       <Route path="/emotion" element={<Navigate to="/emotion-detection" replace />} />
@@ -50,18 +71,22 @@ function App() {
       <Route
         path="/progress"
         element={
-          <MainLayout>
-            <Progress />
-          </MainLayout>
+          <ProtectedRoute>
+            <MainLayout>
+              <Progress />
+            </MainLayout>
+          </ProtectedRoute>
         }
       />
 
       <Route
         path="/child-profile"
         element={
-          <MainLayout>
-            <ChildProfile />
-          </MainLayout>
+          <ProtectedRoute>
+            <MainLayout>
+              <ChildProfile />
+            </MainLayout>
+          </ProtectedRoute>
         }
       />
       <Route path="/profile" element={<Navigate to="/child-profile" replace />} />

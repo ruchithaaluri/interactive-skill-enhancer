@@ -91,7 +91,7 @@ func ask_backend(message: String):
 	var headers = ["Content-Type: application/json"]
 	var body = JSON.stringify({"message": message, "history": []})
 
-	var err = http_request.request(url, headers, HTTPMethod.METHOD_POST, body)
+	var err = http_request.request(url, headers, HTTPClient.METHOD_POST, body)
 	if err != OK:
 		print("❌ HTTP Request failed to initialize: ", err)
 		play_idle()
