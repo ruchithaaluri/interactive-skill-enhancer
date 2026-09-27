@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Sparkles, CheckCircle2, XCircle, Award, ArrowRight, HelpCircle, BookOpen, Volume2, Lightbulb } from "lucide-react";
 import { getTopics, generateQuiz, evaluateQuizAnswer, logProgressEvent } from "../services/api";
+import { FormattedText } from "../utils/formatText";
 
 function playChime(success = true) {
   try {
@@ -175,7 +176,7 @@ function DailyQuest() {
           </div>
           <div>
             <h3 className="text-xl font-extrabold text-white">Daily Quiz Assistant</h3>
-            <p className="text-xs text-slate-300">Pick a subject & topic for interactive 3D Doctor Avatar questions!</p>
+            <p className="text-xs text-slate-300">Pick a subject & topic for interactive Doctor Avatar questions!</p>
           </div>
         </div>
 
@@ -236,7 +237,7 @@ function DailyQuest() {
           </div>
 
           <h4 className="text-base sm:text-lg font-bold text-white leading-relaxed">
-            👨‍⚕️ Dr. Mentor asks: "{q.question}"
+            👩‍⚕️ Dr. Mentor asks: "{q.question}"
           </h4>
 
           {/* Hint Button */}
@@ -293,7 +294,7 @@ function DailyQuest() {
             }`}>
               <div className="font-extrabold flex items-center justify-between gap-2 text-white">
                 <span className="flex items-center gap-2">
-                  <span>👨‍⚕️ Dr. Mentor:</span>
+                  <span>👩‍⚕️ Dr. Mentor:</span>
                   <button
                     onClick={() => speakText(evaluation.avatar_response)}
                     className="p-1 rounded-lg bg-white/10 hover:bg-white/20 text-sky-300"
@@ -307,7 +308,9 @@ function DailyQuest() {
                   {evaluation.is_correct ? "Correct!" : "Supportive Feedback"}
                 </span>
               </div>
-              <div className="leading-relaxed whitespace-pre-wrap">{evaluation.avatar_response}</div>
+              <div className="leading-relaxed">
+                <FormattedText text={evaluation.avatar_response} />
+              </div>
 
               <div className="flex justify-end pt-2">
                 <button

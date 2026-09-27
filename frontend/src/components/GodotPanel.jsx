@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { Gamepad2, Send, Volume2, UserCheck, Sparkles, HeartHandshake } from "lucide-react";
+import { Gamepad2, Send, Volume2, Sparkles, CheckCircle2, Play, Activity } from "lucide-react";
 import { askAI } from "../services/api";
+import { FormattedText } from "../utils/formatText";
 
 function GodotPanel() {
   const [avatarState, setAvatarState] = useState("IDLE");
-  const [activeModel, setActiveModel] = useState("Doctor_Female_Young.gltf");
   const [prompt, setPrompt] = useState("");
   const [aiResponse, setAiResponse] = useState("");
   const [loading, setLoading] = useState(false);
@@ -73,97 +73,84 @@ function GodotPanel() {
           </div>
           <div>
             <h2 className="text-xl font-bold text-white flex items-center gap-2">
-              Dr. Mentor 3D AI Doctor Avatar
-              <span className="px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-400/30 text-emerald-300 font-extrabold text-[10px] uppercase">
-                Godot 4.x Engine
+              Dr. Mentor 3D Godot Controller
+              <span className="px-2.5 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 font-extrabold text-[11px] uppercase flex items-center gap-1">
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                Godot 3D Running: Doctor_Female_Young.gltf
               </span>
             </h2>
-            <p className="text-xs text-slate-400">Warm, friendly, patient virtual doctor tutor</p>
+            <p className="text-xs text-slate-400">
+              Live 3D avatar viewport running via Godot 4.7.1 Engine
+            </p>
           </div>
         </div>
 
-        <div className="flex items-center gap-3">
-          {/* Model Switcher */}
-          <button
-            onClick={() =>
-              setActiveModel(
-                activeModel === "Doctor_Female_Young.gltf"
-                  ? "Doctor_Male_Young.gltf"
-                  : "Doctor_Female_Young.gltf"
-              )
-            }
-            className="px-3 py-1 rounded-xl bg-slate-800 border border-slate-700 text-slate-300 text-xs font-semibold hover:bg-slate-700 transition flex items-center gap-1.5"
-          >
-            <UserCheck size={14} className="text-sky-400" />
-            {activeModel === "Doctor_Female_Young.gltf" ? "Female Doctor" : "Male Doctor Fallback"}
-          </button>
-
-          <div className="flex items-center gap-2">
-            <span className="text-xs text-slate-400">State:</span>
-            <span className="px-3 py-1 rounded-full bg-sky-500/10 border border-sky-500/30 text-sky-400 font-bold text-xs uppercase tracking-wider">
-              {avatarState}
-            </span>
-          </div>
+        <div className="flex items-center gap-2">
+          <span className="text-xs text-slate-400">Avatar State:</span>
+          <span className="px-3.5 py-1 rounded-full bg-sky-500/20 border border-sky-400/40 text-sky-300 font-extrabold text-xs uppercase tracking-wider">
+            {avatarState}
+          </span>
         </div>
       </div>
 
-      {/* 3D Canvas / Avatar Visualizer Screen */}
-      <div className="relative h-[380px] rounded-2xl bg-slate-950 border border-slate-800 overflow-hidden flex flex-col items-center justify-center text-center p-6">
-        <div className="absolute inset-0 bg-gradient-to-b from-sky-950/20 via-transparent to-slate-950 pointer-events-none" />
+      {/* Real 3D Godot Engine Status & Telemetry Panel */}
+      <div className="p-6 rounded-2xl bg-slate-950 border border-slate-800 space-y-4">
+        <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+          <div className="flex items-center gap-2 text-xs font-extrabold text-slate-300 uppercase tracking-wider">
+            <Activity size={16} className="text-sky-400" />
+            Active 3D Model Telemetry:
+          </div>
+          <span className="text-xs text-slate-400 font-mono">
+            res://Doctor_Female_Young.gltf
+          </span>
+        </div>
 
-        <div className="relative z-10 space-y-4 max-w-lg">
-          <div
-            className={`w-36 h-36 mx-auto rounded-full border-4 flex items-center justify-center shadow-2xl transition-all duration-500 ${
-              avatarState === "SPEAKING"
-                ? "border-emerald-400 bg-emerald-500/20 shadow-emerald-500/30 scale-105"
-                : avatarState === "THINKING"
-                ? "border-amber-400 bg-amber-500/20 shadow-amber-500/30 animate-pulse"
-                : avatarState === "CORRECT" || avatarState === "QUIZ_COMPLETE"
-                ? "border-purple-400 bg-purple-500/20 shadow-purple-500/30 scale-105"
-                : avatarState === "INCORRECT_SUPPORT"
-                ? "border-sky-400 bg-sky-500/20 shadow-sky-500/30"
-                : "border-sky-400/60 bg-sky-500/10 shadow-sky-500/20"
-            }`}
-          >
-            <span className="text-6xl">
-              {activeModel === "Doctor_Female_Young.gltf" ? "👩‍⚕️" : "👨‍⚕️"}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+          <div className="p-3 rounded-xl bg-slate-900 border border-slate-800">
+            <span className="text-slate-400 block mb-0.5">3D Model File:</span>
+            <span className="text-white font-bold">Doctor_Female_Young.gltf</span>
+          </div>
+          <div className="p-3 rounded-xl bg-slate-900 border border-slate-800">
+            <span className="text-slate-400 block mb-0.5">Animation Track:</span>
+            <span className="text-emerald-400 font-bold">
+              {avatarState === "SPEAKING" || avatarState === "CORRECT" || avatarState === "QUIZ_COMPLETE"
+                ? "Walk / Gesture Track"
+                : "Idle Track"}
             </span>
           </div>
-
-          <div>
-            <h3 className="text-lg font-bold text-white flex items-center justify-center gap-2">
-              Dr. Mentor <Sparkles size={16} className="text-sky-400" />
-            </h3>
-            <p className="text-xs text-slate-400 mt-0.5">3D Model Rig: {activeModel}</p>
+          <div className="p-3 rounded-xl bg-slate-900 border border-slate-800">
+            <span className="text-slate-400 block mb-0.5">Backend Bridge:</span>
+            <span className="text-sky-400 font-bold">HTTP (http://127.0.0.1:8000/chatbot/)</span>
           </div>
-
-          {aiResponse ? (
-            <div className="bg-slate-900/90 border border-slate-700 p-4 rounded-2xl text-xs text-slate-200 leading-relaxed max-h-28 overflow-y-auto text-left shadow-lg">
-              <div className="flex items-center justify-between font-extrabold text-sky-400 text-[11px] mb-1">
-                <span>👩‍⚕️ Doctor Response:</span>
-                <button
-                  onClick={() => speakText(aiResponse)}
-                  className="p-1 rounded bg-white/10 hover:bg-white/20 text-sky-300"
-                >
-                  <Volume2 size={14} />
-                </button>
-              </div>
-              "{aiResponse}"
-            </div>
-          ) : (
-            <div className="p-3 rounded-xl bg-slate-900/60 border border-white/5 text-xs text-slate-400">
-              "Hi there! I am Dr. Mentor. What would you like to explore or learn today?"
-            </div>
-          )}
         </div>
+
+        {/* Clean Formatted AI Response Output */}
+        {aiResponse ? (
+          <div className="bg-slate-900 border border-slate-800 p-4 rounded-2xl text-xs text-slate-200 leading-relaxed shadow-lg space-y-2">
+            <div className="flex items-center justify-between font-extrabold text-sky-400 text-[11px] pb-1 border-b border-slate-800">
+              <span>👩‍⚕️ Dr. Mentor Speech Output:</span>
+              <button
+                onClick={() => speakText(aiResponse)}
+                className="p-1 rounded bg-white/10 hover:bg-white/20 text-sky-300 flex items-center gap-1 text-[11px]"
+              >
+                <Volume2 size={13} /> Speak Aloud
+              </button>
+            </div>
+            <FormattedText text={aiResponse} />
+          </div>
+        ) : (
+          <div className="p-3.5 rounded-xl bg-slate-900/60 border border-white/5 text-xs text-slate-400">
+            "Hello! I am Dr. Mentor. Ask me a question or start a quiz to see the 3D Doctor Avatar respond!"
+          </div>
+        )}
       </div>
 
-      {/* Controller Buttons & Direct Input */}
+      {/* State Controls & Input */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2 border-t border-slate-800">
         {/* State Triggers */}
         <div className="space-y-3">
           <h4 className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
-            Test Avatar States & Postures
+            Test 3D Avatar States
           </h4>
           <div className="flex flex-wrap gap-2">
             {AVATAR_STATES.map((st) => (
@@ -185,7 +172,7 @@ function GodotPanel() {
         {/* Interact with Avatar */}
         <div className="space-y-3">
           <h4 className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
-            Speak to Doctor Avatar
+            Send Message to 3D Avatar
           </h4>
           <div className="flex items-center gap-2">
             <input

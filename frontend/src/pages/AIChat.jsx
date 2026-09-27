@@ -2,13 +2,14 @@ import { useState, useRef, useEffect } from "react";
 import { SendHorizontal, Bot, User, Trash2, Volume2, VolumeX, Sparkles, Download, Mic, Activity } from "lucide-react";
 import { askAI } from "../services/api";
 import SpeechRecognition from "../components/SpeechRecognition";
+import { FormattedText } from "../utils/formatText";
 
 function AIChat() {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([
     {
       sender: "AI",
-      text: "Hello! 👋 I am your AI Learning Assistant. Ask me anything about programming, mathematics, science, history, geography, or social interaction skills!",
+      text: "Hello! 👋 I am Dr. Mentor, your AI Doctor Learning Assistant. Ask me anything about programming, mathematics, science, history, geography, or social interaction skills!",
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
     },
   ]);
@@ -32,8 +33,7 @@ function AIChat() {
     // Remove markdown symbols before speaking
     const cleanSpeechText = text.replace(/[\*\_\[\]\`\#]/g, '');
     const utterance = new SpeechSynthesisUtterance(cleanSpeechText);
-    utterance.rate = 1.0;
-    utterance.pitch = 1.0;
+    utterance.rate = 0.95;
 
     utterance.onstart = () => setIsSpeaking(true);
     utterance.onend = () => setIsSpeaking(false);
@@ -89,7 +89,7 @@ function AIChat() {
         ...prev,
         {
           sender: "AI",
-          text: "❌ Unable to connect to the AI server. Please check backend connection.",
+          text: "Unable to connect to the AI server. Please check backend connection.",
           timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
         },
       ]);
@@ -136,7 +136,7 @@ function AIChat() {
         <div>
           <h1 className="text-3xl font-extrabold text-white tracking-tight flex items-center gap-3">
             <Sparkles className="text-sky-400 animate-pulse" size={32} />
-            Universal AI Learning Assistant
+            Dr. Mentor AI Learning Assistant
           </h1>
           <p className="text-slate-300 text-sm mt-1">
             Ask any question on programming, math, science, history, geography, or social interaction skills.
@@ -187,7 +187,7 @@ function AIChat() {
         {isSpeaking && (
           <div className="px-6 py-2 bg-sky-500/20 border-b border-sky-400/30 flex items-center justify-between backdrop-blur-md">
             <span className="text-xs font-bold text-sky-300 flex items-center gap-2">
-              <Volume2 size={16} className="animate-bounce" /> AI Voice Assistant is speaking...
+              <Volume2 size={16} className="animate-bounce" /> Dr. Mentor AI is speaking...
             </span>
             <div className="flex items-center gap-1">
               <span className="equalizer-bar" style={{ animationDelay: '0s' }}></span>
@@ -225,7 +225,7 @@ function AIChat() {
                       </div>
                     )}
                     <span className="font-extrabold text-xs tracking-wider uppercase">
-                      {msg.sender === "You" ? "Learner" : "AI Tutor"}
+                      {msg.sender === "You" ? "Learner" : "Dr. Mentor"}
                     </span>
                   </div>
                   <div className="flex items-center gap-2">
@@ -242,8 +242,8 @@ function AIChat() {
                   </div>
                 </div>
 
-                <div className="leading-relaxed whitespace-pre-wrap text-sm sm:text-base font-normal">
-                  {msg.text}
+                <div className="leading-relaxed text-sm sm:text-base font-normal">
+                  <FormattedText text={msg.text} />
                 </div>
               </div>
             </div>
@@ -253,7 +253,7 @@ function AIChat() {
             <div className="flex justify-start">
               <div className="bg-slate-900/80 border border-sky-400/30 rounded-3xl rounded-bl-none p-4 flex items-center gap-3 text-sky-300 text-sm shadow-xl backdrop-blur-xl">
                 <Bot className="animate-bounce text-sky-400" size={20} />
-                <span className="font-semibold">AI Tutor is generating your accurate answer...</span>
+                <span className="font-semibold">Dr. Mentor is generating your response...</span>
               </div>
             </div>
           )}
@@ -291,7 +291,6 @@ function AIChat() {
             className="flex-1 bg-slate-900/80 border border-white/15 rounded-2xl px-5 py-3.5 text-white placeholder-slate-400 outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-400/30 transition text-sm sm:text-base font-medium shadow-inner"
           />
 
-          {/* Voice Dictation Component */}
           <SpeechRecognition onResult={handleSpeech} />
 
           <button
