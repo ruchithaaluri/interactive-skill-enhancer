@@ -5,6 +5,7 @@ import SpeechRecognition from "../components/SpeechRecognition";
 import { FormattedText } from "../utils/formatText";
 
 import { speakWithFemaleVoice } from "../utils/speechUtils";
+import DoctorAvatar from "../components/DoctorAvatar";
 
 function AIChat() {
   const [message, setMessage] = useState("");
@@ -19,6 +20,8 @@ function AIChat() {
   const [ttsEnabled, setTtsEnabled] = useState(true);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const messagesEndRef = useRef(null);
+
+  const currentAvatarState = loading ? "THINKING" : isSpeaking ? "SPEAKING" : "IDLE";
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -176,8 +179,15 @@ function AIChat() {
         </div>
       </div>
 
-      {/* Main Glass Chat Panel */}
-      <div className="glass-panel h-[calc(100vh-230px)] flex flex-col overflow-hidden relative border border-white/15 shadow-2xl">
+      {/* Main Grid: Avatar Companion + Chat Feed */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        {/* Left Column: Doctor Avatar Presentation */}
+        <div className="lg:col-span-4 bg-slate-900/60 border border-white/10 rounded-3xl p-3 shadow-xl backdrop-blur-xl">
+          <DoctorAvatar avatarState={currentAvatarState} isSpeaking={isSpeaking} />
+        </div>
+
+        {/* Right Column: Main Glass Chat Panel */}
+        <div className="lg:col-span-8 glass-panel h-[600px] flex flex-col overflow-hidden relative border border-white/15 shadow-2xl">
         {/* Equalizer Indicator when AI is speaking */}
         {isSpeaking && (
           <div className="px-6 py-2 bg-sky-500/20 border-b border-sky-400/30 flex items-center justify-between backdrop-blur-md">
@@ -298,7 +308,8 @@ function AIChat() {
         </div>
       </div>
     </div>
-  );
+  </div>
+);
 }
 
 export default AIChat;
