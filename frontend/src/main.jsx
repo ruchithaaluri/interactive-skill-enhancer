@@ -6,12 +6,15 @@ import "./index.css";
 import App from "./App";
 
 import AuthProvider from "./context/AuthContext";
+import { PerformanceProvider } from "./context/PerformanceContext";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <BrowserRouter>
       <AuthProvider>
-        <App />
+        <PerformanceProvider>
+          <App />
+        </PerformanceProvider>
       </AuthProvider>
     </BrowserRouter>
   </React.StrictMode>

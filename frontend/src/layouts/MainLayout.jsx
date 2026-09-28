@@ -1,18 +1,23 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import Sidebar from "../components/Sidebar";
 import { ShieldCheck, Sparkles, HeartHandshake, Award } from "lucide-react";
+import { PerformanceContext } from "../context/PerformanceContext";
 
 function MainLayout({ children }) {
   const [caregiverMode, setCaregiverMode] = useState(false);
+  const { backgroundMode, reducedMotion } = useContext(PerformanceContext);
+
+  const showBackground = backgroundMode !== "OFF" && !reducedMotion;
 
   return (
     <div className="relative flex min-h-screen bg-slate-950 text-slate-100 overflow-x-hidden selection:bg-sky-500 selection:text-white">
-      {/* Glassmorphism Ambient Orbs */}
-      <div className="ambient-bg">
-        <div className="orb orb-1"></div>
-        <div className="orb orb-2"></div>
-        <div className="orb orb-3"></div>
-      </div>
+      {/* Background Effect: OFF by default for ultra-low CPU */}
+      {showBackground && (
+        <div className="ambient-bg">
+          <div className="orb orb-1"></div>
+          {backgroundMode === "FULL" && <div className="orb orb-2"></div>}
+        </div>
+      )}
 
       {/* Main Glass Sidebar */}
       <Sidebar caregiverMode={caregiverMode} />

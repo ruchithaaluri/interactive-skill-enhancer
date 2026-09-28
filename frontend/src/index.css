@@ -72,6 +72,23 @@
   }
 }
 
+/* Reduced Motion Mode Override for Very-Low CPU */
+body.reduced-motion *,
+@media (prefers-reduced-motion: reduce) {
+  .orb,
+  .animate-avatar-breath,
+  .animate-doctor-gesture,
+  .animate-doctor-talking,
+  .animate-mouth-viseme,
+  .equalizer-bar,
+  .animate-ping,
+  .animate-bounce,
+  .animate-pulse {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
 /* Glassmorphism Containers */
 .glass-panel {
   background: rgba(15, 23, 42, 0.65);
