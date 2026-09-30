@@ -172,13 +172,39 @@ def fetch_live_knowledge(query: str):
     return None
 
 
-def generate_response(message: str, history=None) -> str:
+PERSONA_GREETINGS = {
+    "doctor": "Hi! I am Dr. Mentor, your friendly AI doctor. 👋 How are you feeling today? What would you like to explore or learn together?",
+    "teacher": "Hi! I'm Ms. Mentor, your teacher! 📚 What exciting lesson or topic would you like to explore today?",
+    "friend": "Hey there! I'm Alex! Great to talk with you! What's on your mind today?",
+    "colleague": "Hello! I'm Sam. Ready to collaborate and tackle new challenges together. What are we working on?",
+    "counsellor": "Hello, I'm Taylor. I'm here to listen and help you talk through ideas comfortably. How are you feeling today?",
+    "shopkeeper": "Welcome! 👋 I'm Shop Mentor! I can help you count, calculate prices, and solve practical math problems. What can I help you with today?",
+    "tutor": "Hi! I'm Study Mentor. Let's focus on your study goals and break down tricky topics step-by-step!",
+    "mentor": "Hello! I'm Morgan, your Life & Learning Mentor. I'm excited to explore big ideas with you. Where shall we start?"
+}
+
+PERSONA_NAMES = {
+    "doctor": "Dr. Mentor",
+    "teacher": "Ms. Mentor",
+    "friend": "Alex",
+    "colleague": "Sam",
+    "counsellor": "Taylor",
+    "shopkeeper": "Shop Mentor",
+    "tutor": "Study Mentor",
+    "mentor": "Morgan"
+}
+
+def generate_response(message: str, history=None, avatar_id: str = "doctor", system_prompt: str = None) -> str:
     if history is None:
         history = []
 
+    active_avatar_id = avatar_id.lower() if avatar_id else "doctor"
+    persona_name = PERSONA_NAMES.get(active_avatar_id, "Dr. Mentor")
+    effective_system_prompt = system_prompt or f"You are {persona_name}, a friendly, helpful, and supportive AI companion. Answer naturally, warmly, and concisely."
+
     if client is not None:
         try:
-            messages = [{"role": "system", "content": SYSTEM_PROMPT}]
+            messages = [{"role": "system", "content": effective_system_prompt}]
             for msg in history:
                 if isinstance(msg, dict):
                     messages.append({"role": msg.get("role", "user"), "content": msg.get("content", "")})
@@ -200,13 +226,15 @@ def generate_response(message: str, history=None) -> str:
 
     msg = message.lower().strip()
 
-    # Friendly conversational human greetings
+    # Friendly conversational human greetings per persona
     if re.search(r'^(hi|hello|hey|greetings|good morning|good afternoon|good evening|howdy)\b', msg):
-        return "Hello there! 👋 How are you doing today? I'm Dr. Mentor, your friendly AI doctor! I'm so happy to talk with you. What would you like to explore or learn together today?"
+        return PERSONA_GREETINGS.get(active_avatar_id, PERSONA_GREETINGS["doctor"])
+
     if re.search(r'^(how are you|how do you do|how is it going|how are you doing)', msg):
-        return "I'm doing wonderful, thank you for asking! 😊 I'm always excited to help you learn and answer your questions. How are you feeling today?"
+        return f"I'm doing great, thank you for asking! 😊 I'm always glad to talk with you. How are you doing today?"
+
     if re.search(r'^(who are you|what is your name)', msg):
-        return "I am **Dr. Mentor**, your friendly virtual AI doctor and learning assistant! I'm here to make learning fun, easy, and encouraging for you. What would you like to learn today?"
+        return f"I am **{persona_name}**, your AI companion! I'm here to support your learning and answer questions warmly and clearly. What would you like to discuss today?"
 
     for pattern, ans in KNOWLEDGE_MAP:
         if re.search(pattern, msg):
@@ -219,14 +247,13 @@ def generate_response(message: str, history=None) -> str:
     topic_clean = clean_query_for_search(message)
     topic_title = topic_clean.title() if topic_clean else "Your Question"
 
+    # Natural conversational response format (Answer -> Explanation -> Example -> Natural follow-up)
     return (
-        f"📘 **Learning About {topic_title}**:\n\n"
-        f"**{topic_title}** is an exciting topic to explore together!\n\n"
-        "**Key Highlights**:\n"
-        f"1. **Core Concept**: Exploring **{topic_title}** helps us learn step-by-step.\n"
-        "2. **Simple Understanding**: Break down complex questions into small pieces.\n"
-        "3. **Practice**: Ask me **\"Give an example\"** or **\"Can we try a quiz?\"** to keep learning!"
+        f"**{topic_title}** is a great subject to talk about!\n\n"
+        f"When we look at **{topic_clean}**, it comes down to understanding the key concepts clearly. "
+        f"Would you like me to explain this with a simple everyday example, or should we try a quick practice question?"
     )
+
 
 
 # =========================================================

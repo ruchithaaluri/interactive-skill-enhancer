@@ -20,8 +20,11 @@ async def chat(request: ChatRequest, authorization: str = Header(None)):
     try:
         reply = generate_response(
             message=request.message,
-            history=request.history
+            history=request.history,
+            avatar_id=request.avatar_id,
+            system_prompt=request.system_prompt
         )
+
 
         email = "demo@learner.com"
         if authorization and authorization.startswith("Bearer "):

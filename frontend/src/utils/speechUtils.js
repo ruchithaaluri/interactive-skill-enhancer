@@ -1,10 +1,15 @@
 /**
  * Utility to find and select a friendly English voice (Female or Male)
- * for AI Mentors (Dr. Mentor, Ms. Mentor, Shop Mentor).
+ * for AI Companions (Dr. Mentor, Ms. Mentor, Alex, Sam, Taylor, Shop Mentor, Study Mentor, Morgan).
  */
 
 export function getAvatarVoice(gender = "female") {
   if (!("speechSynthesis" in window)) return null;
+  
+  // Check user override setting if saved in window/localStorage
+  const userGenderOverride = window.voiceGenderSetting || localStorage.getItem("voice_gender_override") || "auto";
+  const effectiveGender = userGenderOverride !== "auto" ? userGenderOverride : gender;
+
   const voices = window.speechSynthesis.getVoices();
   if (!voices || voices.length === 0) return null;
 
@@ -34,7 +39,7 @@ export function getAvatarVoice(gender = "female") {
     "google uk english male"
   ];
 
-  const targetKeywords = gender === "male" ? maleKeywords : femaleKeywords;
+  const targetKeywords = effectiveGender === "male" ? maleKeywords : femaleKeywords;
 
   // 1. Search for English voice matching target gender
   let selectedVoice = voices.find((v) => {
@@ -62,7 +67,7 @@ export function getAvatarVoice(gender = "female") {
 }
 
 /**
- * Speak text aloud using selected AI Mentor's friendly English Voice
+ * Speak text aloud using selected AI Companion's friendly English Voice
  */
 export function speakWithAvatarVoice(text, gender = "female", onStartCallback, onEndCallback) {
   if (!("speechSynthesis" in window)) return;
@@ -74,10 +79,17 @@ export function speakWithAvatarVoice(text, gender = "female", onStartCallback, o
   if (!cleanText) return;
 
   const utterance = new SpeechSynthesisUtterance(cleanText);
-  utterance.rate = 0.95; // Warm, steady pace
-  utterance.pitch = gender === "male" ? 0.95 : 1.15; // Natural pitch for mentor gender
 
-  const voice = getAvatarVoice(gender);
+  // Apply user speech rate or default
+  const userRate = window.ttsRate || parseFloat(localStorage.getItem("tts_speed_override")) || 0.95;
+  utterance.rate = userRate;
+
+  const userGenderOverride = window.voiceGenderSetting || localStorage.getItem("voice_gender_override") || "auto";
+  const effectiveGender = userGenderOverride !== "auto" ? userGenderOverride : gender;
+
+  utterance.pitch = effectiveGender === "male" ? 0.95 : 1.15; // Natural pitch for mentor gender
+
+  const voice = getAvatarVoice(effectiveGender);
   if (voice) {
     utterance.voice = voice;
   }
@@ -93,7 +105,7 @@ export function speakWithAvatarVoice(text, gender = "female", onStartCallback, o
   // Ensure voices are loaded
   if (window.speechSynthesis.getVoices().length === 0) {
     window.speechSynthesis.onvoiceschanged = () => {
-      const refreshedVoice = getAvatarVoice(gender);
+      const refreshedVoice = getAvatarVoice(effectiveGender);
       if (refreshedVoice) utterance.voice = refreshedVoice;
       window.speechSynthesis.speak(utterance);
     };
@@ -106,3 +118,4 @@ export function speakWithAvatarVoice(text, gender = "female", onStartCallback, o
 export function speakWithFemaleVoice(text, onStartCallback, onEndCallback) {
   return speakWithAvatarVoice(text, "female", onStartCallback, onEndCallback);
 }
+
