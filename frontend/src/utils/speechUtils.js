@@ -1,9 +1,9 @@
 /**
- * Utility to find and select a friendly English female voice
- * for Dr. Mentor (Web Speech Synthesis).
+ * Utility to find and select a friendly English voice (Female or Male)
+ * for AI Mentors (Dr. Mentor, Ms. Mentor, Shop Mentor).
  */
 
-export function getFemaleVoice() {
+export function getAvatarVoice(gender = "female") {
   if (!("speechSynthesis" in window)) return null;
   const voices = window.speechSynthesis.getVoices();
   if (!voices || voices.length === 0) return null;
@@ -19,24 +19,37 @@ export function getFemaleVoice() {
     "fiona",
     "female",
     "google uk english female",
-    "google us english",
-    "microsoft zira"
+    "google us english"
   ];
 
-  // 1. Search for English voice matching known female voice names
+  const maleKeywords = [
+    "david",
+    "mark",
+    "george",
+    "alex",
+    "james",
+    "richard",
+    "male",
+    "google us english male",
+    "google uk english male"
+  ];
+
+  const targetKeywords = gender === "male" ? maleKeywords : femaleKeywords;
+
+  // 1. Search for English voice matching target gender
   let selectedVoice = voices.find((v) => {
     const name = v.name.toLowerCase();
     const lang = v.lang.toLowerCase();
     return (
       lang.startsWith("en") &&
-      femaleKeywords.some((kw) => name.includes(kw))
+      targetKeywords.some((kw) => name.includes(kw))
     );
   });
 
-  // 2. Search for any voice matching female keywords regardless of lang tag
+  // 2. Search for any voice matching target keywords regardless of lang tag
   if (!selectedVoice) {
     selectedVoice = voices.find((v) =>
-      femaleKeywords.some((kw) => v.name.toLowerCase().includes(kw))
+      targetKeywords.some((kw) => v.name.toLowerCase().includes(kw))
     );
   }
 
@@ -49,9 +62,9 @@ export function getFemaleVoice() {
 }
 
 /**
- * Speak text aloud using Dr. Mentor's friendly English Female Voice
+ * Speak text aloud using selected AI Mentor's friendly English Voice
  */
-export function speakWithFemaleVoice(text, onStartCallback, onEndCallback) {
+export function speakWithAvatarVoice(text, gender = "female", onStartCallback, onEndCallback) {
   if (!("speechSynthesis" in window)) return;
 
   window.speechSynthesis.cancel();
@@ -61,12 +74,12 @@ export function speakWithFemaleVoice(text, onStartCallback, onEndCallback) {
   if (!cleanText) return;
 
   const utterance = new SpeechSynthesisUtterance(cleanText);
-  utterance.rate = 0.95; // Warm, steady, patient pace
-  utterance.pitch = 1.15; // Slightly higher pitch for female voice tone
+  utterance.rate = 0.95; // Warm, steady pace
+  utterance.pitch = gender === "male" ? 0.95 : 1.15; // Natural pitch for mentor gender
 
-  const femaleVoice = getFemaleVoice();
-  if (femaleVoice) {
-    utterance.voice = femaleVoice;
+  const voice = getAvatarVoice(gender);
+  if (voice) {
+    utterance.voice = voice;
   }
 
   if (onStartCallback) {
@@ -77,14 +90,19 @@ export function speakWithFemaleVoice(text, onStartCallback, onEndCallback) {
     utterance.onerror = () => onEndCallback();
   }
 
-  // Ensure voices are loaded (Chrome edge case workaround)
+  // Ensure voices are loaded
   if (window.speechSynthesis.getVoices().length === 0) {
     window.speechSynthesis.onvoiceschanged = () => {
-      const refreshedVoice = getFemaleVoice();
+      const refreshedVoice = getAvatarVoice(gender);
       if (refreshedVoice) utterance.voice = refreshedVoice;
       window.speechSynthesis.speak(utterance);
     };
   } else {
     window.speechSynthesis.speak(utterance);
   }
+}
+
+// Backward compatibility helper
+export function speakWithFemaleVoice(text, onStartCallback, onEndCallback) {
+  return speakWithAvatarVoice(text, "female", onStartCallback, onEndCallback);
 }

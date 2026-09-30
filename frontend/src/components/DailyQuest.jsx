@@ -1,7 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Sparkles, CheckCircle2, XCircle, Award, ArrowRight, HelpCircle, BookOpen, Volume2, Lightbulb } from "lucide-react";
 import { getTopics, generateQuiz, evaluateQuizAnswer, logProgressEvent } from "../services/api";
 import { FormattedText } from "../utils/formatText";
+import { speakWithAvatarVoice } from "../utils/speechUtils";
+import { AvatarContext } from "../context/AvatarContext";
 
 function playChime(success = true) {
   try {
@@ -28,16 +30,8 @@ function playChime(success = true) {
   } catch (e) {}
 }
 
-function speakText(text) {
-  if (!("speechSynthesis" in window)) return;
-  window.speechSynthesis.cancel();
-  const clean = text.replace(/[\*\_\[\]\`\#]/g, "");
-  const utterance = new SpeechSynthesisUtterance(clean);
-  utterance.rate = 0.95;
-  window.speechSynthesis.speak(utterance);
-}
-
 function DailyQuest() {
+  const { selectedAvatar } = useContext(AvatarContext);
   const [subjectsMap, setSubjectsMap] = useState({
     "Mathematics": ["Addition", "Subtraction", "Multiplication", "Fractions", "Geometry"],
     "Science": ["Solar System", "Plants", "Animals", "Human Body", "Matter"],
@@ -45,6 +39,10 @@ function DailyQuest() {
     "Computer Science": ["Coding Concepts", "Python Basics", "Algorithms", "Web Development", "Computers"],
     "General Knowledge": ["World Landmarks", "Animals & Habitats", "Space Exploration", "Famous Inventors", "Everyday Science"]
   });
+
+  const speakText = (text) => {
+    speakWithAvatarVoice(text, selectedAvatar.gender || "female");
+  };
 
   const [selectedSubject, setSelectedSubject] = useState("Science");
   const [selectedTopic, setSelectedTopic] = useState("Solar System");
@@ -237,7 +235,7 @@ function DailyQuest() {
           </div>
 
           <h4 className="text-base sm:text-lg font-bold text-white leading-relaxed">
-            👩‍⚕️ Dr. Mentor asks: "{q.question}"
+            {selectedAvatar.name} asks: "{q.question}"
           </h4>
 
           {/* Hint Button */}
@@ -294,7 +292,7 @@ function DailyQuest() {
             }`}>
               <div className="font-extrabold flex items-center justify-between gap-2 text-white">
                 <span className="flex items-center gap-2">
-                  <span>👩‍⚕️ Dr. Mentor:</span>
+                  <span>{selectedAvatar.name}:</span>
                   <button
                     onClick={() => speakText(evaluation.avatar_response)}
                     className="p-1 rounded-lg bg-white/10 hover:bg-white/20 text-sky-300"

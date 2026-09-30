@@ -4,10 +4,11 @@ import { AuthContext } from "../context/AuthContext";
 import AIChatPanel from "../components/AIChatPanel";
 import EmotionPanel from "../components/EmotionPanel";
 import GodotPanel from "../components/GodotPanel";
+import AvatarSelector from "../components/AvatarSelector";
 import DailyQuest from "../components/DailyQuest";
 import CaregiverJournal from "../components/CaregiverJournal";
 import AccessibilityControls from "../components/AccessibilityControls";
-import { Brain, Smile, BarChart3, User, Sparkles, ArrowRight, ShieldCheck } from "lucide-react";
+import { Brain, Smile, BarChart3, User, Sparkles, ArrowRight } from "lucide-react";
 
 function Dashboard() {
   const { user } = useContext(AuthContext);
@@ -56,13 +57,19 @@ function Dashboard() {
             Welcome back, {learnerName}! 👋
           </h1>
           <p className="text-slate-300 text-sm mt-2 max-w-xl font-normal">
-            Ready for your interactive learning session today? Explore AI assistance, micro-learning quests, and 3D avatar interaction below.
+            Ready for your interactive learning session today? Choose your AI Mentor, explore micro-learning quests, and practice skills below.
           </p>
         </div>
 
         {/* Accessibility & Neurodiverse UX Controls */}
         <AccessibilityControls />
       </div>
+
+      {/* CHOOSE YOUR AI MENTOR SELECTOR */}
+      <AvatarSelector />
+
+      {/* INTERACTIVE AI MENTOR PANEL */}
+      <GodotPanel />
 
       {/* Daily Learning Quest (Micro-Learning) & Caregiver Observational Journal */}
       <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
@@ -103,9 +110,6 @@ function Dashboard() {
         <AIChatPanel />
         <EmotionPanel />
       </div>
-
-      {/* 3D Godot Panel */}
-      <GodotPanel />
     </div>
   );
 }

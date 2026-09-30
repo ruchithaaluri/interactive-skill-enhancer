@@ -1,25 +1,32 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useContext } from "react";
 import { SendHorizontal, Bot, User, Trash2, Volume2, VolumeX, Sparkles, Download, Mic, Activity } from "lucide-react";
 import { askAI } from "../services/api";
 import SpeechRecognition from "../components/SpeechRecognition";
 import { FormattedText } from "../utils/formatText";
 
-import { speakWithFemaleVoice } from "../utils/speechUtils";
+import { speakWithAvatarVoice } from "../utils/speechUtils";
 import DoctorAvatar from "../components/DoctorAvatar";
+import { AvatarContext } from "../context/AvatarContext";
 
 function AIChat() {
+  const { selectedAvatar } = useContext(AvatarContext);
   const [message, setMessage] = useState("");
-  const [messages, setMessages] = useState([
-    {
-      sender: "AI",
-      text: "Hello! 👋 I am Dr. Mentor, your friendly female AI Doctor. How are you doing today? Ask me anything about programming, math, science, history, or social interaction skills!",
-      timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-    },
-  ]);
+  const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [ttsEnabled, setTtsEnabled] = useState(true);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const messagesEndRef = useRef(null);
+
+  // Initialize initial greeting whenever selectedAvatar changes
+  useEffect(() => {
+    setMessages([
+      {
+        sender: "AI",
+        text: selectedAvatar.greeting,
+        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      },
+    ]);
+  }, [selectedAvatar.id]);
 
   const currentAvatarState = loading ? "THINKING" : isSpeaking ? "SPEAKING" : "IDLE";
 
@@ -33,8 +40,9 @@ function AIChat() {
 
   const speakText = (text) => {
     if (!ttsEnabled) return;
-    speakWithFemaleVoice(
+    speakWithAvatarVoice(
       text,
+      selectedAvatar.gender || "female",
       () => setIsSpeaking(true),
       () => setIsSpeaking(false)
     );
@@ -64,10 +72,13 @@ function AIChat() {
     setLoading(true);
 
     try {
-      const history = newMessages.map((msg) => ({
-        role: msg.sender === "You" ? "user" : "assistant",
-        content: msg.text,
-      }));
+      const history = [
+        { role: "system", content: selectedAvatar.systemPrompt },
+        ...newMessages.map((msg) => ({
+          role: msg.sender === "You" ? "user" : "assistant",
+          content: msg.text,
+        })),
+      ];
 
       const reply = await askAI(text, history);
 
