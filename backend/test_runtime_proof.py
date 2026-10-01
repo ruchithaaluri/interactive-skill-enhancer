@@ -39,35 +39,48 @@ def run_proof_tests():
     t3_resp = generate_response("I had a bad day", history=[], avatar_id="friend")
     print(f"\n[TEST 3 - Emotional Response (Friend)]\nQuery: 'I had a bad day'\nResponse: {t3_resp}")
 
-    # Test 4: History Context - "Because I failed my math test"
-    hist_4 = [
-        {"role": "user", "content": "I had a bad day"},
-        {"role": "assistant", "content": t3_resp}
+    # Test 4: Regression Test for NLP Routing Bug ("What should I do tomorrow?")
+    t4_resp = generate_response("What should I do tomorrow?", history=[], avatar_id="tutor")
+    print(f"\n[TEST 4 - NLP Routing Regression Test ('What should I do tomorrow?')]\nQuery: 'What should I do tomorrow?'\nResponse: {t4_resp}")
+    assert "Gabrielle Zevin" not in t4_resp, "REGRESSION BUG: 'tomorrow' query incorrectly returned book entry!"
+    assert "Tomorrow, and Tomorrow, and Tomorrow" not in t4_resp, "REGRESSION BUG: 'tomorrow' query matched novel title!"
+
+    # Test 5: Explicit Book Query Should Legitely Work
+    t5_resp = generate_response("Who wrote the novel Tomorrow, and Tomorrow, and Tomorrow?", history=[], avatar_id="teacher")
+    print(f"\n[TEST 5 - Explicit Book Query]\nQuery: 'Who wrote the novel Tomorrow, and Tomorrow, and Tomorrow?'\nResponse: {t5_resp}")
+    assert "Zevin" in t5_resp or "Knowledge Base" in t5_resp or "novel" in t5_resp.lower(), "Explicit book query should return book info!"
+
+    # Test 6: Multi-Turn Conversation Memory Test (Mathematics)
+    hist_math = [
+        {"role": "user", "content": "I failed my mathematics test."},
+        {"role": "assistant", "content": "I'm sorry today was challenging! We can practice step-by-step."}
     ]
-    t4_resp = generate_response("Because I failed my math test.", history=hist_4, avatar_id="teacher")
-    print(f"\n[TEST 4 - Contextual Follow-up (Teacher)]\nQuery: 'Because I failed my math test.'\nResponse: {t4_resp}")
+    t6_resp = generate_response("What did I tell you I struggled with?", history=hist_math, avatar_id="teacher")
+    print(f"\n[TEST 6 - Memory Recall (Math)]\nQuery: 'What did I tell you I struggled with?'\nResponse: {t6_resp}")
+    assert "Math" in t6_resp or "Mathematics" in t6_resp, f"Memory recall failed! Expected Math/Mathematics, got: {t6_resp}"
 
-    # Test 5: Contextual Guidance - "What should I do tomorrow?"
-    hist_5 = hist_4 + [
-        {"role": "user", "content": "Because I failed my math test."},
-        {"role": "assistant", "content": t4_resp}
+    # Test 7: Multi-Turn Conversation Memory Test (Physics)
+    hist_physics = [
+        {"role": "user", "content": "I am preparing for physics."},
+        {"role": "assistant", "content": "Great! Physics is fascinating!"}
     ]
-    t5_resp = generate_response("What should I do tomorrow?", history=hist_5, avatar_id="tutor")
-    print(f"\n[TEST 5 - Contextual Guidance (Tutor)]\nQuery: 'What should I do tomorrow?'\nResponse: {t5_resp}")
+    t7_resp = generate_response("What subject did I just tell you I am preparing for?", history=hist_physics, avatar_id="tutor")
+    print(f"\n[TEST 7 - Memory Recall (Physics)]\nQuery: 'What subject did I just tell you I am preparing for?'\nResponse: {t7_resp}")
+    assert "Physics" in t7_resp or "physics" in t7_resp.lower(), f"Memory recall failed! Expected Physics, got: {t7_resp}"
 
-    # Test 6: Scientific Explanation - "What is photosynthesis?"
-    t6_resp = generate_response("What is photosynthesis?", history=[], avatar_id="teacher")
-    print(f"\n[TEST 6 - Factual Science Answer]\nQuery: 'What is photosynthesis?'\nResponse: {t6_resp}")
-    assert "photosynthesis" in t6_resp.lower() or "sunlight" in t6_resp.lower(), "Photosynthesis explanation missing!"
+    # Test 8: Factual Science Explanation - "What is photosynthesis?"
+    t8_resp = generate_response("What is photosynthesis?", history=[], avatar_id="teacher")
+    print(f"\n[TEST 8 - Factual Science Answer]\nQuery: 'What is photosynthesis?'\nResponse: {t8_resp}")
+    assert "photosynthesis" in t8_resp.lower() or "sunlight" in t8_resp.lower(), "Photosynthesis explanation missing!"
 
-    # Test 7: Math Calculation - "What is 27 × 8?"
-    t7_resp = generate_response("What is 27 * 8?", history=[], avatar_id="shopkeeper")
-    print(f"\n[TEST 7 - Math Calculation]\nQuery: 'What is 27 * 8?'\nResponse: {t7_resp}")
-    assert "216" in t7_resp, f"Math calculation failed! Expected 216, got: {t7_resp}"
+    # Test 9: Math Calculation - "What is 27 * 8?"
+    t9_resp = generate_response("What is 27 * 8?", history=[], avatar_id="shopkeeper")
+    print(f"\n[TEST 9 - Math Calculation]\nQuery: 'What is 27 * 8?'\nResponse: {t9_resp}")
+    assert "216" in t9_resp, f"Math calculation failed! Expected 216, got: {t9_resp}"
 
-    # Test 8: Quiz System Generation & Evaluation
+    # Test 10: Quiz System Generation & Evaluation
     questions = generate_quiz_questions("Science", "Solar System", count=3)
-    print(f"\n[TEST 8 - Quiz Generation]\nGenerated {len(questions)} questions. Sample question: {questions[0]['question']}")
+    print(f"\n[TEST 10 - Quiz Generation]\nGenerated {len(questions)} questions. Sample question: {questions[0]['question']}")
 
     eval_result = evaluate_quiz_answer(
         question=questions[0]["question"],
@@ -75,9 +88,9 @@ def run_proof_tests():
         correct_answer=questions[0]["correct_answer"],
         explanation=questions[0]["explanation"]
     )
-    print(f"[TEST 8 - Quiz Evaluation]\nUser Answer: {questions[0]['correct_answer']} (Correct)\nAvatar Speech: {eval_result['avatar_response']}\nAvatar State: {eval_result['avatar_state']}")
+    print(f"[TEST 10 - Quiz Evaluation]\nUser Answer: {questions[0]['correct_answer']} (Correct)\nAvatar Speech: {eval_result['avatar_response']}\nAvatar State: {eval_result['avatar_state']}")
 
-    # Test 9: No "Dr." leak in any non-doctor persona greeting
+    # Test 11: No "Dr." leak in any non-doctor persona greeting
     personas_to_check = ["teacher", "friend", "colleague", "counsellor", "shopkeeper", "tutor", "mentor", "guide", "support"]
     for p in personas_to_check:
         res = generate_response("hi", history=[], avatar_id=p)

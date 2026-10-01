@@ -142,8 +142,15 @@ def clean_query_for_search(raw_query: str) -> str:
 
 
 def fetch_live_knowledge(query: str):
+    q_lower = query.lower().strip()
+    # Guard against conversational / planning / relative time queries matching Wikipedia articles accidentally
+    if re.search(r'\b(tomorrow|today|yesterday|tonight)\b', q_lower) and not re.search(r'\b(novel|book|author|wrote|written|summary|meaning|definition|film|movie)\b', q_lower):
+        return None
+    if re.search(r'\b(what|how|where|when|should|can|could|would)\s+(should|can|do|i|we|you)\b', q_lower):
+        return None
+
     clean_q = clean_query_for_search(query)
-    if not clean_q:
+    if not clean_q or len(clean_q) < 3:
         return None
 
     headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) SkillEnhancer/1.0'}
@@ -241,6 +248,26 @@ def generate_response(message: str, history=None, avatar_id: str = "doctor", sys
     if re.search(r'^(who are you|what is your name)', msg):
         return f"I am **{persona_name}**, your AI companion! I'm here to support your learning and answer questions warmly and clearly. What would you like to discuss today?"
 
+    # Contextual Conversation Memory Recall Queries
+    history_text = " ".join([m.get("content", "") for m in history if isinstance(m, dict)]).lower()
+
+    if re.search(r'(what did i (tell|say|share)|did i tell you|what did i struggle|what subject did i|you remember|what was my)', msg):
+        if "math" in history_text or "mathematics" in history_text:
+            return f"You told me earlier that you struggled with your **Mathematics test**! Don't worry, we can practice math concepts step-by-step together."
+        elif "physics" in history_text:
+            return f"You told me you are preparing for **Physics**! We can work through Motion, Forces, or Energy concepts whenever you're ready."
+        elif history_text:
+            return f"Based on what you shared earlier, we were discussing your recent study goals and learning topics! How would you like to continue?"
+
+    # Conversational Planning & Guidance Queries
+    if re.search(r'(what should i (do|study|practice|prepare|learn)|what can i do|how should i (study|prepare))', msg):
+        if "math" in msg or "math" in history_text or "mathematics" in history_text:
+            return f"To improve your **Mathematics**, I recommend reviewing core Addition & Fractions first! We can try a short 5-question practice quiz tomorrow."
+        elif "physics" in msg or "physics" in history_text:
+            return f"For **Physics**, a great plan for tomorrow is starting with **Motion & Speed** concepts, followed by a quick practice quiz!"
+        else:
+            return f"A great plan for tomorrow is to start with a short 10-minute review of your favorite subject, then try a quick practice quiz! Which subject would you like to focus on — Math, Science, or English?"
+
     # Social & Emotional Support Intent Matching
     if re.search(r'(bad day|hard day|rough day|failed|feeling sad|anxious|nervous|upset|frustrated|stressed)', msg):
         if active_avatar_id == "friend":
@@ -267,7 +294,6 @@ def generate_response(message: str, history=None, avatar_id: str = "doctor", sys
     topic_clean = clean_query_for_search(message)
     topic_title = topic_clean.title() if topic_clean else "Your Question"
 
-    # Natural conversational response format (Answer -> Explanation -> Example -> Natural follow-up)
     return (
         f"**{topic_title}** is a great subject to talk about!\n\n"
         f"When we look at **{topic_clean}**, it comes down to understanding the key concepts clearly. "

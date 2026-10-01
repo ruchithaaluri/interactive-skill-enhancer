@@ -1,47 +1,73 @@
 /**
- * Utility to find and select a friendly English voice (Female or Male)
- * for AI Companions (Dr. Mentor, Ms. Mentor, Alex, Sam, Taylor, Shop Mentor, Study Mentor, Morgan).
+ * Persona-specific Voice Configuration Architecture
+ * Map each persona profile to distinct pitch, rate, gender, and preferred browser TTS voice names.
  */
 
-export function getAvatarVoice(gender = "female") {
+export const PERSONA_VOICE_PROFILES = {
+  doctor: {
+    gender: "female",
+    pitch: 1.05,
+    rate: 0.95,
+    preferredNames: ["zira", "samantha", "victoria", "google us english", "female"]
+  },
+  teacher: {
+    gender: "female",
+    pitch: 1.1,
+    rate: 0.92,
+    preferredNames: ["hazel", "eva", "karen", "susan", "zira", "female"]
+  },
+  friend: {
+    gender: "male",
+    pitch: 1.15,
+    rate: 1.0,
+    preferredNames: ["alex", "david", "mark", "google us english male", "male"]
+  },
+  colleague: {
+    gender: "male",
+    pitch: 0.95,
+    rate: 0.98,
+    preferredNames: ["george", "james", "richard", "david", "male"]
+  },
+  counsellor: {
+    gender: "female",
+    pitch: 0.95,
+    rate: 0.88,
+    preferredNames: ["fiona", "samantha", "zira", "hazel", "female"]
+  },
+  shopkeeper: {
+    gender: "male",
+    pitch: 1.0,
+    rate: 1.02,
+    preferredNames: ["mark", "david", "google uk english male", "male"]
+  },
+  tutor: {
+    gender: "male",
+    pitch: 1.05,
+    rate: 0.95,
+    preferredNames: ["alex", "james", "david", "male"]
+  },
+  mentor: {
+    gender: "female",
+    pitch: 0.9,
+    rate: 0.9,
+    preferredNames: ["victoria", "zira", "samantha", "female"]
+  }
+};
+
+export function getAvatarVoice(avatarId = "doctor", gender = "female") {
   if (!("speechSynthesis" in window)) return null;
-  
-  // Check user override setting if saved in window/localStorage
-  const userGenderOverride = window.voiceGenderSetting || localStorage.getItem("voice_gender_override") || "auto";
-  const effectiveGender = userGenderOverride !== "auto" ? userGenderOverride : gender;
 
   const voices = window.speechSynthesis.getVoices();
   if (!voices || voices.length === 0) return null;
 
-  const femaleKeywords = [
-    "zira",
-    "hazel",
-    "eva",
-    "samantha",
-    "victoria",
-    "karen",
-    "susan",
-    "fiona",
-    "female",
-    "google uk english female",
-    "google us english"
-  ];
+  const profile = PERSONA_VOICE_PROFILES[avatarId] || {
+    gender,
+    preferredNames: gender === "male" ? ["david", "mark", "alex", "male"] : ["zira", "samantha", "hazel", "female"]
+  };
 
-  const maleKeywords = [
-    "david",
-    "mark",
-    "george",
-    "alex",
-    "james",
-    "richard",
-    "male",
-    "google us english male",
-    "google uk english male"
-  ];
+  const targetKeywords = profile.preferredNames;
 
-  const targetKeywords = effectiveGender === "male" ? maleKeywords : femaleKeywords;
-
-  // 1. Search for English voice matching target gender
+  // 1. Search for English voice matching persona preferred names
   let selectedVoice = voices.find((v) => {
     const name = v.name.toLowerCase();
     const lang = v.lang.toLowerCase();
@@ -51,7 +77,7 @@ export function getAvatarVoice(gender = "female") {
     );
   });
 
-  // 2. Search for any voice matching target keywords regardless of lang tag
+  // 2. Search for any voice matching target keywords regardless of language tag
   if (!selectedVoice) {
     selectedVoice = voices.find((v) =>
       targetKeywords.some((kw) => v.name.toLowerCase().includes(kw))
@@ -67,9 +93,9 @@ export function getAvatarVoice(gender = "female") {
 }
 
 /**
- * Speak text aloud using selected AI Companion's friendly English Voice
+ * Speak text aloud using selected AI Companion's configured voice profile
  */
-export function speakWithAvatarVoice(text, gender = "female", onStartCallback, onEndCallback) {
+export function speakWithAvatarVoice(text, avatarOrGender = "doctor", onStartCallback, onEndCallback) {
   if (!("speechSynthesis" in window)) return;
 
   window.speechSynthesis.cancel();
@@ -80,16 +106,22 @@ export function speakWithAvatarVoice(text, gender = "female", onStartCallback, o
 
   const utterance = new SpeechSynthesisUtterance(cleanText);
 
-  // Apply user speech rate or default
-  const userRate = window.ttsRate || parseFloat(localStorage.getItem("tts_speed_override")) || 0.95;
+  // Retrieve persona voice profile
+  const avatarId = typeof avatarOrGender === "string" && PERSONA_VOICE_PROFILES[avatarOrGender.toLowerCase()]
+    ? avatarOrGender.toLowerCase()
+    : "doctor";
+
+  const profile = PERSONA_VOICE_PROFILES[avatarId] || {
+    gender: avatarOrGender === "male" ? "male" : "female",
+    pitch: 1.0,
+    rate: 0.95
+  };
+
+  const userRate = window.ttsRate || parseFloat(localStorage.getItem("tts_speed_override")) || profile.rate;
   utterance.rate = userRate;
+  utterance.pitch = profile.pitch;
 
-  const userGenderOverride = window.voiceGenderSetting || localStorage.getItem("voice_gender_override") || "auto";
-  const effectiveGender = userGenderOverride !== "auto" ? userGenderOverride : gender;
-
-  utterance.pitch = effectiveGender === "male" ? 0.95 : 1.15; // Natural pitch for mentor gender
-
-  const voice = getAvatarVoice(effectiveGender);
+  const voice = getAvatarVoice(avatarId, profile.gender);
   if (voice) {
     utterance.voice = voice;
   }
@@ -102,10 +134,9 @@ export function speakWithAvatarVoice(text, gender = "female", onStartCallback, o
     utterance.onerror = () => onEndCallback();
   }
 
-  // Ensure voices are loaded
   if (window.speechSynthesis.getVoices().length === 0) {
     window.speechSynthesis.onvoiceschanged = () => {
-      const refreshedVoice = getAvatarVoice(effectiveGender);
+      const refreshedVoice = getAvatarVoice(avatarId, profile.gender);
       if (refreshedVoice) utterance.voice = refreshedVoice;
       window.speechSynthesis.speak(utterance);
     };
@@ -114,8 +145,7 @@ export function speakWithAvatarVoice(text, gender = "female", onStartCallback, o
   }
 }
 
-// Backward compatibility helper
 export function speakWithFemaleVoice(text, onStartCallback, onEndCallback) {
-  return speakWithAvatarVoice(text, "female", onStartCallback, onEndCallback);
+  return speakWithAvatarVoice(text, "doctor", onStartCallback, onEndCallback);
 }
 
