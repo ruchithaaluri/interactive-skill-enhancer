@@ -7,68 +7,96 @@ function PersonaEnvironmentBackdrop({ avatarId }) {
   switch (avatarId) {
     case "doctor":
       return (
-        <div className="absolute inset-0 pointer-events-none overflow-hidden bg-gradient-to-b from-cyan-950/40 via-slate-950 to-slate-950">
-          <div className="absolute top-4 right-6 opacity-25 text-cyan-400 font-mono text-[10px] space-y-1">
-            <div>+ CLINIC VITAL MONITOR</div>
+        <div className="absolute inset-0 pointer-events-none overflow-hidden bg-gradient-to-b from-cyan-950/50 via-slate-950 to-slate-950">
+          <div className="absolute top-3 left-4 opacity-30 text-cyan-300 font-mono text-[10px] space-y-0.5 border-l-2 border-cyan-400 pl-2">
+            <div className="font-bold">+ CLINIC MEDICAL BAY</div>
             <div>HR: 72 bpm | SpO2: 99%</div>
+            <div>TEMP: 98.6°F | BP: 120/80</div>
           </div>
-          <svg className="absolute bottom-12 inset-x-0 w-full h-16 opacity-30 text-cyan-400" viewBox="0 0 500 50">
-            <path d="M 0 25 L 150 25 L 170 10 L 190 40 L 210 5 L 230 45 L 250 25 L 500 25" fill="none" stroke="currentColor" strokeWidth="2" className="animate-pulse" />
+          <div className="absolute top-4 right-4 opacity-20 text-cyan-400 font-mono text-xs">🩺 EXAMINATION ROOM</div>
+          {/* Animated ECG Heartbeat Graph SVG */}
+          <svg className="absolute bottom-10 inset-x-0 w-full h-16 opacity-35 text-cyan-400" viewBox="0 0 500 50">
+            <path d="M 0 25 L 120 25 L 135 10 L 150 40 L 165 5 L 180 45 L 195 25 L 500 25" fill="none" stroke="currentColor" strokeWidth="2" className="animate-pulse" />
           </svg>
         </div>
       );
     case "teacher":
       return (
-        <div className="absolute inset-0 pointer-events-none overflow-hidden bg-gradient-to-b from-amber-950/35 via-slate-950 to-slate-950">
-          <div className="absolute top-6 left-6 opacity-20 text-amber-200 font-serif text-xs space-y-1">
+        <div className="absolute inset-0 pointer-events-none overflow-hidden bg-gradient-to-b from-amber-950/45 via-slate-950 to-slate-950">
+          <div className="absolute top-4 left-6 opacity-30 text-amber-200 font-serif text-xs space-y-1">
+            <div className="font-bold tracking-widest text-[10px] uppercase text-amber-400">Classroom Blackboard</div>
             <div>E = mc² &nbsp;|&nbsp; π ≈ 3.14159</div>
             <div>f(x) = ∫ x² dx = x³/3 + C</div>
+            <div>H₂O &nbsp;|&nbsp; F = m · a</div>
           </div>
-          <div className="absolute top-10 right-8 w-24 h-14 border border-amber-500/25 rounded-lg bg-amber-950/30 opacity-40 flex items-center justify-center text-[10px] text-amber-300 font-sans tracking-wide">
-            CLASSROOM
+          <div className="absolute top-4 right-6 w-24 h-14 border border-amber-500/30 rounded-lg bg-amber-950/40 opacity-50 flex flex-col items-center justify-center text-[10px] text-amber-300 font-sans tracking-wide">
+            <span className="font-bold">LESSON #4</span>
+            <span className="text-[9px] opacity-80">Interactive Board</span>
           </div>
         </div>
       );
     case "friend":
       return (
-        <div className="absolute inset-0 pointer-events-none overflow-hidden bg-gradient-to-b from-emerald-950/35 via-slate-950 to-slate-950">
-          <div className="absolute top-8 left-8 w-32 h-32 rounded-full bg-emerald-500/10 blur-xl animate-pulse" />
-          <div className="absolute top-6 right-6 opacity-25 text-emerald-300 text-xs font-medium">☕ CASUAL LOUNGE</div>
+        <div className="absolute inset-0 pointer-events-none overflow-hidden bg-gradient-to-b from-emerald-950/45 via-slate-950 to-slate-950">
+          <div className="absolute top-8 left-8 w-36 h-36 rounded-full bg-emerald-500/15 blur-2xl animate-pulse" />
+          <div className="absolute top-4 right-6 opacity-30 text-emerald-300 text-xs font-semibold flex items-center gap-1">
+            <span>☕ CASUAL LOUNGE</span>
+          </div>
+          <div className="absolute bottom-12 left-6 opacity-20 text-emerald-200 text-xs font-mono">
+            <div>🎵 Ambient Music</div>
+            <div>Relaxed Chat Zone</div>
+          </div>
         </div>
       );
     case "counsellor":
       return (
-        <div className="absolute inset-0 pointer-events-none overflow-hidden bg-gradient-to-b from-purple-950/40 via-slate-950 to-slate-950">
-          <div className="absolute top-6 right-6 opacity-25 text-purple-300 text-xs font-light tracking-widest">✨ CALM SANCTUARY</div>
-          <div className="absolute inset-0 bg-radial from-purple-500/10 via-transparent to-transparent opacity-50 animate-pulse" />
+        <div className="absolute inset-0 pointer-events-none overflow-hidden bg-gradient-to-b from-purple-950/50 via-slate-950 to-slate-950">
+          <div className="absolute top-4 right-6 opacity-30 text-purple-300 text-xs font-light tracking-widest">✨ CALM SANCTUARY</div>
+          <div className="absolute top-10 left-6 opacity-20 text-purple-200 text-[10px] font-sans">
+            <div>Mindful Listening Space</div>
+            <div>Peaceful Support</div>
+          </div>
+          <div className="absolute inset-0 bg-radial from-purple-500/15 via-transparent to-transparent opacity-60 animate-pulse" />
         </div>
       );
     case "shopkeeper":
       return (
-        <div className="absolute inset-0 pointer-events-none overflow-hidden bg-gradient-to-b from-teal-950/40 via-slate-950 to-slate-950">
-          <div className="absolute top-6 left-6 opacity-25 text-teal-300 text-xs font-mono">🏪 STORE FRONT</div>
-          <div className="absolute top-12 right-6 opacity-20 text-teal-200 text-[10px]">Shelves & Inventory</div>
+        <div className="absolute inset-0 pointer-events-none overflow-hidden bg-gradient-to-b from-teal-950/50 via-slate-950 to-slate-950">
+          <div className="absolute top-4 left-6 opacity-30 text-teal-300 text-xs font-mono font-bold">🏪 STORE COUNTER</div>
+          <div className="absolute top-10 right-6 opacity-25 text-teal-200 text-[10px] space-y-0.5 text-right font-mono">
+            <div>🏷️ TODAY'S SPECIAL: 20% OFF</div>
+            <div>Cash Register #1 Active</div>
+          </div>
         </div>
       );
     case "tutor":
       return (
-        <div className="absolute inset-0 pointer-events-none overflow-hidden bg-gradient-to-b from-blue-950/40 via-slate-950 to-slate-950">
-          <div className="absolute top-6 left-6 opacity-25 text-blue-300 text-xs font-mono">📚 STUDY NOOK</div>
-          <div className="absolute top-10 right-8 opacity-20 text-blue-200 text-[10px]">Notes & Practice</div>
+        <div className="absolute inset-0 pointer-events-none overflow-hidden bg-gradient-to-b from-blue-950/50 via-slate-950 to-slate-950">
+          <div className="absolute top-4 left-6 opacity-30 text-blue-300 text-xs font-mono font-bold">📚 STUDY NOOK</div>
+          <div className="absolute top-10 right-6 opacity-25 text-blue-200 text-[10px] font-mono space-y-0.5 text-right">
+            <div>📖 Practice Modules</div>
+            <div>Step-by-Step Goals</div>
+          </div>
         </div>
       );
     case "mentor":
       return (
-        <div className="absolute inset-0 pointer-events-none overflow-hidden bg-gradient-to-b from-rose-950/40 via-slate-950 to-slate-950">
-          <div className="absolute top-6 left-6 opacity-25 text-rose-300 text-xs font-mono">🏢 EXECUTIVE WORKSPACE</div>
-          <div className="absolute top-12 right-6 opacity-20 text-rose-200 text-[10px]">Strategic Guidance</div>
+        <div className="absolute inset-0 pointer-events-none overflow-hidden bg-gradient-to-b from-rose-950/50 via-slate-950 to-slate-950">
+          <div className="absolute top-4 left-6 opacity-30 text-rose-300 text-xs font-mono font-bold">🏢 EXECUTIVE SUITE</div>
+          <div className="absolute top-10 right-6 opacity-25 text-rose-200 text-[10px] font-mono space-y-0.5 text-right">
+            <div>📊 Strategy & Vision</div>
+            <div>Leadership Hub</div>
+          </div>
         </div>
       );
     case "colleague":
       return (
-        <div className="absolute inset-0 pointer-events-none overflow-hidden bg-gradient-to-b from-indigo-950/40 via-slate-950 to-slate-950">
-          <div className="absolute top-6 left-6 opacity-25 text-indigo-300 text-xs font-mono">💼 OFFICE SUITE</div>
-          <div className="absolute top-12 right-6 opacity-20 text-indigo-200 text-[10px]">Project Collaboration</div>
+        <div className="absolute inset-0 pointer-events-none overflow-hidden bg-gradient-to-b from-indigo-950/50 via-slate-950 to-slate-950">
+          <div className="absolute top-4 left-6 opacity-30 text-indigo-300 text-xs font-mono font-bold">💼 OFFICE WORKSPACE</div>
+          <div className="absolute top-10 right-6 opacity-25 text-indigo-200 text-[10px] font-mono space-y-0.5 text-right">
+            <div>💻 Project Sprint</div>
+            <div>Team Collaboration</div>
+          </div>
         </div>
       );
     default:
@@ -89,7 +117,7 @@ export function Animated2DAvatar({ avatarState = "IDLE", isSpeaking = false }) {
   const [isTabVisible, setIsTabVisible] = useState(true);
   const [isBlinking, setIsBlinking] = useState(false);
   const [visemeFrame, setVisemeFrame] = useState(0);
-  const [gestureState, setGestureState] = useState("IDLE"); // IDLE, WAVE, THINK, EXPLAIN, CELEBRATE, LISTEN
+  const [gestureState, setGestureState] = useState("IDLE"); // IDLE, WAVE, THINK, EXPLAIN, CELEBRATE, LISTEN, POINT
   const [renderMode, setRenderMode] = useState("vector"); // 'vector' (Animated Cartoon) or 'photo' (Realistic Artwork)
 
   // 1. IntersectionObserver to pause animation loops when off-screen
@@ -128,7 +156,7 @@ export function Animated2DAvatar({ avatarState = "IDLE", isSpeaking = false }) {
       setIsBlinking(true);
       const timer = setTimeout(() => setIsBlinking(false), 160);
       return () => clearTimeout(timer);
-    }, 4500);
+    }, 4200);
 
     return () => clearInterval(blinkInterval);
   }, [reducedMotion, animationsEnabled, isVisible, isTabVisible]);
@@ -170,7 +198,7 @@ export function Animated2DAvatar({ avatarState = "IDLE", isSpeaking = false }) {
         break;
       case "ENCOURAGING":
       case "INCORRECT_SUPPORT":
-        setGestureState("EXPLAIN");
+        setGestureState("POINT");
         break;
       default:
         setGestureState("IDLE");
@@ -178,21 +206,24 @@ export function Animated2DAvatar({ avatarState = "IDLE", isSpeaking = false }) {
     }
   }, [avatarState]);
 
-  // Persona visual styling definitions for the Vector SVG Avatar
-  const getPersonaVectorTheme = (id, role) => {
+  // Persona visual styling definitions for the Vector SVG Avatar (Distinct Male vs Female features)
+  const getPersonaVectorTheme = (id, gender) => {
+    const isMale = gender === "male";
     switch (id) {
       case "doctor":
         return {
+          isMale: false,
           hairColor: "#4A3B32",
           skinColor: "#F3C5A5",
           outfitBg: "#38BDF8",
           outfitDetail: "#0284C7",
-          accessory: "stethoscope", // stethoscope overlay
+          accessory: "stethoscope",
           glasses: false,
           hairStyle: "doctor_bun"
         };
       case "teacher":
         return {
+          isMale: false,
           hairColor: "#6B3A19",
           skinColor: "#F5D0A9",
           outfitBg: "#F59E0B",
@@ -203,16 +234,18 @@ export function Animated2DAvatar({ avatarState = "IDLE", isSpeaking = false }) {
         };
       case "friend":
         return {
+          isMale: true,
           hairColor: "#1E293B",
           skinColor: "#E2A782",
           outfitBg: "#10B981",
           outfitDetail: "#059669",
           accessory: "headphone",
           glasses: false,
-          hairStyle: "curly_wavy"
+          hairStyle: "short_parted"
         };
       case "colleague":
         return {
+          isMale: true,
           hairColor: "#27272A",
           skinColor: "#DDA176",
           outfitBg: "#6366F1",
@@ -223,6 +256,7 @@ export function Animated2DAvatar({ avatarState = "IDLE", isSpeaking = false }) {
         };
       case "counsellor":
         return {
+          isMale: false,
           hairColor: "#581C87",
           skinColor: "#F5C8A0",
           outfitBg: "#A855F7",
@@ -233,6 +267,7 @@ export function Animated2DAvatar({ avatarState = "IDLE", isSpeaking = false }) {
         };
       case "shopkeeper":
         return {
+          isMale: true,
           hairColor: "#451A03",
           skinColor: "#E5B083",
           outfitBg: "#14B8A6",
@@ -243,6 +278,7 @@ export function Animated2DAvatar({ avatarState = "IDLE", isSpeaking = false }) {
         };
       case "tutor":
         return {
+          isMale: true,
           hairColor: "#1B2A4A",
           skinColor: "#F0C49E",
           outfitBg: "#3B82F6",
@@ -253,6 +289,7 @@ export function Animated2DAvatar({ avatarState = "IDLE", isSpeaking = false }) {
         };
       case "mentor":
         return {
+          isMale: false,
           hairColor: "#881337",
           skinColor: "#E8B48D",
           outfitBg: "#F43F5E",
@@ -263,6 +300,7 @@ export function Animated2DAvatar({ avatarState = "IDLE", isSpeaking = false }) {
         };
       case "guide":
         return {
+          isMale: false,
           hairColor: "#065F46",
           skinColor: "#F3C8A0",
           outfitBg: "#06B6D4",
@@ -273,6 +311,7 @@ export function Animated2DAvatar({ avatarState = "IDLE", isSpeaking = false }) {
         };
       case "support":
         return {
+          isMale: true,
           hairColor: "#312E81",
           skinColor: "#DC9B76",
           outfitBg: "#8B5CF6",
@@ -283,18 +322,19 @@ export function Animated2DAvatar({ avatarState = "IDLE", isSpeaking = false }) {
         };
       default:
         return {
+          isMale,
           hairColor: "#334155",
           skinColor: "#F3C5A5",
           outfitBg: "#38BDF8",
           outfitDetail: "#0284C7",
           accessory: "none",
           glasses: false,
-          hairStyle: "standard"
+          hairStyle: isMale ? "short_cropped" : "teacher_bob"
         };
     }
   };
 
-  const vectorTheme = getPersonaVectorTheme(selectedAvatar.id, selectedAvatar.role);
+  const vectorTheme = getPersonaVectorTheme(selectedAvatar.id, selectedAvatar.gender);
 
   // SVG Viseme mouth paths for active speaking animation
   const getMouthPath = () => {
@@ -338,25 +378,27 @@ export function Animated2DAvatar({ avatarState = "IDLE", isSpeaking = false }) {
   // Head tilt rotation transform
   const getHeadTransform = () => {
     if (reducedMotion || !animationsEnabled) return "";
-    if (activeSpeaking) return "rotate(1deg) translateY(-1px)";
+    if (activeSpeaking) return "rotate(1.5deg) translateY(-1.5px)";
     if (avatarState === "LISTENING") return "rotate(-3deg) translateY(1px)";
     if (avatarState === "THINKING") return "rotate(4deg) translateY(-2px)";
-    if (avatarState === "CORRECT" || avatarState === "HAPPY") return "rotate(-2deg) translateY(-3px)";
+    if (avatarState === "CORRECT" || avatarState === "HAPPY") return "rotate(-2.5deg) translateY(-3px)";
     return "";
   };
 
-  // Arm/Hand Gesture SVG transform coordinates
+  // Arm/Hand Gesture SVG transform coordinates for rich human-like movement
   const getArmRightTransform = () => {
-    if (gestureState === "WAVE") return "rotate(-45deg) translate(-10px, -20px)";
-    if (gestureState === "CELEBRATE") return "rotate(-65deg) translate(-15px, -30px)";
-    if (gestureState === "EXPLAIN") return "rotate(-20deg) translate(-5px, -10px)";
+    if (gestureState === "WAVE") return "rotate(-55deg) translate(-12px, -24px)";
+    if (gestureState === "CELEBRATE") return "rotate(-70deg) translate(-18px, -35px)";
+    if (gestureState === "EXPLAIN") return "rotate(-25deg) translate(-8px, -12px)";
+    if (gestureState === "POINT") return "rotate(-40deg) translate(-15px, -15px)";
     return "rotate(0deg)";
   };
 
   const getArmLeftTransform = () => {
-    if (gestureState === "THINK") return "rotate(35deg) translate(10px, -15px)";
-    if (gestureState === "CELEBRATE") return "rotate(65deg) translate(15px, -30px)";
-    if (gestureState === "EXPLAIN") return "rotate(20deg) translate(5px, -10px)";
+    if (gestureState === "THINK") return "rotate(40deg) translate(12px, -18px)";
+    if (gestureState === "CELEBRATE") return "rotate(70deg) translate(18px, -35px)";
+    if (gestureState === "EXPLAIN") return "rotate(25deg) translate(8px, -12px)";
+    if (gestureState === "LISTEN") return "rotate(15deg) translate(5px, -8px)";
     return "rotate(0deg)";
   };
 
@@ -473,37 +515,85 @@ export function Animated2DAvatar({ avatarState = "IDLE", isSpeaking = false }) {
                   }}
                   filter="url(#shadow)"
                 >
-                  {/* Head Oval Base */}
-                  <ellipse cx="100" cy="105" rx="42" ry="48" fill="url(#skinGrad)" />
+                  {/* Head Oval Base - Chiseled male vs soft female contour */}
+                  <ellipse cx="100" cy="105" rx={vectorTheme.isMale ? "41" : "43"} ry={vectorTheme.isMale ? "47" : "49"} fill="url(#skinGrad)" />
 
                   {/* Ears */}
-                  <circle cx="57" cy="108" r="8" fill={vectorTheme.skinColor} />
-                  <circle cx="143" cy="108" r="8" fill={vectorTheme.skinColor} />
+                  <circle cx="56" cy="108" r="8" fill={vectorTheme.skinColor} />
+                  <circle cx="144" cy="108" r="8" fill={vectorTheme.skinColor} />
 
-                  {/* Hair Style Base (Back & Top) */}
-                  <path
-                    d="M 56,100 C 50,60 70,45 100,45 C 130,45 150,60 144,100 C 140,70 130,55 100,55 C 70,55 60,70 56,100 Z"
-                    fill={vectorTheme.hairColor}
-                  />
+                  {/* Hair Style Base (Dynamic Male vs Female Hair Paths) */}
+                  {vectorTheme.hairStyle === "doctor_bun" && (
+                    <g fill={vectorTheme.hairColor}>
+                      <circle cx="100" cy="42" r="16" />
+                      <path d="M 54,102 C 48,58 70,48 100,48 C 130,48 152,58 146,102 C 140,72 125,58 100,58 C 75,58 60,72 54,102 Z" />
+                    </g>
+                  )}
+                  {vectorTheme.hairStyle === "teacher_bob" && (
+                    <path
+                      d="M 52,118 C 45,70 65,46 100,46 C 135,46 155,70 148,118 C 142,75 125,58 100,58 C 75,58 58,75 52,118 Z"
+                      fill={vectorTheme.hairColor}
+                    />
+                  )}
+                  {vectorTheme.hairStyle === "short_parted" && (
+                    <path
+                      d="M 56,100 C 52,70 68,52 100,52 C 128,52 144,70 144,100 C 138,78 120,62 95,62 C 70,62 60,78 56,100 Z"
+                      fill={vectorTheme.hairColor}
+                    />
+                  )}
+                  {vectorTheme.hairStyle === "short_cropped" && (
+                    <path
+                      d="M 57,96 C 53,68 70,54 100,54 C 130,54 147,68 143,96 C 138,76 122,64 100,64 C 78,64 62,76 57,96 Z"
+                      fill={vectorTheme.hairColor}
+                    />
+                  )}
+                  {vectorTheme.hairStyle === "soft_waves" && (
+                    <path
+                      d="M 50,135 C 44,75 66,45 100,45 C 134,45 156,75 150,135 C 142,80 126,58 100,58 C 74,58 58,80 50,135 Z"
+                      fill={vectorTheme.hairColor}
+                    />
+                  )}
+                  {vectorTheme.hairStyle === "neat_spiky" && (
+                    <g fill={vectorTheme.hairColor}>
+                      <path d="M 57,98 C 53,65 68,48 100,48 C 132,48 147,65 143,98 C 138,75 120,60 100,60 C 80,60 62,75 57,98 Z" />
+                      <path d="M 85,50 L 92,36 L 98,50 L 105,34 L 112,50 Z" />
+                    </g>
+                  )}
+                  {(!vectorTheme.hairStyle || vectorTheme.hairStyle === "shoulder_length" || vectorTheme.hairStyle === "ponytail" || vectorTheme.hairStyle === "clean_cut") && (
+                    <path
+                      d="M 55,104 C 48,62 68,46 100,46 C 132,46 152,62 145,104 C 140,72 125,58 100,58 C 75,58 60,72 55,104 Z"
+                      fill={vectorTheme.hairColor}
+                    />
+                  )}
 
                   {/* Eyebrows */}
                   <path
                     d="M 72,82 Q 82,78 90,83"
                     stroke={vectorTheme.hairColor}
-                    strokeWidth="3.5"
+                    strokeWidth={vectorTheme.isMale ? "4" : "3.2"}
                     strokeLinecap="round"
                     fill="none"
                   />
                   <path
                     d="M 110,83 Q 118,78 128,82"
                     stroke={vectorTheme.hairColor}
-                    strokeWidth="3.5"
+                    strokeWidth={vectorTheme.isMale ? "4" : "3.2"}
                     strokeLinecap="round"
                     fill="none"
                   />
 
                   {/* Eyes & Blinking Eyelids */}
                   <g style={{ transformOrigin: "100px 96px", transform: eyeLidTransform, transition: "transform 0.08s ease" }}>
+                    {/* Female Eyelash Extension Overlays */}
+                    {!vectorTheme.isMale && (
+                      <g stroke="#1E293B" strokeWidth="1.8" fill="none">
+                        <path d="M 72,89 Q 81,84 90,89" />
+                        <path d="M 110,89 Q 119,84 128,89" />
+                        <path d="M 73,88 L 70,85" />
+                        <path d="M 127,88 L 130,85" />
+                      </g>
+                    )}
+
                     {/* Left Eye */}
                     <circle cx="81" cy="95" r="8" fill="#FFFFFF" />
                     <circle cx={81 + eyeGazeOffsetX} cy={95 + eyeGazeOffsetY} r="4.5" fill="#1E293B" />
@@ -528,8 +618,8 @@ export function Animated2DAvatar({ avatarState = "IDLE", isSpeaking = false }) {
                   <path d="M 100,98 L 97,112 L 103,112" stroke="#DDA176" strokeWidth="2" fill="none" strokeLinecap="round" />
 
                   {/* Cheeks blush */}
-                  <ellipse cx="73" cy="114" rx="7" ry="4" fill="#F43F5E" opacity="0.25" />
-                  <ellipse cx="127" cy="114" rx="7" ry="4" fill="#F43F5E" opacity="0.25" />
+                  <ellipse cx="73" cy="114" rx="7" ry="4" fill="#F43F5E" opacity={vectorTheme.isMale ? "0.15" : "0.3"} />
+                  <ellipse cx="127" cy="114" rx="7" ry="4" fill="#F43F5E" opacity={vectorTheme.isMale ? "0.15" : "0.3"} />
 
                   {/* Dynamic Viseme Mouth Path */}
                   <path

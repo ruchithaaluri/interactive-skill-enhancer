@@ -6,6 +6,7 @@ import { FormattedText } from "../utils/formatText";
 import { speakWithAvatarVoice } from "../utils/speechUtils";
 import Animated2DAvatar from "../components/Animated2DAvatar";
 import { AvatarContext } from "../context/AvatarContext";
+import Particle3DBackground from "../components/Particle3DBackground";
 
 function AIChat() {
   const { selectedAvatar } = useContext(AvatarContext);
@@ -138,7 +139,10 @@ function AIChat() {
   ];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 relative">
+      {/* Dynamic 3D Particle Wave Field matching Persona theme */}
+      <Particle3DBackground mode="waves" theme={selectedAvatar.themeColor || "sky"} />
+
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>

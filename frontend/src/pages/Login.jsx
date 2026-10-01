@@ -2,6 +2,7 @@ import { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import { LogIn, AlertCircle, Eye, EyeOff, Mail, Lock, Sparkles, ArrowRight } from "lucide-react";
+import Particle3DBackground from "../components/Particle3DBackground";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -37,6 +38,9 @@ function Login() {
 
   return (
     <div className="min-h-screen bg-slate-950 flex items-center justify-center p-4 relative overflow-hidden">
+      {/* 3D Animated Saturn Particle Background */}
+      <Particle3DBackground mode="saturn" theme="gold" />
+
       {/* Background Animated Gradient Orbs */}
       <div className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full bg-sky-500/10 blur-3xl pointer-events-none animate-pulse" />
       <div className="absolute bottom-1/4 right-1/4 w-96 h-96 rounded-full bg-indigo-500/10 blur-3xl pointer-events-none animate-pulse" style={{ animationDelay: "1s" }} />
