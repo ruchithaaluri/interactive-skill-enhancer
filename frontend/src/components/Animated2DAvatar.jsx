@@ -3,6 +3,83 @@ import { Sparkles, Volume2, Mic, Brain, CheckCircle2, Heart, Trophy, RefreshCw, 
 import { PerformanceContext } from "../context/PerformanceContext";
 import { AvatarContext } from "../context/AvatarContext";
 
+function PersonaEnvironmentBackdrop({ avatarId }) {
+  switch (avatarId) {
+    case "doctor":
+      return (
+        <div className="absolute inset-0 pointer-events-none overflow-hidden bg-gradient-to-b from-cyan-950/40 via-slate-950 to-slate-950">
+          <div className="absolute top-4 right-6 opacity-25 text-cyan-400 font-mono text-[10px] space-y-1">
+            <div>+ CLINIC VITAL MONITOR</div>
+            <div>HR: 72 bpm | SpO2: 99%</div>
+          </div>
+          <svg className="absolute bottom-12 inset-x-0 w-full h-16 opacity-30 text-cyan-400" viewBox="0 0 500 50">
+            <path d="M 0 25 L 150 25 L 170 10 L 190 40 L 210 5 L 230 45 L 250 25 L 500 25" fill="none" stroke="currentColor" strokeWidth="2" className="animate-pulse" />
+          </svg>
+        </div>
+      );
+    case "teacher":
+      return (
+        <div className="absolute inset-0 pointer-events-none overflow-hidden bg-gradient-to-b from-amber-950/35 via-slate-950 to-slate-950">
+          <div className="absolute top-6 left-6 opacity-20 text-amber-200 font-serif text-xs space-y-1">
+            <div>E = mc² &nbsp;|&nbsp; π ≈ 3.14159</div>
+            <div>f(x) = ∫ x² dx = x³/3 + C</div>
+          </div>
+          <div className="absolute top-10 right-8 w-24 h-14 border border-amber-500/25 rounded-lg bg-amber-950/30 opacity-40 flex items-center justify-center text-[10px] text-amber-300 font-sans tracking-wide">
+            CLASSROOM
+          </div>
+        </div>
+      );
+    case "friend":
+      return (
+        <div className="absolute inset-0 pointer-events-none overflow-hidden bg-gradient-to-b from-emerald-950/35 via-slate-950 to-slate-950">
+          <div className="absolute top-8 left-8 w-32 h-32 rounded-full bg-emerald-500/10 blur-xl animate-pulse" />
+          <div className="absolute top-6 right-6 opacity-25 text-emerald-300 text-xs font-medium">☕ CASUAL LOUNGE</div>
+        </div>
+      );
+    case "counsellor":
+      return (
+        <div className="absolute inset-0 pointer-events-none overflow-hidden bg-gradient-to-b from-purple-950/40 via-slate-950 to-slate-950">
+          <div className="absolute top-6 right-6 opacity-25 text-purple-300 text-xs font-light tracking-widest">✨ CALM SANCTUARY</div>
+          <div className="absolute inset-0 bg-radial from-purple-500/10 via-transparent to-transparent opacity-50 animate-pulse" />
+        </div>
+      );
+    case "shopkeeper":
+      return (
+        <div className="absolute inset-0 pointer-events-none overflow-hidden bg-gradient-to-b from-teal-950/40 via-slate-950 to-slate-950">
+          <div className="absolute top-6 left-6 opacity-25 text-teal-300 text-xs font-mono">🏪 STORE FRONT</div>
+          <div className="absolute top-12 right-6 opacity-20 text-teal-200 text-[10px]">Shelves & Inventory</div>
+        </div>
+      );
+    case "tutor":
+      return (
+        <div className="absolute inset-0 pointer-events-none overflow-hidden bg-gradient-to-b from-blue-950/40 via-slate-950 to-slate-950">
+          <div className="absolute top-6 left-6 opacity-25 text-blue-300 text-xs font-mono">📚 STUDY NOOK</div>
+          <div className="absolute top-10 right-8 opacity-20 text-blue-200 text-[10px]">Notes & Practice</div>
+        </div>
+      );
+    case "mentor":
+      return (
+        <div className="absolute inset-0 pointer-events-none overflow-hidden bg-gradient-to-b from-rose-950/40 via-slate-950 to-slate-950">
+          <div className="absolute top-6 left-6 opacity-25 text-rose-300 text-xs font-mono">🏢 EXECUTIVE WORKSPACE</div>
+          <div className="absolute top-12 right-6 opacity-20 text-rose-200 text-[10px]">Strategic Guidance</div>
+        </div>
+      );
+    case "colleague":
+      return (
+        <div className="absolute inset-0 pointer-events-none overflow-hidden bg-gradient-to-b from-indigo-950/40 via-slate-950 to-slate-950">
+          <div className="absolute top-6 left-6 opacity-25 text-indigo-300 text-xs font-mono">💼 OFFICE SUITE</div>
+          <div className="absolute top-12 right-6 opacity-20 text-indigo-200 text-[10px]">Project Collaboration</div>
+        </div>
+      );
+    default:
+      return (
+        <div className="absolute inset-0 pointer-events-none overflow-hidden bg-gradient-to-b from-sky-950/30 via-slate-950 to-slate-950">
+          <div className="absolute inset-0 bg-radial from-sky-500/10 via-transparent to-transparent opacity-60" />
+        </div>
+      );
+  }
+}
+
 export function Animated2DAvatar({ avatarState = "IDLE", isSpeaking = false }) {
   const { reducedMotion, animationsEnabled } = useContext(PerformanceContext);
   const { selectedAvatar } = useContext(AvatarContext);
@@ -302,6 +379,9 @@ export function Animated2DAvatar({ avatarState = "IDLE", isSpeaking = false }) {
 
         {/* Avatar Presentation Canvas Area */}
         <div className="relative w-full h-[360px] sm:h-[390px] flex items-center justify-center overflow-hidden bg-slate-950/70">
+          {/* Dynamic Profession Environment Backdrop */}
+          <PersonaEnvironmentBackdrop avatarId={selectedAvatar.id} />
+
           {/* Subtle Background Radial Glow */}
           <div className="absolute inset-0 bg-radial from-sky-500/10 via-transparent to-transparent opacity-60 pointer-events-none" />
 

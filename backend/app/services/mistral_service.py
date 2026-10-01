@@ -283,10 +283,19 @@ def generate_response(message: str, history=None, avatar_id: str = "doctor", sys
 
 SUBJECTS_AND_TOPICS = {
     "Mathematics": ["Addition", "Subtraction", "Multiplication", "Fractions", "Geometry"],
+    "Physics": ["Motion & Speed", "Gravity & Forces", "Energy & Work", "Light & Sound", "Electricity"],
+    "Chemistry": ["Atoms & Molecules", "States of Matter", "Periodic Table", "Chemical Reactions", "Acids & Bases"],
+    "Biology": ["Cell Biology", "Photosynthesis", "Genetics & DNA", "Ecosystems", "Human Anatomy"],
     "Science": ["Solar System", "Plants", "Animals", "Human Body", "Matter"],
     "English": ["Vocabulary", "Grammar", "Phonics", "Spelling", "Reading Comprehension"],
     "Computer Science": ["Coding Concepts", "Python Basics", "Algorithms", "Web Development", "Computers"],
-    "General Knowledge": ["World Landmarks", "Animals & Habitats", "Space Exploration", "Famous Inventors", "Everyday Science"]
+    "History": ["Ancient Civilizations", "World Wars", "Famous Leaders", "Industrial Revolution", "Inventions"],
+    "Geography": ["Continents & Oceans", "Maps & Coordinates", "Climate & Weather", "Mountains & Rivers", "Countries & Capitals"],
+    "Social Science": ["Civics & Government", "Culture & Society", "Economics Basics", "Community Helpers", "Global Rights"],
+    "General Knowledge": ["World Landmarks", "Animals & Habitats", "Space Exploration", "Famous Inventors", "Everyday Science"],
+    "Life Skills": ["Time Management", "Problem Solving", "Financial Literacy", "Health & Hygiene", "Emotional Resilience"],
+    "Communication": ["Active Listening", "Public Speaking", "Body Language", "Teamwork & Collaboration", "Empathy in Conversation"],
+    "Custom Topic": ["General Learning"]
 }
 
 QUIZ_QUESTION_BANK = {
