@@ -180,7 +180,9 @@ PERSONA_GREETINGS = {
     "counsellor": "Hello, I'm Taylor. I'm here to listen and help you talk through ideas comfortably. How are you feeling today?",
     "shopkeeper": "Welcome! 👋 I'm Shop Mentor! I can help you count, calculate prices, and solve practical math problems. What can I help you with today?",
     "tutor": "Hi! I'm Study Mentor. Let's focus on your study goals and break down tricky topics step-by-step!",
-    "mentor": "Hello! I'm Morgan, your Life & Learning Mentor. I'm excited to explore big ideas with you. Where shall we start?"
+    "mentor": "Hello! I'm Morgan, your Life & Learning Mentor. I'm excited to explore big ideas with you. Where shall we start?",
+    "guide": "Welcome! I'm Sonia, your AI Learning Guide! I'm here to show you around subjects and guide your path. What would you like to discover?",
+    "support": "Hi! I'm Jordan, your AI Support Assistant! If you have any questions or need help navigating your learning, I'm right here."
 }
 
 PERSONA_NAMES = {
@@ -191,8 +193,11 @@ PERSONA_NAMES = {
     "counsellor": "Taylor",
     "shopkeeper": "Shop Mentor",
     "tutor": "Study Mentor",
-    "mentor": "Morgan"
+    "mentor": "Morgan",
+    "guide": "Sonia",
+    "support": "Jordan"
 }
+
 
 def generate_response(message: str, history=None, avatar_id: str = "doctor", system_prompt: str = None) -> str:
     if history is None:

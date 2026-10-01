@@ -9,7 +9,9 @@ import {
   Briefcase,
   Heart,
   BookOpen,
-  Compass
+  Compass,
+  MapPin,
+  LifeBuoy
 } from "lucide-react";
 
 function AvatarSelector() {
@@ -24,6 +26,8 @@ function AvatarSelector() {
     shopkeeper: <Store size={16} />,
     tutor: <BookOpen size={16} />,
     mentor: <Compass size={16} />,
+    guide: <MapPin size={16} />,
+    support: <LifeBuoy size={16} />,
   };
 
   return (
@@ -40,8 +44,8 @@ function AvatarSelector() {
         </p>
       </div>
 
-      {/* Selector Cards Grid (2 cols on mobile, 4 cols on desktop) */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3.5 pt-2">
+      {/* Selector Cards Grid (2 cols on mobile, 5 cols on desktop) */}
+      <div className="grid grid-cols-2 sm:grid-cols-5 gap-3.5 pt-2">
         {Object.values(avatarConfigs).map((av) => {
           const isSelected = selectedAvatarId === av.id;
 
@@ -74,7 +78,7 @@ function AvatarSelector() {
               {/* Name & Title */}
               <div className="text-center space-y-0.5 w-full">
                 <div className="text-xs sm:text-sm font-extrabold text-white flex items-center justify-center gap-1.5 truncate">
-                  {avatarIcons[av.id]}
+                  {avatarIcons[av.id] || <Compass size={16} />}
                   <span className="truncate">{av.name}</span>
                 </div>
                 <div className="text-[11px] font-semibold text-slate-400 truncate">
@@ -93,4 +97,5 @@ function AvatarSelector() {
 }
 
 export default AvatarSelector;
+
 

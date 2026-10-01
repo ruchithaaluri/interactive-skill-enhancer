@@ -6,6 +6,8 @@ import colleagueAvatarImg from "../assets/colleague-avatar.png";
 import counsellorAvatarImg from "../assets/counsellor-avatar.png";
 import tutorAvatarImg from "../assets/tutor-avatar.png";
 import mentorAvatarImg from "../assets/mentor-avatar.png";
+import guideAvatarImg from "../assets/guide-avatar.png";
+import supportAvatarImg from "../assets/support-avatar.png";
 
 export const AVATAR_CONFIGS = {
   doctor: {
@@ -126,8 +128,39 @@ export const AVATAR_CONFIGS = {
     greeting: "Hello! I'm Morgan, your Life & Learning Mentor. I'm excited to explore big ideas and guide your growth. Where shall we start?",
     systemPrompt: "You are Morgan, a balanced, empowering, thoughtful, and curious life and learning mentor. Inspire curiosity, critical thinking, and growth mindset.",
     gestureProfile: "inspiring"
+  },
+
+  guide: {
+    id: "guide",
+    name: "Sonia",
+    role: "AI Learning Guide",
+    subtitle: "Welcoming • Informative",
+    image: guideAvatarImg,
+    badgeBg: "bg-cyan-500/20 text-cyan-300 border-cyan-400/40",
+    themeColor: "cyan",
+    gender: "female",
+    personality: "Welcoming, informative, structured, clear guide",
+    greeting: "Welcome! I'm Sonia, your AI Learning Guide! I'm here to show you around subjects and guide your path. What would you like to discover?",
+    systemPrompt: "You are Sonia, a welcoming, clear, informative, and structured learning guide. Introduce topics clearly and highlight exciting aspects of every lesson.",
+    gestureProfile: "guiding"
+  },
+
+  support: {
+    id: "support",
+    name: "Jordan",
+    role: "AI Support Assistant",
+    subtitle: "Helpful • Reassuring",
+    image: supportAvatarImg,
+    badgeBg: "bg-violet-500/20 text-violet-300 border-violet-400/40",
+    themeColor: "violet",
+    gender: "male",
+    personality: "Helpful, reassuring, patient, practical support specialist",
+    greeting: "Hi! I'm Jordan, your AI Support Assistant! If you have any questions or need help navigating your learning, I'm right here.",
+    systemPrompt: "You are Jordan, a helpful, patient, reassuring, and practical support assistant. Provide clear, straightforward help and encouragement.",
+    gestureProfile: "reassuring"
   }
 };
 
 export const DEFAULT_AVATAR_ID = "doctor";
+
 
