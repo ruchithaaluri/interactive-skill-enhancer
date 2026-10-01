@@ -241,6 +241,21 @@ def generate_response(message: str, history=None, avatar_id: str = "doctor", sys
     if re.search(r'^(who are you|what is your name)', msg):
         return f"I am **{persona_name}**, your AI companion! I'm here to support your learning and answer questions warmly and clearly. What would you like to discuss today?"
 
+    # Social & Emotional Support Intent Matching
+    if re.search(r'(bad day|hard day|rough day|failed|feeling sad|anxious|nervous|upset|frustrated|stressed)', msg):
+        if active_avatar_id == "friend":
+            return f"Oh no! I'm really sorry to hear that. That sounds tough! Do you want to tell me what happened? I'm right here to listen."
+        elif active_avatar_id == "counsellor":
+            return f"I hear you, and it's completely okay to feel that way. I'm here to listen warmly without any judgment. Would you like to share what made today so difficult?"
+        elif active_avatar_id == "teacher":
+            return f"I'm sorry today was challenging! Remember that one difficult moment or test doesn't define your intelligence. We can take a break or talk through it together whenever you're ready."
+        elif active_avatar_id == "doctor":
+            return f"I'm so sorry you're feeling this way. Take a slow, deep breath. Taking care of your mind and body is the most important thing! Would you like to talk about what happened?"
+        elif active_avatar_id == "tutor":
+            return f"That sounds like a tough day. We don't have to jump straight into studying. Take a moment to rest, and we can work through anything step-by-step when you feel ready."
+        else:
+            return f"I'm really sorry to hear that. I'm here to support you. Would you like to talk about what happened or take a short break together?"
+
     for pattern, ans in KNOWLEDGE_MAP:
         if re.search(pattern, msg):
             return ans
@@ -258,6 +273,7 @@ def generate_response(message: str, history=None, avatar_id: str = "doctor", sys
         f"When we look at **{topic_clean}**, it comes down to understanding the key concepts clearly. "
         f"Would you like me to explain this with a simple everyday example, or should we try a quick practice question?"
     )
+
 
 
 
