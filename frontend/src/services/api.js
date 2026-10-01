@@ -48,10 +48,12 @@ export const getCurrentUser = async () => {
 // AI Chat & Quiz API
 // ==============================
 
-export const askAI = async (message, history = []) => {
+export const askAI = async (message, history = [], avatar_id = "doctor", system_prompt = null) => {
   const response = await api.post("/chatbot/", {
     message,
     history,
+    avatar_id,
+    system_prompt
   });
   return response.data.response;
 };

@@ -621,11 +621,19 @@ export function Animated2DAvatar({ avatarState = "IDLE", isSpeaking = false }) {
                   <ellipse cx="73" cy="114" rx="7" ry="4" fill="#F43F5E" opacity={vectorTheme.isMale ? "0.15" : "0.3"} />
                   <ellipse cx="127" cy="114" rx="7" ry="4" fill="#F43F5E" opacity={vectorTheme.isMale ? "0.15" : "0.3"} />
 
-                  {/* Dynamic Viseme Mouth Path */}
+                  {/* Dynamic Viseme Mouth Path - Male lip contour vs Female lip contour */}
                   <path
                     d={getMouthPath()}
-                    fill={activeSpeaking ? "#E11D48" : "#991B1B"}
-                    stroke="#881337"
+                    fill={
+                      activeSpeaking
+                        ? vectorTheme.isMale
+                          ? "#B45309"
+                          : "#E11D48"
+                        : vectorTheme.isMale
+                        ? "#78350F"
+                        : "#991B1B"
+                    }
+                    stroke={vectorTheme.isMale ? "#451A03" : "#881337"}
                     strokeWidth="1.5"
                     strokeLinejoin="round"
                   />

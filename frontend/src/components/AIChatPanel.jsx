@@ -1,18 +1,29 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useContext } from "react";
 import { SendHorizontal, Bot, User, Trash2 } from "lucide-react";
 import { askAI } from "../services/api";
 import SpeechRecognition from "./SpeechRecognition";
+import { AvatarContext } from "../context/AvatarContext";
 
 function AIChatPanel() {
+  const { selectedAvatar } = useContext(AvatarContext);
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([
     {
       sender: "AI",
-      text: "Hello! 👋 I'm your AI Learning Assistant. How can I help you learn today?",
+      text: selectedAvatar.greeting,
     },
   ]);
   const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef(null);
+
+  useEffect(() => {
+    setMessages([
+      {
+        sender: "AI",
+        text: selectedAvatar.greeting,
+      },
+    ]);
+  }, [selectedAvatar.id]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -41,7 +52,7 @@ function AIChatPanel() {
         content: msg.text,
       }));
 
-      const reply = await askAI(text, history);
+      const reply = await askAI(text, history, selectedAvatar.id, selectedAvatar.systemPrompt);
 
       setMessages((prev) => [
         ...prev,

@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
+import { AvatarContext } from "../context/AvatarContext";
 import AIChatPanel from "../components/AIChatPanel";
 import EmotionPanel from "../components/EmotionPanel";
 import GodotPanel from "../components/GodotPanel";
@@ -8,10 +9,12 @@ import AvatarSelector from "../components/AvatarSelector";
 import DailyQuest from "../components/DailyQuest";
 import CaregiverJournal from "../components/CaregiverJournal";
 import AccessibilityControls from "../components/AccessibilityControls";
+import Particle3DBackground from "../components/Particle3DBackground";
 import { Brain, Smile, BarChart3, User, Sparkles, ArrowRight } from "lucide-react";
 
 function Dashboard() {
   const { user } = useContext(AuthContext);
+  const { selectedAvatar } = useContext(AvatarContext);
   const learnerName = user?.full_name || "Learner";
 
   const quickNav = [
@@ -46,7 +49,10 @@ function Dashboard() {
   ];
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 relative">
+      {/* 3D Animated Particle Wave Background synced with persona theme */}
+      <Particle3DBackground mode="waves" theme={selectedAvatar?.themeColor || "cyan"} />
+
       {/* Top Banner with Accessibility & Sensory Control Bar */}
       <div className="glass-panel p-6 sm:p-8 border border-white/15 shadow-2xl flex flex-col md:flex-row md:items-center justify-between gap-6 relative overflow-hidden">
         <div>
