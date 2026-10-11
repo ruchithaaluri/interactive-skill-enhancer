@@ -81,8 +81,17 @@ function AvatarSelector() {
                   {avatarIcons[av.id] || <Compass size={16} />}
                   <span className="truncate">{av.name}</span>
                 </div>
-                <div className="text-[11px] font-semibold text-slate-400 truncate">
+                <div className="text-[11px] font-semibold text-slate-300 truncate">
                   {av.role}
+                </div>
+                <div>
+                  <span className={`inline-block text-[10px] px-2 py-0.5 rounded-full font-bold shadow-sm ${
+                    av.gender === "male"
+                      ? "bg-blue-500/25 text-blue-300 border border-blue-400/40"
+                      : "bg-pink-500/25 text-pink-300 border border-pink-400/40"
+                  }`}>
+                    {av.gender === "male" ? "👨 Male 3D" : "👩 Female 3D"}
+                  </span>
                 </div>
                 <div className="text-[10px] text-slate-500 font-medium truncate pt-0.5">
                   {av.subtitle}

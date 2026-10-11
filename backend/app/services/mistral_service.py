@@ -251,6 +251,13 @@ def generate_response(message: str, history=None, avatar_id: str = "doctor", sys
     # Contextual Conversation Memory Recall Queries
     history_text = " ".join([m.get("content", "") for m in history if isinstance(m, dict)]).lower()
 
+    # NLP Context Follow-up Handler (e.g. "Because I failed my math test" after "I had a bad day")
+    if re.search(r'(because|failed|math test|physics test|exam|quiz)', msg) and ("bad day" in history_text or "hard day" in history_text or "rough day" in history_text or "sad" in history_text):
+        if "math" in msg or "math" in history_text:
+            return f"I understand completely now. Failing a math test can feel really disappointing, but please don't be discouraged! Math is a skill that gets easier with step-by-step practice. I'm right here with you, and we can go over any math problems together at your own pace. Would you like to review one easy math problem together?"
+        else:
+            return f"I understand completely. It's really frustrating when a test doesn't go the way you hoped. Remember that one test score does not measure your true potential! Take a breath, and whenever you're ready, we can practice step-by-step together."
+
     if re.search(r'(what did i (tell|say|share)|did i tell you|what did i struggle|what subject did i|you remember|what was my)', msg):
         if "math" in history_text or "mathematics" in history_text:
             return f"You told me earlier that you struggled with your **Mathematics test**! Don't worry, we can practice math concepts step-by-step together."

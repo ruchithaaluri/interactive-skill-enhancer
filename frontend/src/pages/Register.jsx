@@ -49,7 +49,7 @@ function Register() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 flex items-center justify-center p-4 relative overflow-hidden">
+    <div className="min-h-screen bg-slate-950 flex items-center justify-center py-10 px-4 relative overflow-y-auto">
       {/* 3D Animated Scroll Wave Background */}
       <Particle3DBackground mode="waves" theme="cyan" />
 

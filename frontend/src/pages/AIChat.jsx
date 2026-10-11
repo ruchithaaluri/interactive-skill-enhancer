@@ -1,10 +1,12 @@
 import { useState, useRef, useEffect, useContext } from "react";
-import { SendHorizontal, Bot, User, Trash2, Volume2, VolumeX, Sparkles, Download } from "lucide-react";
+import { SendHorizontal, Bot, User, Trash2, Volume2, VolumeX, Sparkles, Download, Sliders, Camera, Eye } from "lucide-react";
 import { askAI } from "../services/api";
-import SpeechRecognition from "../components/SpeechRecognition";
+import WhisperSpeechRecognition from "../components/WhisperSpeechRecognition";
 import { FormattedText } from "../utils/formatText";
 import { speakWithAvatarVoice } from "../utils/speechUtils";
 import Animated2DAvatar from "../components/Animated2DAvatar";
+import AvatarCanvas3D from "../components/AvatarCanvas3D";
+import MediaPipeTracker from "../components/MediaPipeTracker";
 import { AvatarContext } from "../context/AvatarContext";
 import Particle3DBackground from "../components/Particle3DBackground";
 
@@ -15,10 +17,22 @@ function AIChat() {
   const [loading, setLoading] = useState(false);
   const [ttsEnabled, setTtsEnabled] = useState(true);
   const [isSpeaking, setIsSpeaking] = useState(false);
+  const [viewMode, setViewMode] = useState("3d");
+
+  // MediaPipe Landmark Tracking & Quality Preset State
+  const [cameraTrackingActive, setCameraTrackingActive] = useState(false);
+  const [qualityPreset, setQualityPreset] = useState("balanced");
+  const [trackingData, setTrackingData] = useState(null);
+
   const messagesEndRef = useRef(null);
 
-  // Initialize initial greeting whenever selectedAvatar changes
+  // Stop previous speech and reset conversation when persona changes
   useEffect(() => {
+    if (window.speechSynthesis) {
+      window.speechSynthesis.cancel();
+    }
+    setIsSpeaking(false);
+
     setMessages([
       {
         sender: "AI",
@@ -42,7 +56,7 @@ function AIChat() {
     if (!ttsEnabled) return;
     speakWithAvatarVoice(
       text,
-      selectedAvatar.gender || "female",
+      selectedAvatar.id,
       () => setIsSpeaking(true),
       () => setIsSpeaking(false)
     );
@@ -55,6 +69,12 @@ function AIChat() {
   const sendMessage = async (textToSend = null) => {
     const text = textToSend || message;
     if (!text.trim() || loading) return;
+
+    // Interrupt any ongoing speech cleanly
+    if (window.speechSynthesis) {
+      window.speechSynthesis.cancel();
+      setIsSpeaking(false);
+    }
 
     const currentTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
@@ -193,15 +213,66 @@ function AIChat() {
         </div>
       </div>
 
-      {/* Main Grid: Avatar Companion + Chat Feed */}
+      {/* Main Grid: 3D Avatar Companion & MediaPipe Tracking + Chat Feed */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-        {/* Left Column: Animated 2D Avatar Presentation */}
-        <div className="lg:col-span-4 bg-slate-900/60 border border-white/10 rounded-3xl p-3 shadow-xl backdrop-blur-xl">
-          <Animated2DAvatar avatarState={currentAvatarState} isSpeaking={isSpeaking} />
+        {/* Left Column: 3D / 2D Avatar Companion Presentation + MediaPipe Tracking */}
+        <div className="lg:col-span-5 space-y-4">
+          <div className="flex items-center justify-between px-2">
+            <span className="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
+              <Sparkles size={14} className="text-sky-400" />
+              <span>Companion Character</span>
+            </span>
+            <div className="flex items-center gap-1 bg-slate-900/80 p-1 rounded-xl border border-white/10 text-xs shadow-inner">
+              <button
+                onClick={() => setViewMode("3d")}
+                className={`px-3 py-1 rounded-lg font-bold transition flex items-center gap-1.5 ${
+                  viewMode === "3d"
+                    ? "bg-gradient-to-r from-sky-500 to-blue-600 text-white shadow-md shadow-sky-500/20"
+                    : "text-slate-400 hover:text-white"
+                }`}
+              >
+                <span>🎮</span> 3D WebGL
+              </button>
+              <button
+                onClick={() => setViewMode("2d")}
+                className={`px-3 py-1 rounded-lg font-bold transition flex items-center gap-1.5 ${
+                  viewMode === "2d"
+                    ? "bg-gradient-to-r from-sky-500 to-blue-600 text-white shadow-md shadow-sky-500/20"
+                    : "text-slate-400 hover:text-white"
+                }`}
+              >
+                <span>🎨</span> 2D Vector
+              </button>
+            </div>
+          </div>
+
+          {/* 3D WebGL Avatar Canvas or 2D Vector Fallback */}
+          {viewMode === "3d" ? (
+            <AvatarCanvas3D
+              avatar={selectedAvatar}
+              avatarState={currentAvatarState}
+              isSpeaking={isSpeaking}
+              trackingData={trackingData}
+              qualityPreset={qualityPreset}
+            />
+          ) : (
+            <div className="bg-slate-900/60 border border-white/10 rounded-3xl p-3 shadow-xl backdrop-blur-xl">
+              <Animated2DAvatar avatarState={currentAvatarState} isSpeaking={isSpeaking} />
+            </div>
+          )}
+
+          {/* MediaPipe Face & Hand Landmark Tracker Component */}
+          <MediaPipeTracker
+            active={cameraTrackingActive}
+            onToggleActive={setCameraTrackingActive}
+            onTrackingData={setTrackingData}
+            preset={qualityPreset}
+            onPresetChange={setQualityPreset}
+          />
         </div>
 
         {/* Right Column: Main Glass Chat Panel */}
-        <div className="lg:col-span-8 glass-panel h-[600px] flex flex-col overflow-hidden relative border border-white/15 shadow-2xl">
+        <div className="lg:col-span-7 glass-panel h-[780px] flex flex-col overflow-hidden relative border border-white/15 shadow-2xl">
           {/* Equalizer Indicator when AI is speaking */}
           {isSpeaking && (
             <div className="px-6 py-2 bg-sky-500/20 border-b border-sky-400/30 flex items-center justify-between backdrop-blur-md">
@@ -226,7 +297,7 @@ function AIChat() {
                 className={`flex ${msg.sender === "You" ? "justify-end" : "justify-start"}`}
               >
                 <div
-                  className={`max-w-[88%] lg:max-w-[78%] rounded-3xl p-5 border backdrop-blur-xl transition-all duration-300 ${
+                  className={`max-w-[88%] lg:max-w-[82%] rounded-3xl p-5 border backdrop-blur-xl transition-all duration-300 ${
                     msg.sender === "You"
                       ? "bg-gradient-to-r from-sky-600/90 to-blue-600/90 border-sky-400/40 text-white rounded-br-none shadow-xl shadow-sky-600/20"
                       : "bg-slate-900/80 border-white/15 text-slate-100 rounded-bl-none shadow-2xl"
@@ -296,7 +367,7 @@ function AIChat() {
             ))}
           </div>
 
-          {/* Input Bar with Speech Recognition */}
+          {/* Input Bar with Free Local Whisper & Speech Recognition */}
           <div className="p-4 bg-slate-950/80 border-t border-white/10 flex items-center gap-3">
             <input
               type="text"
@@ -310,7 +381,8 @@ function AIChat() {
               className="flex-1 bg-slate-900/80 border border-white/15 rounded-2xl px-5 py-3.5 text-white placeholder-slate-400 outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-400/30 transition text-sm sm:text-base font-medium shadow-inner"
             />
 
-            <SpeechRecognition onResult={handleSpeech} />
+            {/* Whisper Speech Recognition */}
+            <WhisperSpeechRecognition onResult={handleSpeech} />
 
             <button
               onClick={() => sendMessage()}

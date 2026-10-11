@@ -37,7 +37,7 @@ function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 flex items-center justify-center p-4 relative overflow-hidden">
+    <div className="min-h-screen bg-slate-950 flex items-center justify-center py-10 px-4 relative overflow-y-auto">
       {/* 3D Animated Saturn Particle Background */}
       <Particle3DBackground mode="saturn" theme="gold" />
 

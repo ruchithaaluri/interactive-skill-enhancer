@@ -3,6 +3,7 @@ import { SendHorizontal, Bot, User, Trash2 } from "lucide-react";
 import { askAI } from "../services/api";
 import SpeechRecognition from "./SpeechRecognition";
 import { AvatarContext } from "../context/AvatarContext";
+import { speakWithAvatarVoice } from "../utils/speechUtils";
 
 function AIChatPanel() {
   const { selectedAvatar } = useContext(AvatarContext);
@@ -58,6 +59,10 @@ function AIChatPanel() {
         ...prev,
         { sender: "AI", text: reply },
       ]);
+
+      if ("speechSynthesis" in window) {
+        speakWithAvatarVoice(reply, selectedAvatar.id);
+      }
     } catch (error) {
       console.error(error);
       setMessages((prev) => [

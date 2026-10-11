@@ -73,7 +73,19 @@
 }
 
 /* Reduced Motion Mode Override for Very-Low CPU */
-body.reduced-motion *,
+body.reduced-motion .orb,
+body.reduced-motion .animate-avatar-breath,
+body.reduced-motion .animate-doctor-gesture,
+body.reduced-motion .animate-doctor-talking,
+body.reduced-motion .animate-mouth-viseme,
+body.reduced-motion .equalizer-bar,
+body.reduced-motion .animate-ping,
+body.reduced-motion .animate-bounce,
+body.reduced-motion .animate-pulse {
+  animation: none !important;
+  transition: none !important;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .orb,
   .animate-avatar-breath,
@@ -342,4 +354,60 @@ body.reduced-motion *,
 
 .animate-mouth-viseme {
   animation: mouthVisemePulse 0.28s ease-in-out infinite alternate;
+}
+
+/* Prominent Hand Gesture Keyframes */
+@keyframes handWaveMotion {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(-18deg) translateY(-4px);
+  }
+  75% {
+    transform: rotate(18deg) translateY(-2px);
+  }
+}
+
+.animate-hand-wave {
+  animation: handWaveMotion 0.8s ease-in-out infinite;
+}
+
+@keyframes handExplainMotion {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-6px) rotate(-8deg) scale(1.05);
+  }
+}
+
+.animate-hand-explain {
+  animation: handExplainMotion 1.4s ease-in-out infinite alternate;
+}
+
+@keyframes handCelebrateMotion {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-12px) scale(1.1);
+  }
+}
+
+.animate-hand-celebrate {
+  animation: handCelebrateMotion 0.7s ease-in-out infinite alternate;
+}
+
+@keyframes gestureFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+.animate-gesture-float {
+  animation: gestureFloat 2s ease-in-out infinite;
 }

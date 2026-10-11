@@ -6,51 +6,63 @@
 export const PERSONA_VOICE_PROFILES = {
   doctor: {
     gender: "female",
-    pitch: 1.05,
+    pitch: 1.12,
     rate: 0.95,
-    preferredNames: ["zira", "samantha", "victoria", "google us english", "female"]
+    preferredNames: ["zira", "samantha", "victoria", "hazel", "eva", "female"]
   },
   teacher: {
     gender: "female",
-    pitch: 1.1,
+    pitch: 1.18,
     rate: 0.92,
     preferredNames: ["hazel", "eva", "karen", "susan", "zira", "female"]
   },
   friend: {
     gender: "male",
-    pitch: 1.15,
+    pitch: 0.88,
     rate: 1.0,
-    preferredNames: ["alex", "david", "mark", "google us english male", "male"]
+    preferredNames: ["david", "mark", "alex", "george", "james", "male", "guy"]
   },
   colleague: {
     gender: "male",
-    pitch: 0.95,
+    pitch: 0.84,
     rate: 0.98,
-    preferredNames: ["george", "james", "richard", "david", "male"]
+    preferredNames: ["george", "james", "richard", "david", "mark", "male"]
   },
   counsellor: {
     gender: "female",
-    pitch: 0.95,
+    pitch: 1.05,
     rate: 0.88,
     preferredNames: ["fiona", "samantha", "zira", "hazel", "female"]
   },
   shopkeeper: {
     gender: "male",
-    pitch: 1.0,
+    pitch: 0.86,
     rate: 1.02,
-    preferredNames: ["mark", "david", "google uk english male", "male"]
+    preferredNames: ["mark", "david", "george", "alex", "male"]
   },
   tutor: {
     gender: "male",
-    pitch: 1.05,
+    pitch: 0.88,
     rate: 0.95,
-    preferredNames: ["alex", "james", "david", "male"]
+    preferredNames: ["alex", "james", "david", "mark", "male"]
   },
   mentor: {
     gender: "female",
-    pitch: 0.9,
-    rate: 0.9,
+    pitch: 1.10,
+    rate: 0.92,
     preferredNames: ["victoria", "zira", "samantha", "female"]
+  },
+  guide: {
+    gender: "female",
+    pitch: 1.15,
+    rate: 0.94,
+    preferredNames: ["zira", "samantha", "hazel", "eva", "female"]
+  },
+  support: {
+    gender: "male",
+    pitch: 0.85,
+    rate: 0.98,
+    preferredNames: ["david", "alex", "mark", "george", "male"]
   }
 };
 
@@ -61,27 +73,52 @@ export function getAvatarVoice(avatarId = "doctor", gender = "female") {
   if (!voices || voices.length === 0) return null;
 
   const profile = PERSONA_VOICE_PROFILES[avatarId] || {
-    gender,
-    preferredNames: gender === "male" ? ["david", "mark", "alex", "male"] : ["zira", "samantha", "hazel", "female"]
+    gender: gender === "male" ? "male" : "female",
+    preferredNames: gender === "male"
+      ? ["david", "mark", "alex", "george", "james", "male"]
+      : ["zira", "samantha", "hazel", "victoria", "eva", "female"]
   };
 
+  const isMale = profile.gender === "male";
   const targetKeywords = profile.preferredNames;
 
-  // 1. Search for English voice matching persona preferred names
+  // 1. Strict gender-matched voice search
   let selectedVoice = voices.find((v) => {
     const name = v.name.toLowerCase();
     const lang = v.lang.toLowerCase();
-    return (
-      lang.startsWith("en") &&
-      targetKeywords.some((kw) => name.includes(kw))
-    );
+    if (!lang.startsWith("en")) return false;
+
+    if (isMale) {
+      // Must not match female markers
+      if (name.includes("zira") || name.includes("female") || name.includes("samantha") || name.includes("hazel") || name.includes("victoria")) {
+        return false;
+      }
+      return targetKeywords.some((kw) => name.includes(kw));
+    } else {
+      // Must not match male markers
+      if (name.includes("david") || name.includes("male") || name.includes("george") || name.includes("mark")) {
+        return false;
+      }
+      return targetKeywords.some((kw) => name.includes(kw));
+    }
   });
 
-  // 2. Search for any voice matching target keywords regardless of language tag
+  // 2. Broad search with gender exclusion
   if (!selectedVoice) {
-    selectedVoice = voices.find((v) =>
-      targetKeywords.some((kw) => v.name.toLowerCase().includes(kw))
-    );
+    selectedVoice = voices.find((v) => {
+      const name = v.name.toLowerCase();
+      if (isMale) {
+        return (
+          (name.includes("david") || name.includes("male") || name.includes("george") || name.includes("alex") || name.includes("mark")) &&
+          !name.includes("female") && !name.includes("zira")
+        );
+      } else {
+        return (
+          (name.includes("zira") || name.includes("female") || name.includes("samantha") || name.includes("hazel")) &&
+          !name.includes("male") && !name.includes("david")
+        );
+      }
+    });
   }
 
   // 3. Fallback to any English voice
@@ -107,19 +144,32 @@ export function speakWithAvatarVoice(text, avatarOrGender = "doctor", onStartCal
   const utterance = new SpeechSynthesisUtterance(cleanText);
 
   // Retrieve persona voice profile
-  const avatarId = typeof avatarOrGender === "string" && PERSONA_VOICE_PROFILES[avatarOrGender.toLowerCase()]
-    ? avatarOrGender.toLowerCase()
-    : "doctor";
+  let avatarId = "doctor";
+  let fallbackGender = "female";
+
+  if (typeof avatarOrGender === "string") {
+    const lower = avatarOrGender.toLowerCase();
+    if (PERSONA_VOICE_PROFILES[lower]) {
+      avatarId = lower;
+      fallbackGender = PERSONA_VOICE_PROFILES[lower].gender;
+    } else if (lower === "male" || lower === "female") {
+      fallbackGender = lower;
+      avatarId = lower === "male" ? "friend" : "doctor";
+    }
+  }
 
   const profile = PERSONA_VOICE_PROFILES[avatarId] || {
-    gender: avatarOrGender === "male" ? "male" : "female",
-    pitch: 1.0,
+    gender: fallbackGender,
+    pitch: fallbackGender === "male" ? 0.85 : 1.15,
     rate: 0.95
   };
 
+  const isMale = profile.gender === "male";
+  // Pitch modulation ensures male voices sound unmistakably deep/masculine and female voices sound bright/feminine
+  const basePitch = isMale ? 0.82 : 1.18;
   const userRate = window.ttsRate || parseFloat(localStorage.getItem("tts_speed_override")) || profile.rate;
   utterance.rate = userRate;
-  utterance.pitch = profile.pitch;
+  utterance.pitch = basePitch;
 
   const voice = getAvatarVoice(avatarId, profile.gender);
   if (voice) {

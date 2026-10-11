@@ -121,7 +121,9 @@ export function Particle3DBackground({ mode = "waves", theme = "cyan" }) {
         ctx.stroke();
 
         // Render Orbiting Ring Particles
-        particles.forEach((p) => {
+        const maxLen = particles.length;
+        for (let i = 0; i < maxLen; i++) {
+          const p = particles[i];
           p.angle += p.speed;
 
           // 3D Isometric projection math for tilted Saturn Ring
@@ -140,22 +142,23 @@ export function Particle3DBackground({ mode = "waves", theme = "cyan" }) {
           ctx.arc(px, py, Math.max(0.5, p.size * scale), 0, Math.PI * 2);
           ctx.fill();
 
-          // Connect nearby particles with subtle light cables
-          particles.forEach((p2) => {
+          // Connect nearby particles (sample step 3 for efficiency)
+          for (let j = i + 1; j < maxLen; j += 3) {
+            const p2 = particles[j];
             const rx2 = Math.cos(p2.angle) * p2.radius;
             const ry2 = Math.sin(p2.angle) * p2.radius * tiltFactor + p2.yOffset;
             const distSq = (rx - rx2) ** 2 + (ry - ry2) ** 2;
 
-            if (distSq < 1200) {
-              ctx.strokeStyle = colors.primary + `${0.12 * (1 - distSq / 1200)})`;
+            if (distSq < 1000) {
+              ctx.strokeStyle = colors.primary + `${0.12 * (1 - distSq / 1000)})`;
               ctx.lineWidth = 0.6;
               ctx.beginPath();
               ctx.moveTo(px, py);
               ctx.lineTo(centerX + rx2, centerY + ry2);
               ctx.stroke();
             }
-          });
-        });
+          }
+        }
       } else {
         // Render Mode B: Flowing Scroll Wave Field Grid
         const stepX = width / 30;

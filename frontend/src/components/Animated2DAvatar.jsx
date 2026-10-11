@@ -7,102 +7,159 @@ function PersonaEnvironmentBackdrop({ avatarId }) {
   switch (avatarId) {
     case "doctor":
       return (
-        <div className="absolute inset-0 pointer-events-none overflow-hidden bg-gradient-to-b from-cyan-950/50 via-slate-950 to-slate-950">
-          <div className="absolute top-3 left-4 opacity-30 text-cyan-300 font-mono text-[10px] space-y-0.5 border-l-2 border-cyan-400 pl-2">
-            <div className="font-bold">+ CLINIC MEDICAL BAY</div>
-            <div>HR: 72 bpm | SpO2: 99%</div>
-            <div>TEMP: 98.6°F | BP: 120/80</div>
+        <div className="absolute inset-0 pointer-events-none overflow-hidden bg-gradient-to-tr from-slate-900 via-sky-950 to-cyan-900">
+          {/* Realistic Medical Examination Room Lighting & Backdrop Elements */}
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-cyan-400/20 via-sky-950/60 to-slate-950" />
+          <div className="absolute top-4 left-6 border-l-4 border-cyan-400 pl-3 space-y-1 bg-slate-900/80 p-2.5 rounded-r-xl border-y border-r border-cyan-500/30 backdrop-blur-md shadow-lg">
+            <div className="text-xs font-black text-cyan-300 tracking-wider">🏥 ADVANCED MEDICAL CLINIC</div>
+            <div className="text-[11px] font-mono text-cyan-200">Patient HR: 72 bpm | SpO2: 99%</div>
+            <div className="text-[10px] font-mono text-cyan-300/80">Room 304 • Sterilized Bay</div>
           </div>
-          <div className="absolute top-4 right-4 opacity-20 text-cyan-400 font-mono text-xs">🩺 EXAMINATION ROOM</div>
-          {/* Animated ECG Heartbeat Graph SVG */}
-          <svg className="absolute bottom-10 inset-x-0 w-full h-16 opacity-35 text-cyan-400" viewBox="0 0 500 50">
-            <path d="M 0 25 L 120 25 L 135 10 L 150 40 L 165 5 L 180 45 L 195 25 L 500 25" fill="none" stroke="currentColor" strokeWidth="2" className="animate-pulse" />
+          <div className="absolute top-4 right-6 px-3 py-1.5 rounded-xl bg-cyan-900/60 border border-cyan-400/40 text-cyan-200 font-mono text-xs font-bold shadow-md">
+            🩺 Examination Room 1
+          </div>
+          {/* Real-time Heartbeat Waveform SVG */}
+          <svg className="absolute bottom-12 inset-x-0 w-full h-20 opacity-40 text-cyan-300" viewBox="0 0 500 50">
+            <path d="M 0 25 L 120 25 L 135 8 L 150 42 L 165 2 L 180 48 L 195 25 L 500 25" fill="none" stroke="currentColor" strokeWidth="2.5" className="animate-pulse" />
           </svg>
+          {/* Background Ambient Medical Bay Light Beams */}
+          <div className="absolute top-0 right-1/4 w-72 h-72 rounded-full bg-cyan-400/10 blur-3xl" />
         </div>
       );
     case "teacher":
       return (
-        <div className="absolute inset-0 pointer-events-none overflow-hidden bg-gradient-to-b from-amber-950/45 via-slate-950 to-slate-950">
-          <div className="absolute top-4 left-6 opacity-30 text-amber-200 font-serif text-xs space-y-1">
-            <div className="font-bold tracking-widest text-[10px] uppercase text-amber-400">Classroom Blackboard</div>
-            <div>E = mc² &nbsp;|&nbsp; π ≈ 3.14159</div>
-            <div>f(x) = ∫ x² dx = x³/3 + C</div>
-            <div>H₂O &nbsp;|&nbsp; F = m · a</div>
+        <div className="absolute inset-0 pointer-events-none overflow-hidden bg-gradient-to-tr from-slate-950 via-amber-950 to-stone-900">
+          {/* Realistic Wooden Classroom Backdrop with Blackboard & Warm Sunlight */}
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-amber-400/25 via-amber-950/70 to-slate-950" />
+          <div className="absolute top-4 left-6 border-2 border-amber-600/40 rounded-xl bg-amber-950/80 p-3 shadow-xl backdrop-blur-md max-w-xs">
+            <div className="text-xs font-black text-amber-300 uppercase tracking-widest pb-1 border-b border-amber-700/50">
+              🏫 Classroom Blackboard
+            </div>
+            <div className="text-xs font-serif text-amber-100 pt-1 space-y-0.5">
+              <div>• E = mc² &nbsp;|&nbsp; π ≈ 3.14159</div>
+              <div>• f(x) = ∫ x² dx = x³/3 + C</div>
+              <div>• Photosynthesis: H₂O + CO₂ + Light</div>
+            </div>
           </div>
-          <div className="absolute top-4 right-6 w-24 h-14 border border-amber-500/30 rounded-lg bg-amber-950/40 opacity-50 flex flex-col items-center justify-center text-[10px] text-amber-300 font-sans tracking-wide">
-            <span className="font-bold">LESSON #4</span>
-            <span className="text-[9px] opacity-80">Interactive Board</span>
+          <div className="absolute top-4 right-6 px-3.5 py-2 rounded-xl bg-amber-900/70 border border-amber-500/40 text-amber-200 text-xs font-bold shadow-md">
+            📚 Interactive Learning Board
           </div>
+          {/* Warm Golden Sunlight Beams */}
+          <div className="absolute -top-10 -right-10 w-96 h-96 rounded-full bg-amber-400/15 blur-3xl animate-pulse" />
         </div>
       );
     case "friend":
       return (
-        <div className="absolute inset-0 pointer-events-none overflow-hidden bg-gradient-to-b from-emerald-950/45 via-slate-950 to-slate-950">
-          <div className="absolute top-8 left-8 w-36 h-36 rounded-full bg-emerald-500/15 blur-2xl animate-pulse" />
-          <div className="absolute top-4 right-6 opacity-30 text-emerald-300 text-xs font-semibold flex items-center gap-1">
-            <span>☕ CASUAL LOUNGE</span>
+        <div className="absolute inset-0 pointer-events-none overflow-hidden bg-gradient-to-tr from-slate-950 via-emerald-950 to-teal-900">
+          {/* Outdoor Sunny Park / Casual Coffee Lounge Backdrop */}
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-emerald-400/25 via-teal-950/70 to-slate-950" />
+          <div className="absolute top-4 left-6 px-4 py-2 rounded-xl bg-emerald-950/80 border border-emerald-500/40 text-emerald-300 font-bold text-xs shadow-lg backdrop-blur-md">
+            ☕ CASUAL GARDEN LOUNGE
           </div>
-          <div className="absolute bottom-12 left-6 opacity-20 text-emerald-200 text-xs font-mono">
-            <div>🎵 Ambient Music</div>
-            <div>Relaxed Chat Zone</div>
+          <div className="absolute top-4 right-6 text-xs font-semibold text-emerald-200 bg-emerald-900/60 px-3 py-1.5 rounded-xl border border-emerald-400/30">
+            ☀️ Sunny Afternoon Chat
           </div>
+          {/* Leaf & Sunlight Glow Effects */}
+          <div className="absolute top-1/4 left-1/4 w-80 h-80 rounded-full bg-emerald-400/15 blur-3xl animate-pulse" />
+        </div>
+      );
+    case "colleague":
+      return (
+        <div className="absolute inset-0 pointer-events-none overflow-hidden bg-gradient-to-tr from-slate-950 via-indigo-950 to-slate-900">
+          {/* Glass Modern Office Backdrop with City Skyline Lighting */}
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-indigo-400/20 via-slate-900/80 to-slate-950" />
+          <div className="absolute top-4 left-6 px-4 py-2 rounded-xl bg-indigo-950/80 border border-indigo-500/40 text-indigo-300 font-extrabold text-xs shadow-lg backdrop-blur-md">
+            💼 CORPORATE GLASS OFFICE
+          </div>
+          <div className="absolute top-4 right-6 text-xs font-mono font-bold text-indigo-200 bg-indigo-900/60 px-3 py-1.5 rounded-xl border border-indigo-400/30">
+            💻 Project Sprint Hub
+          </div>
+          <div className="absolute top-1/3 right-1/3 w-80 h-80 rounded-full bg-indigo-500/15 blur-3xl" />
         </div>
       );
     case "counsellor":
       return (
-        <div className="absolute inset-0 pointer-events-none overflow-hidden bg-gradient-to-b from-purple-950/50 via-slate-950 to-slate-950">
-          <div className="absolute top-4 right-6 opacity-30 text-purple-300 text-xs font-light tracking-widest">✨ CALM SANCTUARY</div>
-          <div className="absolute top-10 left-6 opacity-20 text-purple-200 text-[10px] font-sans">
-            <div>Mindful Listening Space</div>
-            <div>Peaceful Support</div>
+        <div className="absolute inset-0 pointer-events-none overflow-hidden bg-gradient-to-tr from-slate-950 via-purple-950 to-fuchsia-950">
+          {/* Calm Mindful Sanctuary Backdrop */}
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-400/25 via-purple-950/70 to-slate-950" />
+          <div className="absolute top-4 left-6 px-4 py-2 rounded-xl bg-purple-950/80 border border-purple-500/40 text-purple-300 font-extrabold text-xs shadow-lg backdrop-blur-md">
+            ✨ PEACEFUL SANCTUARY ROOM
           </div>
-          <div className="absolute inset-0 bg-radial from-purple-500/15 via-transparent to-transparent opacity-60 animate-pulse" />
+          <div className="absolute top-4 right-6 text-xs font-sans font-bold text-purple-200 bg-purple-900/60 px-3 py-1.5 rounded-xl border border-purple-400/30">
+            🌿 Mindful Listening Space
+          </div>
+          <div className="absolute inset-0 bg-radial from-purple-500/20 via-transparent to-transparent opacity-75 animate-pulse" />
         </div>
       );
     case "shopkeeper":
       return (
-        <div className="absolute inset-0 pointer-events-none overflow-hidden bg-gradient-to-b from-teal-950/50 via-slate-950 to-slate-950">
-          <div className="absolute top-4 left-6 opacity-30 text-teal-300 text-xs font-mono font-bold">🏪 STORE COUNTER</div>
-          <div className="absolute top-10 right-6 opacity-25 text-teal-200 text-[10px] space-y-0.5 text-right font-mono">
-            <div>🏷️ TODAY'S SPECIAL: 20% OFF</div>
-            <div>Cash Register #1 Active</div>
+        <div className="absolute inset-0 pointer-events-none overflow-hidden bg-gradient-to-tr from-slate-950 via-teal-950 to-emerald-900">
+          {/* Realistic Retail Store Counter Backdrop */}
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-teal-400/25 via-teal-950/70 to-slate-950" />
+          <div className="absolute top-4 left-6 px-4 py-2 rounded-xl bg-teal-950/80 border border-teal-500/40 text-teal-300 font-mono font-bold text-xs shadow-lg backdrop-blur-md">
+            🏪 RETAIL STORE COUNTER
+          </div>
+          <div className="absolute top-4 right-6 text-xs font-mono font-bold text-teal-200 bg-teal-900/60 px-3 py-1.5 rounded-xl border border-teal-400/30">
+            🏷️ 20% Store Special Active
           </div>
         </div>
       );
     case "tutor":
       return (
-        <div className="absolute inset-0 pointer-events-none overflow-hidden bg-gradient-to-b from-blue-950/50 via-slate-950 to-slate-950">
-          <div className="absolute top-4 left-6 opacity-30 text-blue-300 text-xs font-mono font-bold">📚 STUDY NOOK</div>
-          <div className="absolute top-10 right-6 opacity-25 text-blue-200 text-[10px] font-mono space-y-0.5 text-right">
-            <div>📖 Practice Modules</div>
-            <div>Step-by-Step Goals</div>
+        <div className="absolute inset-0 pointer-events-none overflow-hidden bg-gradient-to-tr from-slate-950 via-blue-950 to-sky-900">
+          {/* Cozy Library Study Corner Backdrop */}
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-blue-400/25 via-blue-950/70 to-slate-950" />
+          <div className="absolute top-4 left-6 px-4 py-2 rounded-xl bg-blue-950/80 border border-blue-500/40 text-blue-300 font-bold text-xs shadow-lg backdrop-blur-md">
+            📚 LIBRARY STUDY NOOK
+          </div>
+          <div className="absolute top-4 right-6 text-xs font-bold text-blue-200 bg-blue-900/60 px-3 py-1.5 rounded-xl border border-blue-400/30">
+            📖 Step-by-Step Practice
           </div>
         </div>
       );
     case "mentor":
       return (
-        <div className="absolute inset-0 pointer-events-none overflow-hidden bg-gradient-to-b from-rose-950/50 via-slate-950 to-slate-950">
-          <div className="absolute top-4 left-6 opacity-30 text-rose-300 text-xs font-mono font-bold">🏢 EXECUTIVE SUITE</div>
-          <div className="absolute top-10 right-6 opacity-25 text-rose-200 text-[10px] font-mono space-y-0.5 text-right">
-            <div>📊 Strategy & Vision</div>
-            <div>Leadership Hub</div>
+        <div className="absolute inset-0 pointer-events-none overflow-hidden bg-gradient-to-tr from-slate-950 via-rose-950 to-pink-950">
+          {/* Executive Leadership Suite Backdrop */}
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-rose-400/25 via-rose-950/70 to-slate-950" />
+          <div className="absolute top-4 left-6 px-4 py-2 rounded-xl bg-rose-950/80 border border-rose-500/40 text-rose-300 font-extrabold text-xs shadow-lg backdrop-blur-md">
+            🏢 EXECUTIVE LEADERSHIP SUITE
+          </div>
+          <div className="absolute top-4 right-6 text-xs font-bold text-rose-200 bg-rose-900/60 px-3 py-1.5 rounded-xl border border-rose-400/30">
+            📊 Strategic Growth Hub
           </div>
         </div>
       );
-    case "colleague":
+    case "guide":
       return (
-        <div className="absolute inset-0 pointer-events-none overflow-hidden bg-gradient-to-b from-indigo-950/50 via-slate-950 to-slate-950">
-          <div className="absolute top-4 left-6 opacity-30 text-indigo-300 text-xs font-mono font-bold">💼 OFFICE WORKSPACE</div>
-          <div className="absolute top-10 right-6 opacity-25 text-indigo-200 text-[10px] font-mono space-y-0.5 text-right">
-            <div>💻 Project Sprint</div>
-            <div>Team Collaboration</div>
+        <div className="absolute inset-0 pointer-events-none overflow-hidden bg-gradient-to-tr from-slate-950 via-cyan-950 to-sky-900">
+          {/* Outdoor Discovery Center Backdrop */}
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-cyan-400/25 via-cyan-950/70 to-slate-950" />
+          <div className="absolute top-4 left-6 px-4 py-2 rounded-xl bg-cyan-950/80 border border-cyan-500/40 text-cyan-300 font-bold text-xs shadow-lg backdrop-blur-md">
+            🗺️ DISCOVERY & TRAVEL HUB
+          </div>
+          <div className="absolute top-4 right-6 text-xs font-bold text-cyan-200 bg-cyan-900/60 px-3 py-1.5 rounded-xl border border-cyan-400/30">
+            🌐 World Explorer Center
+          </div>
+        </div>
+      );
+    case "support":
+      return (
+        <div className="absolute inset-0 pointer-events-none overflow-hidden bg-gradient-to-tr from-slate-950 via-violet-950 to-purple-900">
+          {/* Tech Helpdesk Support Desk Backdrop */}
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-violet-400/25 via-violet-950/70 to-slate-950" />
+          <div className="absolute top-4 left-6 px-4 py-2 rounded-xl bg-violet-950/80 border border-violet-500/40 text-violet-300 font-bold text-xs shadow-lg backdrop-blur-md">
+            🎧 TECH SUPPORT WORKSTATION
+          </div>
+          <div className="absolute top-4 right-6 text-xs font-bold text-violet-200 bg-violet-900/60 px-3 py-1.5 rounded-xl border border-violet-400/30">
+            💬 24/7 Learning Support
           </div>
         </div>
       );
     default:
       return (
-        <div className="absolute inset-0 pointer-events-none overflow-hidden bg-gradient-to-b from-sky-950/30 via-slate-950 to-slate-950">
-          <div className="absolute inset-0 bg-radial from-sky-500/10 via-transparent to-transparent opacity-60" />
+        <div className="absolute inset-0 pointer-events-none overflow-hidden bg-gradient-to-b from-sky-900/50 via-slate-950 to-slate-950">
+          <div className="absolute inset-0 bg-radial from-sky-500/20 via-transparent to-transparent opacity-75" />
         </div>
       );
   }
@@ -212,118 +269,118 @@ export function Animated2DAvatar({ avatarState = "IDLE", isSpeaking = false }) {
     switch (id) {
       case "doctor":
         return {
-          isMale: false,
-          hairColor: "#4A3B32",
+          isMale,
+          hairColor: isMale ? "#1E293B" : "#4A3B32",
           skinColor: "#F3C5A5",
           outfitBg: "#38BDF8",
           outfitDetail: "#0284C7",
           accessory: "stethoscope",
           glasses: false,
-          hairStyle: "doctor_bun"
+          hairStyle: isMale ? "short_cropped" : "doctor_bun"
         };
       case "teacher":
         return {
-          isMale: false,
-          hairColor: "#6B3A19",
+          isMale,
+          hairColor: isMale ? "#27272A" : "#6B3A19",
           skinColor: "#F5D0A9",
           outfitBg: "#F59E0B",
           outfitDetail: "#D97706",
           accessory: "glasses",
           glasses: true,
-          hairStyle: "teacher_bob"
+          hairStyle: isMale ? "short_parted" : "teacher_bob"
         };
       case "friend":
         return {
-          isMale: true,
-          hairColor: "#1E293B",
+          isMale,
+          hairColor: isMale ? "#1E293B" : "#581C87",
           skinColor: "#E2A782",
           outfitBg: "#10B981",
           outfitDetail: "#059669",
           accessory: "headphone",
           glasses: false,
-          hairStyle: "short_parted"
+          hairStyle: isMale ? "short_parted" : "soft_waves"
         };
       case "colleague":
         return {
-          isMale: true,
-          hairColor: "#27272A",
+          isMale,
+          hairColor: isMale ? "#27272A" : "#334155",
           skinColor: "#DDA176",
           outfitBg: "#6366F1",
           outfitDetail: "#4F46E5",
           accessory: "tie",
           glasses: false,
-          hairStyle: "short_cropped"
+          hairStyle: isMale ? "short_cropped" : "teacher_bob"
         };
       case "counsellor":
         return {
-          isMale: false,
-          hairColor: "#581C87",
+          isMale,
+          hairColor: isMale ? "#312E81" : "#581C87",
           skinColor: "#F5C8A0",
           outfitBg: "#A855F7",
           outfitDetail: "#9333EA",
           accessory: "pendant",
           glasses: false,
-          hairStyle: "soft_waves"
+          hairStyle: isMale ? "clean_cut" : "soft_waves"
         };
       case "shopkeeper":
         return {
-          isMale: true,
-          hairColor: "#451A03",
+          isMale,
+          hairColor: isMale ? "#451A03" : "#78350F",
           skinColor: "#E5B083",
           outfitBg: "#14B8A6",
           outfitDetail: "#0D9488",
           accessory: "apron",
           glasses: false,
-          hairStyle: "short_parted"
+          hairStyle: isMale ? "short_parted" : "doctor_bun"
         };
       case "tutor":
         return {
-          isMale: true,
-          hairColor: "#1B2A4A",
+          isMale,
+          hairColor: isMale ? "#1B2A4A" : "#431407",
           skinColor: "#F0C49E",
           outfitBg: "#3B82F6",
           outfitDetail: "#2563EB",
           accessory: "pen",
           glasses: true,
-          hairStyle: "neat_spiky"
+          hairStyle: isMale ? "neat_spiky" : "teacher_bob"
         };
       case "mentor":
         return {
-          isMale: false,
-          hairColor: "#881337",
+          isMale,
+          hairColor: isMale ? "#111827" : "#881337",
           skinColor: "#E8B48D",
           outfitBg: "#F43F5E",
           outfitDetail: "#E11D48",
           accessory: "badge",
           glasses: false,
-          hairStyle: "shoulder_length"
+          hairStyle: isMale ? "clean_cut" : "shoulder_length"
         };
       case "guide":
         return {
-          isMale: false,
-          hairColor: "#065F46",
+          isMale,
+          hairColor: isMale ? "#065F46" : "#047857",
           skinColor: "#F3C8A0",
           outfitBg: "#06B6D4",
           outfitDetail: "#0891B2",
           accessory: "lanyard",
           glasses: false,
-          hairStyle: "ponytail"
+          hairStyle: isMale ? "short_cropped" : "ponytail"
         };
       case "support":
         return {
-          isMale: true,
-          hairColor: "#312E81",
+          isMale,
+          hairColor: isMale ? "#312E81" : "#4C1D95",
           skinColor: "#DC9B76",
           outfitBg: "#8B5CF6",
           outfitDetail: "#7C3AED",
           accessory: "headset",
           glasses: false,
-          hairStyle: "clean_cut"
+          hairStyle: isMale ? "clean_cut" : "shoulder_length"
         };
       default:
         return {
           isMale,
-          hairColor: "#334155",
+          hairColor: isMale ? "#334155" : "#4A3B32",
           skinColor: "#F3C5A5",
           outfitBg: "#38BDF8",
           outfitDetail: "#0284C7",
@@ -403,33 +460,69 @@ export function Animated2DAvatar({ avatarState = "IDLE", isSpeaking = false }) {
   };
 
   return (
-    <div ref={containerRef} className="relative w-full flex flex-col items-center justify-center p-2">
-      {/* Outer Card Panel Container */}
-      <div className="relative w-full max-w-md rounded-3xl overflow-hidden bg-slate-900/90 border border-slate-800 shadow-2xl flex flex-col items-center">
+    <div ref={containerRef} className="relative w-full flex flex-col items-center justify-center p-2 perspective-[1200px]">
+      {/* Outer Card Panel Container with 3D Depth Elevation */}
+      <div className="relative w-full max-w-2xl rounded-3xl overflow-hidden bg-slate-900/95 border border-slate-800/80 shadow-[0_25px_60px_rgba(0,0,0,0.6)] flex flex-col items-center transform-gpu transition-all duration-300 hover:scale-[1.005]">
         
         {/* Top Render Style Switcher Toggle Pill */}
-        <div className="absolute top-3 right-3 z-30">
+        <div className="absolute top-3.5 right-4 z-30">
           <button
             onClick={() => setRenderMode(renderMode === "vector" ? "photo" : "vector")}
-            className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-950/80 border border-sky-400/40 text-[11px] font-bold text-sky-300 hover:bg-sky-500/20 backdrop-blur-md shadow-md transition"
+            className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-950/85 border border-sky-400/50 text-xs font-extrabold text-sky-300 hover:bg-sky-500/30 backdrop-blur-md shadow-lg transition"
             title="Toggle Visual Style (Animated Vector Cartoon vs Realistic Artwork)"
           >
-            <RefreshCw size={12} />
-            <span>{renderMode === "vector" ? "Mode: Vector Cartoon" : "Mode: Realistic Artwork"}</span>
+            <RefreshCw size={13} />
+            <span>{renderMode === "vector" ? "Mode: 3D Vector Cartoon" : "Mode: Realistic Artwork"}</span>
           </button>
         </div>
 
-        {/* Avatar Presentation Canvas Area */}
-        <div className="relative w-full h-[360px] sm:h-[390px] flex items-center justify-center overflow-hidden bg-slate-950/70">
+        {/* Avatar Presentation Canvas Area (ENHANCED ENLARGED FRAME SIZE) */}
+        <div className="relative w-full h-[460px] sm:h-[520px] flex items-center justify-center overflow-hidden bg-slate-950/80">
           {/* Dynamic Profession Environment Backdrop */}
           <PersonaEnvironmentBackdrop avatarId={selectedAvatar.id} />
 
           {/* Subtle Background Radial Glow */}
           <div className="absolute inset-0 bg-radial from-sky-500/10 via-transparent to-transparent opacity-60 pointer-events-none" />
 
+          {/* Prominent Floating Action & Hand Gesture Indicator */}
+          <div className="absolute top-3 left-3 z-30 pointer-events-none">
+            <div className="px-3 py-1 rounded-full bg-slate-950/85 border border-sky-400/50 backdrop-blur-md flex items-center gap-1.5 shadow-xl animate-gesture-float">
+              <span className="text-sm">
+                {gestureState === "WAVE"
+                  ? "👋"
+                  : gestureState === "EXPLAIN"
+                  ? "👐"
+                  : gestureState === "THINK"
+                  ? "🤔"
+                  : gestureState === "CELEBRATE"
+                  ? "🙌"
+                  : gestureState === "LISTEN"
+                  ? "🎧"
+                  : gestureState === "POINT"
+                  ? "👉"
+                  : "😊"}
+              </span>
+              <span className="text-[10px] font-extrabold text-sky-300 uppercase tracking-wider">
+                {gestureState === "WAVE"
+                  ? "Waving Gesture"
+                  : gestureState === "EXPLAIN"
+                  ? "Explaining Concept"
+                  : gestureState === "THINK"
+                  ? "Pondering & Thinking"
+                  : gestureState === "CELEBRATE"
+                  ? "Celebrating Success!"
+                  : gestureState === "LISTEN"
+                  ? "Listening Intently"
+                  : gestureState === "POINT"
+                  ? "Pointing to Lesson"
+                  : "Attentive & Ready"}
+              </span>
+            </div>
+          </div>
+
           {/* RENDER MODE A: ANIMATED VECTOR CARTOON CHARACTER */}
           {renderMode === "vector" ? (
-            <div className="relative w-72 h-80 flex items-center justify-center">
+            <div className="relative w-80 h-96 sm:w-96 sm:h-[440px] flex items-center justify-center drop-shadow-[0_25px_35px_rgba(0,0,0,0.6)]">
               <svg
                 viewBox="0 0 200 240"
                 className={`w-full h-full transition-transform duration-500 ${
@@ -481,26 +574,34 @@ export function Animated2DAvatar({ avatarState = "IDLE", isSpeaking = false }) {
 
                 {/* 2. Left Arm & Hand Gesture Layer */}
                 <g
+                  className={gestureState === "EXPLAIN" ? "animate-hand-explain" : gestureState === "CELEBRATE" ? "animate-hand-celebrate" : ""}
                   style={{
                     transformOrigin: "45px 190px",
                     transform: getArmLeftTransform(),
                     transition: "transform 0.4s ease-out"
                   }}
                 >
-                  <path d="M 40,190 Q 25,210 35,235" stroke={vectorTheme.outfitBg} strokeWidth="14" strokeLinecap="round" fill="none" />
-                  <circle cx="35" cy="235" r="8" fill={vectorTheme.skinColor} />
+                  <path d="M 40,190 Q 20,210 32,230" stroke={vectorTheme.outfitBg} strokeWidth="16" strokeLinecap="round" fill="none" />
+                  <g transform="translate(32, 230)">
+                    <circle cx="0" cy="0" r="9" fill={vectorTheme.skinColor} />
+                    <path d="M -4,-2 C -8,-8 -3,-12 0,-9 C 3,-12 8,-8 4,-2" fill={vectorTheme.skinColor} stroke={vectorTheme.skinColor} strokeWidth="2" />
+                  </g>
                 </g>
 
                 {/* 3. Right Arm & Hand Gesture Layer */}
                 <g
+                  className={gestureState === "WAVE" ? "animate-hand-wave" : gestureState === "EXPLAIN" ? "animate-hand-explain" : gestureState === "CELEBRATE" ? "animate-hand-celebrate" : ""}
                   style={{
                     transformOrigin: "155px 190px",
                     transform: getArmRightTransform(),
                     transition: "transform 0.4s ease-out"
                   }}
                 >
-                  <path d="M 160,190 Q 175,210 165,235" stroke={vectorTheme.outfitBg} strokeWidth="14" strokeLinecap="round" fill="none" />
-                  <circle cx="165" cy="235" r="8" fill={vectorTheme.skinColor} />
+                  <path d="M 160,190 Q 180,210 168,230" stroke={vectorTheme.outfitBg} strokeWidth="16" strokeLinecap="round" fill="none" />
+                  <g transform="translate(168, 230)">
+                    <circle cx="0" cy="0" r="9" fill={vectorTheme.skinColor} />
+                    <path d="M -4,-2 C -8,-8 -3,-12 0,-9 C 3,-12 8,-8 4,-2" fill={vectorTheme.skinColor} stroke={vectorTheme.skinColor} strokeWidth="2" />
+                  </g>
                 </g>
 
                 {/* 4. Neck */}
