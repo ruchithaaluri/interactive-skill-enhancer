@@ -59,23 +59,24 @@ function Sidebar({ caregiverMode }) {
   };
 
   return (
-    <aside className="w-64 bg-slate-900/70 backdrop-blur-2xl border-r border-white/10 min-h-screen p-6 flex flex-col justify-between shrink-0 shadow-2xl relative z-20">
+    <aside className="w-64 bg-slate-950/75 backdrop-blur-2xl border-r border-white/10 min-h-screen p-5 flex flex-col justify-between shrink-0 shadow-2xl relative z-20">
       <div>
-        <div className="flex items-center gap-3.5 mb-8">
-          <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-sky-500 to-indigo-600 border border-white/30 flex items-center justify-center text-white font-extrabold text-2xl shadow-lg shadow-sky-500/30">
-            <Sparkles size={22} />
+        {/* Starlight Celestial Logo Badge */}
+        <div className="flex items-center gap-3.5 mb-7 px-1">
+          <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-sky-400 via-indigo-500 to-purple-600 border border-white/30 flex items-center justify-center text-white shadow-lg shadow-indigo-500/30">
+            <Sparkles size={22} className="animate-pulse" />
           </div>
           <div>
-            <h1 className="text-white text-base font-extrabold tracking-tight leading-tight font-heading">
+            <h1 className="text-white text-base font-black tracking-tight leading-tight font-starlight">
               Skill Enhancer
             </h1>
-            <p className="text-[11px] font-medium text-sky-400/90 flex items-center gap-1 mt-0.5">
-              <Zap size={12} /> AI Autism Support
+            <p className="text-[11px] font-semibold text-sky-400 flex items-center gap-1 mt-0.5">
+              <Zap size={12} className="text-amber-400" /> AI Autism Support
             </p>
           </div>
         </div>
 
-        <nav className="space-y-2">
+        <nav className="space-y-1.5">
           {links.map((link) => (
             <NavLink
               key={link.path}
@@ -83,14 +84,16 @@ function Sidebar({ caregiverMode }) {
               className={({ isActive }) =>
                 `group relative flex items-center justify-between px-4 py-3 rounded-2xl text-sm font-semibold transition-all duration-300 ${
                   isActive
-                    ? "bg-gradient-to-r from-sky-500 to-blue-600 text-white shadow-xl shadow-sky-500/25 border border-white/20"
+                    ? "bg-gradient-to-r from-sky-500/90 via-indigo-600/90 to-purple-600/90 text-white shadow-xl shadow-indigo-500/25 border border-white/20"
                     : "text-slate-300 hover:bg-white/5 hover:text-white border border-transparent"
                 }`
               }
             >
               <div className="flex items-center gap-3">
-                {link.icon}
-                <span>{link.name}</span>
+                <span className="group-hover:text-sky-300 transition-colors">
+                  {link.icon}
+                </span>
+                <span className="tracking-wide">{link.name}</span>
               </div>
               {link.badge && (
                 <span className="text-[10px] uppercase tracking-wider font-bold px-2 py-0.5 rounded-full bg-sky-400/10 border border-sky-400/30 text-sky-300">
@@ -102,26 +105,26 @@ function Sidebar({ caregiverMode }) {
         </nav>
       </div>
 
-      <div className="pt-6 border-t border-white/10 space-y-3">
+      <div className="pt-5 border-t border-white/10 space-y-3">
         {user ? (
-          <div className="bg-slate-800/40 backdrop-blur-md border border-white/10 rounded-2xl p-3.5 shadow-inner">
-            <div className="text-[11px] uppercase tracking-wider font-bold text-slate-400 mb-1">
-              Active User
+          <div className="bg-slate-900/60 backdrop-blur-md border border-white/10 rounded-2xl p-3.5 shadow-inner">
+            <div className="text-[10px] uppercase tracking-wider font-bold text-slate-400 mb-1">
+              Active Learner
             </div>
             <div className="text-sm font-bold text-white truncate">
               {user.full_name || user.email}
             </div>
             <button
               onClick={handleLogout}
-              className="mt-3 flex items-center justify-center gap-2 text-xs font-bold text-red-400 hover:text-red-300 hover:bg-red-500/10 py-1.5 px-3 rounded-xl border border-red-500/20 transition w-full"
+              className="mt-3 flex items-center justify-center gap-2 text-xs font-bold text-rose-400 hover:text-rose-200 hover:bg-rose-500/15 py-1.5 px-3 rounded-xl border border-rose-500/25 transition w-full"
             >
-              <LogOut size={15} /> Logout Session
+              <LogOut size={14} /> Sign Out
             </button>
           </div>
         ) : (
           <NavLink
             to="/login"
-            className="flex items-center justify-center gap-2 px-4 py-3 rounded-2xl text-sm font-bold text-sky-300 bg-sky-500/10 border border-sky-500/30 hover:bg-sky-500/20 transition shadow-lg shadow-sky-500/10"
+            className="flex items-center justify-center gap-2 px-4 py-3 rounded-2xl text-sm font-bold text-white bg-gradient-to-r from-sky-500 to-indigo-600 border border-white/20 hover:from-sky-400 hover:to-indigo-500 transition shadow-lg shadow-indigo-500/25"
           >
             <LogIn size={18} /> Sign In
           </NavLink>

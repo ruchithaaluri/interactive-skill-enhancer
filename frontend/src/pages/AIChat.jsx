@@ -4,8 +4,7 @@ import { askAI } from "../services/api";
 import WhisperSpeechRecognition from "../components/WhisperSpeechRecognition";
 import { FormattedText } from "../utils/formatText";
 import { speakWithAvatarVoice } from "../utils/speechUtils";
-import Animated2DAvatar from "../components/Animated2DAvatar";
-import AvatarCanvas3D from "../components/AvatarCanvas3D";
+import RealisticAvatar from "../components/RealisticAvatar";
 import MediaPipeTracker from "../components/MediaPipeTracker";
 import { AvatarContext } from "../context/AvatarContext";
 import Particle3DBackground from "../components/Particle3DBackground";
@@ -17,7 +16,6 @@ function AIChat() {
   const [loading, setLoading] = useState(false);
   const [ttsEnabled, setTtsEnabled] = useState(true);
   const [isSpeaking, setIsSpeaking] = useState(false);
-  const [viewMode, setViewMode] = useState("3d");
 
   // MediaPipe Landmark Tracking & Quality Preset State
   const [cameraTrackingActive, setCameraTrackingActive] = useState(false);
@@ -160,18 +158,18 @@ function AIChat() {
 
   return (
     <div className="space-y-6 relative">
-      {/* Dynamic 3D Particle Wave Field matching Persona theme */}
-      <Particle3DBackground mode="waves" theme={selectedAvatar.themeColor || "sky"} />
+      {/* Dynamic Realistic Starlight Particle Canvas */}
+      <Particle3DBackground mode="starlight" theme="starlight" />
 
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-extrabold text-white tracking-tight flex items-center gap-3">
-            <Sparkles className="text-sky-400 animate-pulse" size={32} />
-            {selectedAvatar.name} — AI {selectedAvatar.role}
+          <h1 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight flex items-center gap-3 font-starlight">
+            <Sparkles className="text-cyan-400 animate-pulse" size={32} />
+            {selectedAvatar.name} — {selectedAvatar.role}
           </h1>
-          <p className="text-slate-300 text-sm mt-1">
-            {selectedAvatar.subtitle} • Interactive Learning & Companion Assistant
+          <p className="text-sky-300/80 text-xs sm:text-sm mt-1 tracking-wide">
+            {selectedAvatar.subtitle} • Interactive Audio-Visual Learning Session
           </p>
         </div>
 
@@ -185,81 +183,45 @@ function AIChat() {
                 setIsSpeaking(false);
               }
             }}
-            className={`flex items-center gap-2 px-3.5 py-2 rounded-2xl text-xs font-bold border backdrop-blur-md transition shadow-lg ${
+            className={`flex items-center gap-2 px-3.5 py-2 rounded-2xl text-xs font-semibold border backdrop-blur-xl transition shadow-lg ${
               ttsEnabled
-                ? "bg-sky-500/20 border-sky-400/40 text-sky-300 hover:bg-sky-500/30"
-                : "bg-slate-800/60 border-white/10 text-slate-400 hover:bg-slate-800"
+                ? "bg-sky-500/20 border-sky-400/50 text-sky-200 hover:bg-sky-500/30 shadow-sky-500/20"
+                : "bg-white/5 border-white/10 text-slate-400 hover:bg-white/10"
             }`}
           >
-            {ttsEnabled ? <Volume2 size={16} /> : <VolumeX size={16} />}
-            {ttsEnabled ? "Voice Output ON" : "Voice Output OFF"}
+            {ttsEnabled ? <Volume2 size={16} className="text-cyan-400" /> : <VolumeX size={16} />}
+            {ttsEnabled ? "Voice: Active" : "Voice: Muted"}
           </button>
 
           {/* Export Transcript Button */}
           <button
             onClick={exportTranscript}
-            className="flex items-center gap-2 px-3.5 py-2 rounded-2xl text-xs font-bold bg-slate-800/60 hover:bg-slate-800 border border-white/10 text-slate-200 backdrop-blur-md transition shadow-lg"
+            className="flex items-center gap-2 px-3.5 py-2 rounded-2xl text-xs font-semibold bg-white/5 hover:bg-white/10 border border-white/10 text-slate-200 backdrop-blur-xl transition shadow-lg"
           >
-            <Download size={16} /> Export Chat
+            <Download size={16} className="text-sky-300" /> Export Transcript
           </button>
 
           {/* Clear Chat Button */}
           <button
             onClick={clearChat}
-            className="flex items-center gap-2 px-3.5 py-2 rounded-2xl text-xs font-bold bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-red-300 backdrop-blur-md transition shadow-lg"
+            className="flex items-center gap-2 px-3.5 py-2 rounded-2xl text-xs font-semibold bg-white/5 hover:bg-rose-500/20 border border-white/10 hover:border-rose-400/30 text-slate-200 hover:text-rose-200 backdrop-blur-xl transition shadow-lg"
           >
-            <Trash2 size={16} /> Clear Chat
+            <Trash2 size={16} /> Reset
           </button>
         </div>
       </div>
 
-      {/* Main Grid: 3D Avatar Companion & MediaPipe Tracking + Chat Feed */}
+      {/* Main Grid: Realistic Avatar Companion & MediaPipe Tracking + Chat Feed */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-        {/* Left Column: 3D / 2D Avatar Companion Presentation + MediaPipe Tracking */}
+        {/* Left Column: Realistic Interactive Avatar Companion + MediaPipe Tracking */}
         <div className="lg:col-span-5 space-y-4">
-          <div className="flex items-center justify-between px-2">
-            <span className="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center gap-1.5">
-              <Sparkles size={14} className="text-sky-400" />
-              <span>Companion Character</span>
-            </span>
-            <div className="flex items-center gap-1 bg-slate-900/80 p-1 rounded-xl border border-white/10 text-xs shadow-inner">
-              <button
-                onClick={() => setViewMode("3d")}
-                className={`px-3 py-1 rounded-lg font-bold transition flex items-center gap-1.5 ${
-                  viewMode === "3d"
-                    ? "bg-gradient-to-r from-sky-500 to-blue-600 text-white shadow-md shadow-sky-500/20"
-                    : "text-slate-400 hover:text-white"
-                }`}
-              >
-                <span>🎮</span> 3D WebGL
-              </button>
-              <button
-                onClick={() => setViewMode("2d")}
-                className={`px-3 py-1 rounded-lg font-bold transition flex items-center gap-1.5 ${
-                  viewMode === "2d"
-                    ? "bg-gradient-to-r from-sky-500 to-blue-600 text-white shadow-md shadow-sky-500/20"
-                    : "text-slate-400 hover:text-white"
-                }`}
-              >
-                <span>🎨</span> 2D Vector
-              </button>
-            </div>
-          </div>
-
-          {/* 3D WebGL Avatar Canvas or 2D Vector Fallback */}
-          {viewMode === "3d" ? (
-            <AvatarCanvas3D
-              avatar={selectedAvatar}
-              avatarState={currentAvatarState}
-              isSpeaking={isSpeaking}
-              trackingData={trackingData}
-              qualityPreset={qualityPreset}
-            />
-          ) : (
-            <div className="bg-slate-900/60 border border-white/10 rounded-3xl p-3 shadow-xl backdrop-blur-xl">
-              <Animated2DAvatar avatarState={currentAvatarState} isSpeaking={isSpeaking} />
-            </div>
-          )}
+          {/* Realistic Interactive Persona Avatar */}
+          <RealisticAvatar
+            avatar={selectedAvatar}
+            avatarState={currentAvatarState}
+            isSpeaking={isSpeaking}
+            trackingData={trackingData}
+          />
 
           {/* MediaPipe Face & Hand Landmark Tracker Component */}
           <MediaPipeTracker
@@ -272,12 +234,12 @@ function AIChat() {
         </div>
 
         {/* Right Column: Main Glass Chat Panel */}
-        <div className="lg:col-span-7 glass-panel h-[780px] flex flex-col overflow-hidden relative border border-white/15 shadow-2xl">
+        <div className="lg:col-span-7 glass-panel h-[780px] flex flex-col overflow-hidden relative border border-white/10 shadow-2xl">
           {/* Equalizer Indicator when AI is speaking */}
           {isSpeaking && (
-            <div className="px-6 py-2 bg-sky-500/20 border-b border-sky-400/30 flex items-center justify-between backdrop-blur-md">
-              <span className="text-xs font-bold text-sky-300 flex items-center gap-2">
-                <Volume2 size={16} className="animate-bounce" /> {selectedAvatar.name} is speaking...
+            <div className="px-6 py-2.5 bg-slate-900/60 border-b border-cyan-400/20 flex items-center justify-between backdrop-blur-xl">
+              <span className="text-xs font-semibold text-sky-200 flex items-center gap-2 tracking-wide">
+                <Volume2 size={16} className="text-cyan-400 animate-bounce" /> {selectedAvatar.name} is speaking...
               </span>
               <div className="flex items-center gap-1">
                 <span className="equalizer-bar" style={{ animationDelay: '0s' }}></span>
@@ -299,8 +261,8 @@ function AIChat() {
                 <div
                   className={`max-w-[88%] lg:max-w-[82%] rounded-3xl p-5 border backdrop-blur-xl transition-all duration-300 ${
                     msg.sender === "You"
-                      ? "bg-gradient-to-r from-sky-600/90 to-blue-600/90 border-sky-400/40 text-white rounded-br-none shadow-xl shadow-sky-600/20"
-                      : "bg-slate-900/80 border-white/15 text-slate-100 rounded-bl-none shadow-2xl"
+                      ? "bg-gradient-to-r from-sky-500 to-indigo-600 border-sky-400/40 text-white rounded-br-none shadow-xl shadow-sky-500/25"
+                      : "glass-panel bg-slate-900/80 border-white/10 text-slate-100 rounded-bl-none shadow-xl"
                   }`}
                 >
                   <div className="flex items-center justify-between gap-4 mb-2.5 pb-2 border-b border-white/10">
@@ -310,12 +272,12 @@ function AIChat() {
                           <User size={14} />
                         </div>
                       ) : (
-                        <div className="p-1.5 rounded-full bg-sky-500/30 text-sky-300 border border-sky-400/40">
+                        <div className="p-1.5 rounded-full bg-sky-500/20 text-cyan-300 border border-sky-400/30">
                           <Bot size={14} />
                         </div>
                       )}
-                      <span className="font-extrabold text-xs tracking-wider uppercase">
-                        {msg.sender === "You" ? "Learner" : selectedAvatar.name}
+                      <span className="font-bold text-xs tracking-wide text-sky-200">
+                        {msg.sender === "You" ? "You" : selectedAvatar.name}
                       </span>
                     </div>
                     <div className="flex items-center gap-2">
@@ -328,7 +290,7 @@ function AIChat() {
                           <Volume2 size={15} />
                         </button>
                       )}
-                      <span className="text-[11px] opacity-70 font-mono">{msg.timestamp}</span>
+                      <span className="text-[11px] opacity-70 font-mono text-slate-400">{msg.timestamp}</span>
                     </div>
                   </div>
 
@@ -341,9 +303,9 @@ function AIChat() {
 
             {loading && (
               <div className="flex justify-start">
-                <div className="bg-slate-900/80 border border-sky-400/30 rounded-3xl rounded-bl-none p-4 flex items-center gap-3 text-sky-300 text-sm shadow-xl backdrop-blur-xl">
-                  <Bot className="animate-bounce text-sky-400" size={20} />
-                  <span className="font-semibold">{selectedAvatar.name} is generating your response...</span>
+                <div className="glass-panel bg-slate-900/85 border border-cyan-400/30 rounded-3xl rounded-bl-none p-4 flex items-center gap-3 text-sky-200 text-sm shadow-xl backdrop-blur-xl">
+                  <Bot className="animate-bounce text-cyan-400" size={20} />
+                  <span className="font-medium">{selectedAvatar.name} is thinking...</span>
                 </div>
               </div>
             )}
@@ -352,15 +314,15 @@ function AIChat() {
 
           {/* Quick Action Chips */}
           <div className="px-6 py-3 bg-slate-950/60 border-t border-white/10 flex items-center gap-2 overflow-x-auto">
-            <span className="text-xs font-extrabold text-slate-400 uppercase tracking-wider shrink-0 mr-1">
-              Quick Actions:
+            <span className="text-xs font-bold text-sky-300 shrink-0 mr-1 flex items-center gap-1">
+              <Sparkles size={13} className="text-cyan-400" /> Prompts:
             </span>
             {quickActions.map((action, i) => (
               <button
                 key={i}
                 onClick={() => sendMessage(action)}
                 disabled={loading}
-                className="shrink-0 px-3.5 py-1.5 rounded-full text-xs font-semibold bg-slate-800/80 hover:bg-sky-500 hover:text-white border border-white/10 text-slate-200 transition shadow-sm backdrop-blur-md"
+                className="shrink-0 px-3.5 py-1.5 rounded-full text-xs font-medium bg-white/5 hover:bg-sky-500/20 hover:text-sky-200 border border-white/10 hover:border-sky-400/30 text-slate-200 transition shadow-sm backdrop-blur-md"
               >
                 {action}
               </button>
@@ -368,17 +330,17 @@ function AIChat() {
           </div>
 
           {/* Input Bar with Free Local Whisper & Speech Recognition */}
-          <div className="p-4 bg-slate-950/80 border-t border-white/10 flex items-center gap-3">
+          <div className="p-4 bg-slate-950/80 backdrop-blur-xl border-t border-white/10 flex items-center gap-3">
             <input
               type="text"
-              placeholder={`Talk to ${selectedAvatar.name}... Ask a question or share how you feel!`}
+              placeholder={`Ask ${selectedAvatar.name} anything... (e.g., explain concepts, daily guidance)`}
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               onKeyDown={(e) => {
                 if (e.key === "Enter") sendMessage();
               }}
               disabled={loading}
-              className="flex-1 bg-slate-900/80 border border-white/15 rounded-2xl px-5 py-3.5 text-white placeholder-slate-400 outline-none focus:border-sky-400 focus:ring-2 focus:ring-sky-400/30 transition text-sm sm:text-base font-medium shadow-inner"
+              className="flex-1 bg-white/5 border border-white/10 rounded-2xl px-5 py-3.5 text-white placeholder-slate-400 outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 transition text-sm sm:text-base font-medium shadow-inner"
             />
 
             {/* Whisper Speech Recognition */}
@@ -387,7 +349,7 @@ function AIChat() {
             <button
               onClick={() => sendMessage()}
               disabled={loading || !message.trim()}
-              className="glass-btn-primary text-white font-extrabold px-6 py-3.5 rounded-2xl transition disabled:opacity-40 flex items-center justify-center shrink-0 shadow-xl"
+              className="glass-btn-primary text-white font-bold px-6 py-3.5 rounded-2xl transition disabled:opacity-40 flex items-center justify-center shrink-0 shadow-xl"
             >
               <SendHorizontal size={20} />
             </button>

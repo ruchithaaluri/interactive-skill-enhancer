@@ -1,8 +1,7 @@
-import { Animated2DAvatar } from "./Animated2DAvatar";
+import RealisticAvatar from "./RealisticAvatar";
 
 export default function DoctorAvatar(props) {
-  return <Animated2DAvatar {...props} />;
+  return <RealisticAvatar {...props} />;
 }
 
-export { Animated2DAvatar };
-
+export { RealisticAvatar as Animated2DAvatar };

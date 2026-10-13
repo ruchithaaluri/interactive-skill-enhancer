@@ -49,15 +49,15 @@ function Features() {
   ];
 
   return (
-    <section className="bg-slate-950 py-20 px-8">
+    <section className="py-20 px-8 border-t border-white/10 relative">
       <div className="max-w-7xl mx-auto">
 
-        <h2 className="text-5xl font-bold text-center text-white mb-4">
-          Project Features
+        <h2 className="text-4xl sm:text-5xl font-extrabold text-center text-white mb-3 font-starlight tracking-tight">
+          Platform Capabilities
         </h2>
 
-        <p className="text-center text-slate-400 mb-14">
-          Technologies powering the Interactive Skill Enhancer
+        <p className="text-center text-sky-200/80 mb-14 text-sm font-medium">
+          Empowering neurodiverse learners through sensory-friendly AI, speech practice & interactive avatars
         </p>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">

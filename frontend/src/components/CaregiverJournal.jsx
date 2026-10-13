@@ -41,34 +41,34 @@ function CaregiverJournal() {
   };
 
   return (
-    <div className="glass-panel p-6 sm:p-8 space-y-6 border border-white/15 shadow-2xl">
+    <div className="glass-panel p-6 sm:p-8 space-y-6 border border-white/10 shadow-2xl">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="p-3 rounded-2xl bg-indigo-500/20 text-indigo-400 border border-indigo-400/30">
-            <BookOpen size={22} />
+          <div className="p-3 rounded-2xl bg-sky-500/15 text-cyan-300 border border-sky-400/30 shadow-lg shadow-sky-500/10">
+            <BookOpen size={22} className="text-cyan-400" />
           </div>
           <div>
-            <h3 className="text-xl font-extrabold text-white">Caregiver Observational Journal</h3>
-            <p className="text-xs text-slate-300">Record clinical observations, focus notes, and daily progress remarks.</p>
+            <h3 className="text-xl font-bold text-white font-starlight">Caregiver & Learner Journal</h3>
+            <p className="text-xs text-sky-200/70">Observational milestones, focus reflections, and daily notes.</p>
           </div>
         </div>
       </div>
 
       {/* Input Box */}
-      <div className="space-y-3 bg-slate-900/60 p-4 rounded-2xl border border-white/10">
+      <div className="space-y-3 bg-white/5 p-4 rounded-2xl border border-white/10">
         <textarea
           rows={3}
-          placeholder="Write an observational note (e.g. Learner communicated clearly during AI interaction)..."
+          placeholder="Log an observation (e.g., Learner maintained 20 min sustained focus during interactive companion dialogue)..."
           value={newNote}
           onChange={(e) => setNewNote(e.target.value)}
-          className="w-full bg-slate-950/80 border border-white/10 rounded-xl p-3 text-white placeholder-slate-400 text-sm outline-none focus:border-indigo-400"
+          className="w-full bg-slate-900/80 border border-white/10 rounded-xl p-3 text-white placeholder-slate-400 text-sm outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400/30"
         />
 
         <div className="flex items-center justify-between gap-3 flex-wrap">
           <select
             value={tag}
             onChange={(e) => setTag(e.target.value)}
-            className="bg-slate-800 text-slate-200 text-xs font-bold px-3 py-2 rounded-xl border border-white/10 outline-none"
+            className="bg-slate-900/80 text-sky-200 text-xs font-semibold px-3 py-2 rounded-xl border border-white/10 outline-none"
           >
             <option value="Focus Observation">Focus Observation</option>
             <option value="Communication Milestone">Communication Milestone</option>
@@ -79,9 +79,9 @@ function CaregiverJournal() {
           <button
             onClick={handleAddNote}
             disabled={!newNote.trim()}
-            className="glass-btn-primary px-4 py-2 rounded-xl text-white font-extrabold text-xs flex items-center gap-2 shadow-lg disabled:opacity-50"
+            className="glass-btn-primary px-4 py-2 rounded-xl text-white font-bold text-xs flex items-center gap-2 shadow-lg disabled:opacity-50"
           >
-            <Plus size={15} /> Save Observation
+            <Plus size={15} /> Add Entry
           </button>
         </div>
       </div>
@@ -91,14 +91,14 @@ function CaregiverJournal() {
         {notes.map((item) => (
           <div
             key={item.id}
-            className="p-4 rounded-2xl bg-slate-900/40 border border-white/10 backdrop-blur-md flex items-start justify-between gap-3"
+            className="p-4 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md flex items-start justify-between gap-3 shadow-md"
           >
             <div className="space-y-1">
               <div className="flex items-center gap-2 text-xs">
-                <span className="font-extrabold text-indigo-300 px-2.5 py-0.5 rounded-full bg-indigo-500/20 border border-indigo-400/30">
+                <span className="font-semibold text-sky-300 px-2.5 py-0.5 rounded-full bg-sky-500/15 border border-sky-400/30 text-[10px]">
                   {item.tag}
                 </span>
-                <span className="text-slate-400 flex items-center gap-1">
+                <span className="text-slate-400 flex items-center gap-1 text-[11px]">
                   <Calendar size={12} /> {item.date}
                 </span>
               </div>
@@ -109,8 +109,8 @@ function CaregiverJournal() {
 
             <button
               onClick={() => handleDelete(item.id)}
-              className="text-slate-500 hover:text-red-400 transition p-1"
-              title="Delete Note"
+              className="text-slate-400 hover:text-rose-400 transition p-1"
+              title="Delete Entry"
             >
               <Trash2 size={16} />
             </button>

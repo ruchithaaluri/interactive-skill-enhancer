@@ -174,29 +174,29 @@ function DailyQuest() {
   };
 
   return (
-    <div className="glass-panel p-6 sm:p-8 space-y-6 border border-white/15 shadow-2xl relative overflow-hidden">
+    <div className="glass-panel p-6 sm:p-8 space-y-6 border border-white/10 shadow-2xl relative overflow-hidden">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="flex items-center gap-3">
-          <div className="p-3 rounded-2xl bg-amber-500/20 text-amber-400 border border-amber-400/30">
-            <Sparkles size={22} />
+          <div className="p-3 rounded-2xl bg-sky-500/15 text-cyan-300 border border-sky-400/30 shadow-lg shadow-sky-500/10">
+            <Sparkles size={22} className="text-cyan-400 animate-pulse" />
           </div>
           <div>
-            <h3 className="text-xl font-extrabold text-white">Daily Quiz Assistant</h3>
-            <p className="text-xs text-slate-300">Pick a subject & topic for interactive Doctor Avatar questions!</p>
+            <h3 className="text-xl font-bold text-white font-starlight">Daily Learning Quest ✨</h3>
+            <p className="text-xs text-sky-200/70">Interactive practice questions with your chosen AI companion</p>
           </div>
         </div>
 
-        <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-500/10 border border-amber-400/30 text-amber-300 font-extrabold text-xs">
-          <Award size={16} /> {score} XP
+        <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 text-cyan-300 font-semibold text-xs">
+          <Award size={16} className="text-cyan-400" /> {score} XP Earned
         </div>
       </div>
 
       {/* Subject & Topic Selectors */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 rounded-2xl bg-slate-950/70 border border-white/10">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 rounded-2xl bg-white/5 border border-white/10">
         <div>
-          <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
-            <BookOpen size={14} className="text-sky-400" /> Select Subject
+          <label className="block text-xs font-semibold text-sky-300 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+            <BookOpen size={14} className="text-cyan-400" /> Select Subject
           </label>
           <select
             value={selectedSubject}
@@ -206,7 +206,7 @@ function DailyQuest() {
               const topics = subjectsMap[newSubj] || [];
               if (topics.length > 0) setSelectedTopic(topics[0]);
             }}
-            className="w-full bg-slate-900 border border-slate-700 text-white rounded-xl p-3 text-xs sm:text-sm font-semibold outline-none focus:border-sky-400"
+            className="w-full bg-slate-900/80 border border-white/10 text-white rounded-xl p-3 text-xs sm:text-sm font-medium outline-none focus:border-cyan-400"
           >
             {Object.keys(subjectsMap).map((sub) => (
               <option key={sub} value={sub}>{sub}</option>
@@ -215,13 +215,13 @@ function DailyQuest() {
         </div>
 
         <div>
-          <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1.5">
+          <label className="block text-xs font-semibold text-sky-300 uppercase tracking-wider mb-1.5">
             Select Topic
           </label>
           <select
             value={selectedTopic}
             onChange={(e) => setSelectedTopic(e.target.value)}
-            className="w-full bg-slate-900 border border-slate-700 text-white rounded-xl p-3 text-xs sm:text-sm font-semibold outline-none focus:border-sky-400"
+            className="w-full bg-slate-900/80 border border-white/10 text-white rounded-xl p-3 text-xs sm:text-sm font-medium outline-none focus:border-cyan-400"
           >
             {(subjectsMap[selectedSubject] || []).map((top) => (
               <option key={top} value={top}>{top}</option>
@@ -232,9 +232,9 @@ function DailyQuest() {
 
       {/* Quiz Body */}
       {loadingQuiz ? (
-        <div className="py-12 text-center text-sky-300 font-semibold text-sm flex items-center justify-center gap-3">
-          <div className="w-6 h-6 border-2 border-sky-400 border-t-transparent rounded-full animate-spin" />
-          <span>Generating today's quiz for {selectedTopic}...</span>
+        <div className="py-12 text-center text-sky-200 font-medium text-sm flex items-center justify-center gap-3">
+          <div className="w-6 h-6 border-2 border-cyan-400 border-t-transparent rounded-full animate-spin" />
+          <span>Generating questions for {selectedTopic}...</span>
         </div>
       ) : !completed && q ? (
         <div className="space-y-5">

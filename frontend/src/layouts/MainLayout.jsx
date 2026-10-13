@@ -10,8 +10,8 @@ function MainLayout({ children }) {
   const showBackground = backgroundMode !== "OFF" && !reducedMotion;
 
   return (
-    <div className="relative flex min-h-screen bg-slate-950 text-slate-100 overflow-x-hidden selection:bg-sky-500 selection:text-white">
-      {/* Background Effect: OFF by default for ultra-low CPU */}
+    <div className="relative flex min-h-screen bg-slate-950 text-slate-100 overflow-x-hidden selection:bg-indigo-500 selection:text-white">
+      {/* Ambient Starlight & Celestial Nebula Background */}
       {showBackground && (
         <div className="ambient-bg">
           <div className="orb orb-1"></div>
@@ -24,12 +24,12 @@ function MainLayout({ children }) {
 
       {/* Main Content Area */}
       <div className="relative z-10 flex-1 flex flex-col min-w-0 min-h-screen">
-        {/* Top Header Bar with Caregiver Mode & Real-World Features */}
-        <header className="sticky top-0 z-30 px-6 py-4 border-b border-white/10 bg-slate-950/40 backdrop-blur-xl flex items-center justify-between gap-4">
+        {/* Top Header Bar: Starlight Glassmorphism Bar */}
+        <header className="sticky top-0 z-30 px-6 py-4 border-b border-white/10 bg-slate-950/60 backdrop-blur-2xl flex items-center justify-between gap-4 shadow-lg shadow-black/40">
           <div className="flex items-center gap-3">
             <span className="flex h-3 w-3 relative">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-3 w-3 bg-sky-500"></span>
             </span>
             <div className="text-xs font-semibold text-slate-300">
               {caregiverMode ? (
@@ -38,17 +38,17 @@ function MainLayout({ children }) {
                 </span>
               ) : (
                 <span className="flex items-center gap-1.5 text-sky-400 font-bold">
-                  <Sparkles size={16} /> Child Interactive Learning Environment
+                  <Sparkles size={16} className="text-sky-300" /> Child Interactive Learning Environment
                 </span>
               )}
             </div>
           </div>
 
           <div className="flex items-center gap-3">
-            {/* Gamified Streak / Badge indicator */}
-            <div className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-semibold text-amber-300">
+            {/* Gamified Starlight Streak Badge */}
+            <div className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-semibold text-amber-300 shadow-sm">
               <Award size={15} className="text-amber-400" />
-              <span>3 Day Learning Streak!</span>
+              <span>3 Day Learning Streak ✨</span>
             </div>
 
             {/* Caregiver Mode Toggle Button */}
@@ -57,7 +57,7 @@ function MainLayout({ children }) {
               className={`flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold transition shadow-lg backdrop-blur-md border ${
                 caregiverMode
                   ? "bg-amber-500/20 border-amber-400/40 text-amber-300 hover:bg-amber-500/30"
-                  : "bg-sky-500/20 border-sky-400/40 text-sky-300 hover:bg-sky-500/30"
+                  : "bg-sky-500/20 border-sky-400/40 text-sky-300 hover:bg-sky-500/30 shadow-sky-500/10"
               }`}
             >
               <HeartHandshake size={15} />

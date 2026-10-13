@@ -1,11 +1,12 @@
 import { useEffect, useRef } from "react";
 
 /**
- * Interactive 3D Animated Particle Background Component
- * Inspired by Particle Saturn, Scroll Wave Field, Light Cables, and Spiral Vortex aesthetics.
- * Uses lightweight HTML5 Canvas 2D/3D mathematics for high-performance glowing visuals.
+ * Interactive Starlight Falling Stars Background Component
+ * Features realistic twinkling celestial starfield, graceful falling stardust,
+ * and authentic shooting stars (meteors) with smooth glowing trails.
+ * Pure lightweight HTML5 Canvas 2D (<1% CPU, 60fps).
  */
-export function Particle3DBackground({ mode = "waves", theme = "cyan" }) {
+export function Particle3DBackground({ mode = "starlight", theme = "sky" }) {
   const canvasRef = useRef(null);
 
   useEffect(() => {
@@ -27,64 +28,59 @@ export function Particle3DBackground({ mode = "waves", theme = "cyan" }) {
 
     window.addEventListener("resize", handleResize);
 
-    // Color palette selector based on theme
-    const getThemeColors = () => {
-      switch (theme) {
-        case "amber":
-        case "gold":
-        case "saturn":
-          return { primary: "rgba(245, 158, 11, ", secondary: "rgba(217, 119, 6, " };
-        case "emerald":
-        case "green":
-          return { primary: "rgba(16, 185, 129, ", secondary: "rgba(5, 150, 105, " };
-        case "purple":
-        case "violet":
-          return { primary: "rgba(168, 85, 247, ", secondary: "rgba(147, 51, 234, " };
-        case "rose":
-          return { primary: "rgba(244, 63, 94, ", secondary: "rgba(225, 29, 72, " };
-        case "indigo":
-          return { primary: "rgba(99, 102, 241, ", secondary: "rgba(79, 70, 229, " };
-        case "teal":
-          return { primary: "rgba(20, 184, 166, ", secondary: "rgba(13, 148, 136, " };
-        case "sky":
-        case "cyan":
-        default:
-          return { primary: "rgba(56, 189, 248, ", secondary: "rgba(2, 132, 199, " };
-      }
-    };
-
-    const colors = getThemeColors();
-
-    // Generate Particles for Wave / Ring / Saturn field
-    const particleCount = mode === "saturn" ? 220 : 160;
-    const particles = [];
-
-    for (let i = 0; i < particleCount; i++) {
-      if (mode === "saturn") {
-        // 3D Saturn Ring Particles
-        const angle = Math.random() * Math.PI * 2;
-        const radius = 120 + Math.random() * 160;
-        particles.push({
-          angle,
-          radius,
-          speed: 0.003 + Math.random() * 0.005,
-          yOffset: (Math.random() - 0.5) * 35,
-          size: 1 + Math.random() * 2.2,
-          alpha: 0.3 + Math.random() * 0.7
-        });
-      } else {
-        // Wave Field Grid Particles
-        particles.push({
-          x: (i % 25) * (width / 24) - width * 0.1,
-          z: Math.floor(i / 25) * 20,
-          baseY: height * 0.65 + (i / particleCount) * 120,
-          speed: 0.02 + Math.random() * 0.02,
-          phase: Math.random() * Math.PI * 2,
-          size: 1.2 + Math.random() * 2,
-          alpha: 0.2 + Math.random() * 0.6
-        });
-      }
+    // 1. Static & Twinkling Celestial Stars
+    const starCount = 140;
+    const stars = [];
+    for (let i = 0; i < starCount; i++) {
+      stars.push({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        radius: 0.6 + Math.random() * 1.8,
+        baseAlpha: 0.2 + Math.random() * 0.6,
+        twinkleSpeed: 0.02 + Math.random() * 0.04,
+        twinklePhase: Math.random() * Math.PI * 2,
+        isCrossStar: Math.random() > 0.88, // 12% have subtle 4-point starlight diffraction spikes
+      });
     }
+
+    // 2. Smooth Falling Stardust Particles (Continuous downward drift)
+    const dustCount = 45;
+    const stardust = [];
+    for (let i = 0; i < dustCount; i++) {
+      stardust.push({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        speedY: 0.4 + Math.random() * 0.9, // Gentle falling speed
+        speedX: -0.15 + (Math.random() - 0.5) * 0.3,
+        size: 1.2 + Math.random() * 2.2,
+        alpha: 0.2 + Math.random() * 0.6,
+        seed: Math.random() * 100,
+      });
+    }
+
+    // 3. Realistic Shooting Stars (Meteors with glowing fading tails)
+    const shootingStars = [];
+    let lastSpawnTime = 0;
+
+    const createShootingStar = () => {
+      // Spawn from top or top-right area
+      const angle = (35 + Math.random() * 20) * (Math.PI / 180); // 35 to 55 degrees downwards
+      const speed = 12 + Math.random() * 8;
+      const length = 90 + Math.random() * 110;
+
+      shootingStars.push({
+        x: Math.random() * (width * 1.2) - width * 0.1,
+        y: -30,
+        dx: Math.cos(angle) * speed,
+        dy: Math.sin(angle) * speed,
+        length,
+        life: 0,
+        maxLife: 60 + Math.random() * 30, // Frames
+        alpha: 0,
+        maxAlpha: 0.85 + Math.random() * 0.15,
+        thickness: 1.2 + Math.random() * 1.5,
+      });
+    };
 
     let time = 0;
 
@@ -97,105 +93,120 @@ export function Particle3DBackground({ mode = "waves", theme = "cyan" }) {
       time += 0.015;
       ctx.clearRect(0, 0, width, height);
 
-      // Render Mode A: Saturn Particle Ring & Planet Glow
-      if (mode === "saturn") {
-        const centerX = width * 0.5;
-        const centerY = height * 0.45;
+      // --- LAYER 1: Twinkling Celestial Starfield ---
+      const starLen = stars.length;
+      for (let i = 0; i < starLen; i++) {
+        const star = stars[i];
+        const twinkle = Math.sin(time * star.twinkleSpeed * 60 + star.twinklePhase);
+        const currentAlpha = Math.max(0.1, Math.min(1, star.baseAlpha + twinkle * 0.35));
 
-        // Central Planet Soft Radial Glow
-        const radGrad = ctx.createRadialGradient(centerX, centerY, 10, centerX, centerY, 140);
-        radGrad.addColorStop(0, colors.primary + "0.35)");
-        radGrad.addColorStop(0.6, colors.secondary + "0.15)");
-        radGrad.addColorStop(1, "rgba(2, 6, 23, 0)");
-
-        ctx.fillStyle = radGrad;
+        // Center Star Dot
+        ctx.fillStyle = `rgba(255, 255, 255, ${currentAlpha})`;
         ctx.beginPath();
-        ctx.arc(centerX, centerY, 140, 0, Math.PI * 2);
+        ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
         ctx.fill();
 
-        // Planet Sphere Wireframe Core
-        ctx.strokeStyle = colors.primary + "0.25)";
-        ctx.lineWidth = 1;
+        // Starlight Halo for brighter stars
+        if (star.radius > 1.4) {
+          ctx.fillStyle = `rgba(186, 230, 253, ${currentAlpha * 0.35})`;
+          ctx.beginPath();
+          ctx.arc(star.x, star.y, star.radius * 2.5, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        // 4-Point Starlight Cross Flare for prominent stars
+        if (star.isCrossStar && currentAlpha > 0.55) {
+          const flareLen = star.radius * 4;
+          ctx.strokeStyle = `rgba(224, 242, 254, ${currentAlpha * 0.45})`;
+          ctx.lineWidth = 0.75;
+          ctx.beginPath();
+          ctx.moveTo(star.x - flareLen, star.y);
+          ctx.lineTo(star.x + flareLen, star.y);
+          ctx.moveTo(star.x, star.y - flareLen);
+          ctx.lineTo(star.x, star.y + flareLen);
+          ctx.stroke();
+        }
+      }
+
+      // --- LAYER 2: Gracefully Falling Stardust ---
+      const dustLen = stardust.length;
+      for (let i = 0; i < dustLen; i++) {
+        const d = stardust[i];
+        d.y += d.speedY;
+        d.x += d.speedX + Math.sin(time + d.seed) * 0.3;
+
+        // Wrap around bottom to top smoothly
+        if (d.y > height + 20) {
+          d.y = -10;
+          d.x = Math.random() * width;
+        }
+        if (d.x < -20) d.x = width + 10;
+        if (d.x > width + 20) d.x = -10;
+
+        // Glowing Stardust Droplet
+        const rad = ctx.createRadialGradient(d.x, d.y, 0, d.x, d.y, d.size * 2);
+        rad.addColorStop(0, `rgba(255, 255, 255, ${d.alpha})`);
+        rad.addColorStop(0.4, `rgba(147, 197, 253, ${d.alpha * 0.6})`);
+        rad.addColorStop(1, "rgba(99, 102, 241, 0)");
+
+        ctx.fillStyle = rad;
         ctx.beginPath();
-        ctx.arc(centerX, centerY, 65, 0, Math.PI * 2);
+        ctx.arc(d.x, d.y, d.size * 2, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // --- LAYER 3: Realistic Shooting Stars (Meteors) ---
+      // Spawn a shooting star every 2.5 - 4.5 seconds
+      if (time - lastSpawnTime > 2.5 + Math.random() * 2) {
+        createShootingStar();
+        lastSpawnTime = time;
+      }
+
+      for (let i = shootingStars.length - 1; i >= 0; i--) {
+        const s = shootingStars[i];
+        s.life += 1;
+        s.x += s.dx;
+        s.y += s.dy;
+
+        // Fade in and fade out curve
+        const progress = s.life / s.maxLife;
+        if (progress < 0.2) {
+          s.alpha = (progress / 0.2) * s.maxAlpha;
+        } else {
+          s.alpha = (1 - (progress - 0.2) / 0.8) * s.maxAlpha;
+        }
+
+        // Draw meteor trail with linear gradient
+        const tailX = s.x - (s.dx / Math.hypot(s.dx, s.dy)) * s.length;
+        const tailY = s.y - (s.dy / Math.hypot(s.dx, s.dy)) * s.length;
+
+        const grad = ctx.createLinearGradient(tailX, tailY, s.x, s.y);
+        grad.addColorStop(0, "rgba(147, 197, 253, 0)");
+        grad.addColorStop(0.7, `rgba(186, 230, 253, ${s.alpha * 0.5})`);
+        grad.addColorStop(1, `rgba(255, 255, 255, ${s.alpha})`);
+
+        ctx.strokeStyle = grad;
+        ctx.lineWidth = s.thickness;
+        ctx.lineCap = "round";
+        ctx.beginPath();
+        ctx.moveTo(tailX, tailY);
+        ctx.lineTo(s.x, s.y);
         ctx.stroke();
 
-        // Render Orbiting Ring Particles
-        const maxLen = particles.length;
-        for (let i = 0; i < maxLen; i++) {
-          const p = particles[i];
-          p.angle += p.speed;
+        // Glowing Star Head Flare
+        const headGlow = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, 4.5);
+        headGlow.addColorStop(0, `rgba(255, 255, 255, ${s.alpha})`);
+        headGlow.addColorStop(0.5, `rgba(147, 197, 253, ${s.alpha * 0.8})`);
+        headGlow.addColorStop(1, "rgba(99, 102, 241, 0)");
 
-          // 3D Isometric projection math for tilted Saturn Ring
-          const tiltFactor = 0.38;
-          const rx = Math.cos(p.angle) * p.radius;
-          const ry = Math.sin(p.angle) * p.radius * tiltFactor + p.yOffset;
+        ctx.fillStyle = headGlow;
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, 4.5, 0, Math.PI * 2);
+        ctx.fill();
 
-          const px = centerX + rx;
-          const py = centerY + ry;
-
-          // Depth sorting scale
-          const scale = 0.7 + (ry / (p.radius * tiltFactor + 40)) * 0.5;
-
-          ctx.fillStyle = colors.primary + `${p.alpha * scale})`;
-          ctx.beginPath();
-          ctx.arc(px, py, Math.max(0.5, p.size * scale), 0, Math.PI * 2);
-          ctx.fill();
-
-          // Connect nearby particles (sample step 3 for efficiency)
-          for (let j = i + 1; j < maxLen; j += 3) {
-            const p2 = particles[j];
-            const rx2 = Math.cos(p2.angle) * p2.radius;
-            const ry2 = Math.sin(p2.angle) * p2.radius * tiltFactor + p2.yOffset;
-            const distSq = (rx - rx2) ** 2 + (ry - ry2) ** 2;
-
-            if (distSq < 1000) {
-              ctx.strokeStyle = colors.primary + `${0.12 * (1 - distSq / 1000)})`;
-              ctx.lineWidth = 0.6;
-              ctx.beginPath();
-              ctx.moveTo(px, py);
-              ctx.lineTo(centerX + rx2, centerY + ry2);
-              ctx.stroke();
-            }
-          }
-        }
-      } else {
-        // Render Mode B: Flowing Scroll Wave Field Grid
-        const stepX = width / 30;
-
-        for (let xIndex = 0; xIndex < 35; xIndex++) {
-          const x = (xIndex - 2) * stepX;
-
-          for (let zIndex = 0; zIndex < 12; zIndex++) {
-            const waveY =
-              Math.sin(time + xIndex * 0.2 + zIndex * 0.3) * 25 +
-              Math.cos(time * 0.8 + xIndex * 0.15) * 15;
-
-            const py = height * 0.7 + zIndex * 18 + waveY;
-            const px = x + (zIndex * 12 - 60);
-
-            const alpha = Math.max(0.05, (1 - zIndex / 12) * 0.45);
-            ctx.fillStyle = colors.primary + `${alpha})`;
-            ctx.beginPath();
-            ctx.arc(px, py, 1.8 + (1 - zIndex / 12) * 1.5, 0, Math.PI * 2);
-            ctx.fill();
-
-            // Connect horizontal wave field light cables
-            if (xIndex > 0) {
-              const prevWaveY =
-                Math.sin(time + (xIndex - 1) * 0.2 + zIndex * 0.3) * 25 +
-                Math.cos(time * 0.8 + (xIndex - 1) * 0.15) * 15;
-              const prevPx = (xIndex - 3) * stepX + (zIndex * 12 - 60);
-              const prevPy = height * 0.7 + zIndex * 18 + prevWaveY;
-
-              ctx.strokeStyle = colors.primary + `${alpha * 0.4})`;
-              ctx.lineWidth = 0.8;
-              ctx.beginPath();
-              ctx.moveTo(px, py);
-              ctx.lineTo(prevPx, prevPy);
-              ctx.stroke();
-            }
-          }
+        // Remove dead shooting stars
+        if (s.life >= s.maxLife || s.y > height + 100 || s.x > width + 100) {
+          shootingStars.splice(i, 1);
         }
       }
 
@@ -213,7 +224,7 @@ export function Particle3DBackground({ mode = "waves", theme = "cyan" }) {
   return (
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 w-full h-full pointer-events-none z-0 opacity-80 transition-opacity duration-700"
+      className="fixed inset-0 w-full h-full pointer-events-none z-0 opacity-90 transition-opacity duration-700"
     />
   );
 }

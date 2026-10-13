@@ -75,21 +75,21 @@ function AIChatPanel() {
   };
 
   return (
-    <div className="bg-slate-900 border border-slate-800 rounded-3xl h-[600px] flex flex-col overflow-hidden shadow-xl">
-      <div className="p-5 border-b border-slate-800 flex items-center justify-between">
+    <div className="glass-panel border border-white/10 rounded-3xl h-[600px] flex flex-col overflow-hidden shadow-2xl">
+      <div className="p-5 border-b border-white/10 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="p-2 rounded-xl bg-sky-500/10 text-sky-400">
+          <div className="p-2.5 rounded-xl bg-sky-500/20 text-cyan-400 border border-sky-400/30 shadow-md">
             <Bot size={22} />
           </div>
           <div>
-            <h2 className="text-lg font-bold text-white leading-tight">AI Learning Tutor</h2>
-            <p className="text-xs text-slate-400">Ask questions, get examples, or practice skills</p>
+            <h2 className="text-lg font-bold text-white font-starlight leading-tight">AI Learning Tutor</h2>
+            <p className="text-xs text-sky-200/70">Ask questions, explore examples, or practice skills</p>
           </div>
         </div>
 
         <button
           onClick={() => setMessages([{ sender: "AI", text: "Chat cleared. What shall we learn next?" }])}
-          className="text-slate-400 hover:text-white p-2 rounded-lg transition"
+          className="text-slate-400 hover:text-rose-300 p-2 rounded-lg transition"
           title="Clear chat"
         >
           <Trash2 size={18} />
@@ -103,15 +103,15 @@ function AIChatPanel() {
             className={`flex ${msg.sender === "You" ? "justify-end" : "justify-start"}`}
           >
             <div
-              className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed ${
+              className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed backdrop-blur-md ${
                 msg.sender === "You"
-                  ? "bg-sky-600 text-white rounded-br-none"
-                  : "bg-slate-800 border border-slate-700/70 text-slate-100 rounded-bl-none"
+                  ? "bg-gradient-to-r from-sky-500 to-indigo-600 text-white rounded-br-none shadow-lg shadow-sky-500/20"
+                  : "glass-panel bg-slate-900/80 border border-white/10 text-slate-100 rounded-bl-none shadow-md"
               }`}
             >
-              <div className="flex items-center gap-1.5 mb-1 text-xs opacity-75 font-semibold">
-                {msg.sender === "You" ? <User size={13} /> : <Bot size={13} />}
-                <span>{msg.sender}</span>
+              <div className="flex items-center gap-1.5 mb-1 text-xs opacity-80 font-semibold text-cyan-300">
+                {msg.sender === "You" ? <User size={13} className="text-white" /> : <Bot size={13} />}
+                <span>{msg.sender === "You" ? "You" : selectedAvatar.name}</span>
               </div>
               <p className="whitespace-pre-wrap">{msg.text}</p>
             </div>
@@ -120,8 +120,8 @@ function AIChatPanel() {
 
         {loading && (
           <div className="flex justify-start">
-            <div className="bg-slate-800 border border-slate-700/70 rounded-2xl rounded-bl-none px-4 py-3 text-xs text-slate-400 flex items-center gap-2">
-              <Bot className="animate-spin text-sky-400" size={14} />
+            <div className="glass-panel bg-slate-900/80 border border-cyan-400/30 rounded-2xl rounded-bl-none px-4 py-3 text-xs text-sky-200 flex items-center gap-2">
+              <Bot className="animate-spin text-cyan-400" size={14} />
               <span>Thinking...</span>
             </div>
           </div>
@@ -129,19 +129,19 @@ function AIChatPanel() {
         <div ref={messagesEndRef} />
       </div>
 
-      <div className="p-3 bg-slate-950/40 border-t border-slate-800 flex gap-2 overflow-x-auto scrollbar-none">
+      <div className="p-3 bg-slate-950/40 border-t border-white/10 flex gap-2 overflow-x-auto scrollbar-none">
         {["Explain simpler", "Give example", "Quiz me"].map((btn, i) => (
           <button
             key={i}
             onClick={() => sendMessage(btn)}
-            className="text-xs shrink-0 px-3 py-1 rounded-full bg-slate-800 hover:bg-sky-500 hover:text-white text-slate-300 border border-slate-700 transition"
+            className="text-xs shrink-0 px-3.5 py-1.5 rounded-full bg-white/5 hover:bg-sky-500/20 text-slate-300 hover:text-cyan-300 border border-white/10 hover:border-sky-400/30 transition backdrop-blur-md"
           >
             {btn}
           </button>
         ))}
       </div>
 
-      <div className="p-4 border-t border-slate-800 flex items-center gap-2 bg-slate-900">
+      <div className="p-4 border-t border-white/10 flex items-center gap-2 bg-slate-950/60 backdrop-blur-xl">
         <input
           value={message}
           onChange={(e) => setMessage(e.target.value)}
@@ -150,7 +150,7 @@ function AIChatPanel() {
           }}
           disabled={loading}
           placeholder="Ask a question..."
-          className="flex-1 bg-slate-800 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white outline-none focus:border-sky-500 transition"
+          className="flex-1 bg-slate-900/80 border border-white/10 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-400 outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400/30 transition"
         />
 
         <SpeechRecognition onResult={handleSpeech} />
@@ -158,7 +158,7 @@ function AIChatPanel() {
         <button
           onClick={() => sendMessage()}
           disabled={loading || !message.trim()}
-          className="bg-sky-500 hover:bg-sky-600 disabled:opacity-50 text-white p-2.5 rounded-xl transition"
+          className="glass-btn-primary disabled:opacity-50 text-white p-2.5 rounded-xl transition shadow-lg"
         >
           <SendHorizontal size={18} />
         </button>
