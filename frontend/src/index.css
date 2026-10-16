@@ -433,3 +433,19 @@ body.reduced-motion .animate-pulse {
 .animate-gesture-float {
   animation: gestureFloat 2s ease-in-out infinite;
 }
+
+/* 3D Glassmorphism Depth Tokens */
+.glass-3d-depth {
+  transform-style: preserve-3d;
+  perspective: 1000px;
+  will-change: transform;
+}
+
+.glass-3d-depth:hover {
+  box-shadow: 0 25px 60px rgba(56, 189, 248, 0.22), 0 0 40px rgba(168, 85, 247, 0.15), inset 0 1px 2px rgba(255, 255, 255, 0.3);
+}
+
+.starlight-border-glow {
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  box-shadow: 0 0 25px rgba(56, 189, 248, 0.2), inset 0 0 15px rgba(56, 189, 248, 0.1);
+}

@@ -176,13 +176,36 @@ export function speakWithAvatarVoice(text, avatarOrGender = "doctor", onStartCal
     utterance.voice = voice;
   }
 
+  utterance.onboundary = (event) => {
+    window.dispatchEvent(
+      new CustomEvent("avatar-speech-viseme", {
+        detail: {
+          charIndex: event.charIndex,
+          name: event.name,
+          elapsedTime: event.elapsedTime,
+        },
+      })
+    );
+  };
+
   if (onStartCallback) {
-    utterance.onstart = () => onStartCallback();
+    utterance.onstart = () => {
+      window.dispatchEvent(new CustomEvent("avatar-speech-start", { detail: { avatarId, text: cleanText } }));
+      onStartCallback();
+    };
+  } else {
+    utterance.onstart = () => {
+      window.dispatchEvent(new CustomEvent("avatar-speech-start", { detail: { avatarId, text: cleanText } }));
+    };
   }
-  if (onEndCallback) {
-    utterance.onend = () => onEndCallback();
-    utterance.onerror = () => onEndCallback();
-  }
+
+  const handleEnd = () => {
+    window.dispatchEvent(new CustomEvent("avatar-speech-end", { detail: { avatarId } }));
+    if (onEndCallback) onEndCallback();
+  };
+
+  utterance.onend = handleEnd;
+  utterance.onerror = handleEnd;
 
   if (window.speechSynthesis.getVoices().length === 0) {
     window.speechSynthesis.onvoiceschanged = () => {

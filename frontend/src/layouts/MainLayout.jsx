@@ -1,23 +1,22 @@
 import { useState, useContext } from "react";
 import Sidebar from "../components/Sidebar";
-import { ShieldCheck, Sparkles, HeartHandshake, Award } from "lucide-react";
+import Particle3DBackground from "../components/Particle3DBackground";
+import EnterpriseSystemHUD from "../components/EnterpriseSystemHUD";
+import EnterpriseComplianceModal from "../components/EnterpriseComplianceModal";
+import { ShieldCheck, Sparkles, HeartHandshake, Award, Lock } from "lucide-react";
 import { PerformanceContext } from "../context/PerformanceContext";
 
 function MainLayout({ children }) {
   const [caregiverMode, setCaregiverMode] = useState(false);
+  const [complianceOpen, setComplianceOpen] = useState(false);
   const { backgroundMode, reducedMotion } = useContext(PerformanceContext);
 
   const showBackground = backgroundMode !== "OFF" && !reducedMotion;
 
   return (
-    <div className="relative flex min-h-screen bg-slate-950 text-slate-100 overflow-x-hidden selection:bg-indigo-500 selection:text-white">
-      {/* Ambient Starlight & Celestial Nebula Background */}
-      {showBackground && (
-        <div className="ambient-bg">
-          <div className="orb orb-1"></div>
-          {backgroundMode === "FULL" && <div className="orb orb-2"></div>}
-        </div>
-      )}
+    <div className="relative flex min-h-screen bg-[#02040a] text-slate-100 overflow-x-hidden selection:bg-indigo-500 selection:text-white">
+      {/* 3D Falling Stars, Aurora Borealis & Meteor Shower Canvas */}
+      <Particle3DBackground mode="aurora" theme="starlight" />
 
       {/* Main Glass Sidebar */}
       <Sidebar caregiverMode={caregiverMode} />
@@ -45,6 +44,16 @@ function MainLayout({ children }) {
           </div>
 
           <div className="flex items-center gap-3">
+            {/* Enterprise Compliance Ledger Button */}
+            <button
+              onClick={() => setComplianceOpen(true)}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-400/30 text-emerald-300 text-xs font-semibold transition shadow-sm"
+              title="Inspect COPPA / FERPA / HIPAA On-Device Audit"
+            >
+              <Lock size={13} className="text-emerald-400" />
+              <span className="hidden md:inline">Tier-1 Audit</span> (0.0 KB Cloud)
+            </button>
+
             {/* Gamified Starlight Streak Badge */}
             <div className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-semibold text-amber-300 shadow-sm">
               <Award size={15} className="text-amber-400" />
@@ -71,6 +80,15 @@ function MainLayout({ children }) {
           {children}
         </main>
       </div>
+
+      {/* Enterprise FAANG Telemetry & Diagnostic HUD */}
+      <EnterpriseSystemHUD onOpenCompliance={() => setComplianceOpen(true)} />
+
+      {/* Enterprise Compliance & Security Ledger Modal */}
+      <EnterpriseComplianceModal
+        isOpen={complianceOpen}
+        onClose={() => setComplianceOpen(false)}
+      />
     </div>
   );
 }

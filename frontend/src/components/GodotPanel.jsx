@@ -32,12 +32,7 @@ function GodotPanel() {
     setAvatarState("THINKING");
 
     try {
-      // Pass avatar system prompt prefix to AI chatbot
-      const systemHistory = [
-        { role: "system", content: selectedAvatar.systemPrompt },
-      ];
-
-      const reply = await askAI(question, systemHistory);
+      const reply = await askAI(question, [], selectedAvatar.id, selectedAvatar.systemPrompt);
       setAiResponse(reply);
       setAvatarState("SPEAKING");
 

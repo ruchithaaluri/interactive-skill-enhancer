@@ -214,27 +214,43 @@ def generate_response(message: str, history=None, avatar_id: str = "doctor", sys
     persona_name = PERSONA_NAMES.get(active_avatar_id, "Dr. Mentor")
     effective_system_prompt = system_prompt or f"You are {persona_name}, a friendly, helpful, and supportive AI companion. Answer naturally, warmly, and concisely."
 
-    if client is not None:
-        try:
-            messages = [{"role": "system", "content": effective_system_prompt}]
-            for msg in history:
-                if isinstance(msg, dict):
-                    messages.append({"role": msg.get("role", "user"), "content": msg.get("content", "")})
-                elif hasattr(msg, "role") and hasattr(msg, "content"):
-                    messages.append({"role": msg.role, "content": msg.content})
-            messages.append({"role": "user", "content": message})
-
-            response = client.chat.complete(
-                model="mistral-small-latest",
-                messages=messages
-            )
-            return response.choices[0].message.content
-        except Exception:
-            pass
-
+    # 1. Check for direct math calculation first for 100% accurate arithmetic
     math_ans = try_solve_math(message)
     if math_ans:
         return math_ans
+
+    # 2. Real intelligent NLP generation via Mistral AI
+    if client is not None:
+        for model_name in ["open-mistral-7b", "mistral-tiny", "open-mixtral-8x7b", "mistral-small-latest"]:
+            try:
+                messages = [{"role": "system", "content": effective_system_prompt}]
+                for msg in history:
+                    if isinstance(msg, dict):
+                        role = msg.get("role", "user")
+                        if role == "system":
+                            continue
+                        content = msg.get("content", "")
+                        if content and content != message:
+                            messages.append({"role": role, "content": content})
+                    elif hasattr(msg, "role") and hasattr(msg, "content"):
+                        if msg.role == "system":
+                            continue
+                        if msg.content and msg.content != message:
+                            messages.append({"role": msg.role, "content": msg.content})
+
+                messages.append({"role": "user", "content": message})
+
+                response = client.chat.complete(
+                    model=model_name,
+                    messages=messages,
+                    temperature=0.7,
+                    max_tokens=600
+                )
+                if response and response.choices and response.choices[0].message.content:
+                    return response.choices[0].message.content
+            except Exception as e:
+                print(f"[INFO] Mistral NLP model '{model_name}' attempt status: {e}")
+                continue
 
     msg = message.lower().strip()
 

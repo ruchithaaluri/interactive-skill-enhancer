@@ -90,13 +90,11 @@ function AIChat() {
     setLoading(true);
 
     try {
-      const history = [
-        { role: "system", content: selectedAvatar.systemPrompt },
-        ...newMessages.map((msg) => ({
-          role: msg.sender === "You" ? "user" : "assistant",
-          content: msg.text,
-        })),
-      ];
+      // Prior turns for conversational context (excluding current prompt which is passed as message)
+      const history = messages.slice(-6).map((msg) => ({
+        role: msg.sender === "You" ? "user" : "assistant",
+        content: msg.text,
+      }));
 
       const reply = await askAI(text, history, selectedAvatar.id, selectedAvatar.systemPrompt);
 
@@ -158,9 +156,6 @@ function AIChat() {
 
   return (
     <div className="space-y-6 relative">
-      {/* Dynamic Realistic Starlight Particle Canvas */}
-      <Particle3DBackground mode="starlight" theme="starlight" />
-
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>

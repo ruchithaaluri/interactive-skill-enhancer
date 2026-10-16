@@ -4,9 +4,10 @@ export const PerformanceContext = createContext();
 
 export function PerformanceProvider({ children }) {
   // Scenarios/Settings:
-  // Background: OFF (default), LIGHT, FULL
+  // Background: FULL (default), LIGHT, OFF
   const [backgroundMode, setBackgroundMode] = useState(() => {
-    return localStorage.getItem("bg_mode") || "OFF";
+    const saved = localStorage.getItem("bg_mode");
+    return saved && saved !== "OFF" ? saved : "FULL";
   });
 
   // Reduced Motion mode: default false, check system media query
