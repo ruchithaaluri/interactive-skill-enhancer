@@ -8,8 +8,11 @@
 ![Vite](https://img.shields.io/badge/Vite-5.0+-purple.svg)
 ![Godot](https://img.shields.io/badge/Godot-4.7-blue.svg)
 ![Docker](https://img.shields.io/badge/Docker-Ready-blue.svg)
+[![Live Demo](https://img.shields.io/badge/🚀_Live_Deployment-Vercel-success?style=for-the-badge&logo=vercel)](https://interactive-skill-enhancer-xi.vercel.app/)
 
-**Interactive Skill Enhancer** is a full-stack, AI-powered educational and observational platform designed to support children—specifically providing autism-support considerations—and their caregivers, parents, and educators.
+> 🌐 **Live Production Deployment**: **[https://interactive-skill-enhancer-xi.vercel.app/](https://interactive-skill-enhancer-xi.vercel.app/)**
+
+**Interactive Skill Enhancer** is a full-stack, AI-powered educational and observational platform designed to support neurodiverse children (specifically autistic, ADHD, and introverted learners) and their caregivers, parents, and educators.
 
 ---
 
