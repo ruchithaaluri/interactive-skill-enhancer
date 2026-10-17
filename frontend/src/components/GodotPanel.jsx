@@ -4,7 +4,7 @@ import { askAI } from "../services/api";
 import { FormattedText } from "../utils/formatText";
 import { speakWithAvatarVoice } from "../utils/speechUtils";
 import DoctorAvatar from "./DoctorAvatar";
-import SpeechRecognition from "./SpeechRecognition";
+import SpeechRecognition from "./speechrecognition";
 import { AvatarContext } from "../context/AvatarContext";
 
 function GodotPanel() {

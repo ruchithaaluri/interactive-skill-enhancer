@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, useContext } from "react";
 import { SendHorizontal, Bot, User, Trash2 } from "lucide-react";
 import { askAI } from "../services/api";
-import SpeechRecognition from "./SpeechRecognition";
+import SpeechRecognition from "./speechrecognition";
 import { AvatarContext } from "../context/AvatarContext";
 import { speakWithAvatarVoice } from "../utils/speechUtils";
 
